@@ -1,0 +1,2750 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an issue": {
+      "main": [
+        [
+          {
+            "node": "Get keywords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send an SMS/MMS/WhatsApp message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Make a call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Recent Similar Issues Resolved": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Issue Ref": {
+      "main": [
+        [
+          {
+            "node": "Simplify Issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Comments": {
+      "main": [
+        [
+          {
+            "node": "Simplify Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simplify Comments": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarise Resolution": {
+      "main": [
+        [
+          {
+            "node": "Return Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simplify Issue": {
+      "main": [
+        [
+          {
+            "node": "Get Comments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Summarise Resolution",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Get keywords",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Attempt to Resolve Issue",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarise Resolution",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Create an issue",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Decide on ticket",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Summarize todos",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Connect again",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarize todo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Connect to Confluence",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Connect to Confluence1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Connect to Confluence2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decide on ticket": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get keywords": {
+      "main": [
+        [
+          {
+            "node": "Get Recent Similar Issues Resolved",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Collect Jira info": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect to Confluence": {
+      "main": [
+        [
+          {
+            "node": "Get html body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get html body": {
+      "main": [
+        [
+          {
+            "node": "Extract titles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split todo headers": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect again": {
+      "main": [
+        [
+          {
+            "node": "Get todo content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get todo content": {
+      "main": [
+        [
+          {
+            "node": "Summarize todo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize todo": {
+      "main": [
+        [
+          {
+            "node": "Output results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output results": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize todos": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extract titles": {
+      "main": [
+        [
+          {
+            "node": "Split todo headers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop over keywords": {
+      "main": [
+        [
+          {
+            "node": "Summarize all todos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Issues": {
+      "main": [
+        [
+          {
+            "node": "Collect Jira info",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Issue Ref",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop over keywords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attempt to Resolve Issue": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Summarize todos1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Connect again1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model7": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarize todo1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect to Confluence1": {
+      "main": [
+        [
+          {
+            "node": "Get html body1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get html body1": {
+      "main": [
+        [
+          {
+            "node": "Extract titles1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split todo headers1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect again1": {
+      "main": [
+        [
+          {
+            "node": "Get todo content1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get todo content1": {
+      "main": [
+        [
+          {
+            "node": "Summarize todo1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize todo1": {
+      "main": [
+        [
+          {
+            "node": "Output results1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output results1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract titles1": {
+      "main": [
+        [
+          {
+            "node": "Split todo headers1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [
+          {
+            "node": "Summarize todos2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Connect again2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model8": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarize todo2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect to Confluence2": {
+      "main": [
+        [
+          {
+            "node": "Get html body2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get html body2": {
+      "main": [
+        [
+          {
+            "node": "Extract titles2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split todo headers2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connect again2": {
+      "main": [
+        [
+          {
+            "node": "Get todo content2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get todo content2": {
+      "main": [
+        [
+          {
+            "node": "Summarize todo2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize todo2": {
+      "main": [
+        [
+          {
+            "node": "Output results2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output results2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract titles2": {
+      "main": [
+        [
+          {
+            "node": "Split todo headers2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize todos1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Summarize todos2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Attempt to Resolve Issue",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Attempt to Resolve Issue1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model10": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Attempt to Resolve Issue1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attempt to Resolve Issue1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Decide on ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model11": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-09-12T07:10:09.734Z",
+  "id": "zRFxSv2gTIdCSU9a",
+  "isArchived": false,
+  "meta": null,
+  "name": "KL Flow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        1616
+      ],
+      "id": "9e434c91-eacc-4792-a7de-4a6fcef367bc",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "sIpsyXB2BEbZqRKi",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "project": {
+          "__rl": true,
+          "value": "10000",
+          "mode": "list",
+          "cachedResultName": "n8ntest"
+        },
+        "issueType": {
+          "__rl": true,
+          "value": "10003",
+          "mode": "list",
+          "cachedResultName": "Task"
+        },
+        "summary": "={{ $('Microsoft Outlook Trigger').item.json.subject }}",
+        "additionalFields": {
+          "assignee": {
+            "__rl": true,
+            "value": "712020:bb851a6c-16da-40a6-9801-e652b471f0ce",
+            "mode": "list",
+            "cachedResultName": "Zubor Attila"
+          },
+          "description": "={{ $('HTML').item.json.Issue }}",
+          "reporter": {
+            "__rl": true,
+            "value": "712020:bb851a6c-16da-40a6-9801-e652b471f0ce",
+            "mode": "list",
+            "cachedResultName": "Zubor Attila"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.jira",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        1616
+      ],
+      "id": "72d46174-2eaf-46ac-a751-29d50153dc08",
+      "name": "Create an issue"
+    },
+    {
+      "parameters": {
+        "from": "+13342768035",
+        "to": "+36209782288",
+        "message": "=You have a new Jira issue!  {{ $('Create an issue').item.json.key }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        672
+      ],
+      "id": "bb155faf-2573-434f-aaca-26464051de7a",
+      "name": "Send an SMS/MMS/WhatsApp message",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "call",
+        "from": "+13342768035",
+        "to": "+36209782288",
+        "message": "=You have an urgent issue!  {{ $('Create an issue').item.json.key }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        864
+      ],
+      "id": "1db67c01-358b-4897-99bc-f4329ca006cc",
+      "name": "Make a call",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "toRecipients": "={{ $('Microsoft Outlook Trigger').item.json.to }}",
+        "subject": "=Re: {{ $('Microsoft Outlook Trigger').item.json.subject }}",
+        "message": "=I am an automated agent designed to help manage incoming issues. \nI have opened the following Jira ticket for your request: \"\n{{ $('Create an issue').item.json.self }}\n\"Please reply to this email with only one word regarding the urgency of the request:\nLow - These requests can wait until working hours the next day to be picked up.\nMedium - These requests require attention in the following hours, a monitoring team member will be notified via text message.\nHigh - These requests require immidiate attention, a monitoring team member will be notified via phone call immidiately.",
+        "responseType": "customForm",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Request priority",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Low"
+                  },
+                  {
+                    "option": "Medium"
+                  },
+                  {
+                    "option": "High"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        864
+      ],
+      "id": "2267338f-4435-45af-84bd-e4bf933b9e64",
+      "name": "Send message and wait for response",
+      "webhookId": "94d1b7a8-736e-430d-bcae-249ebf5d503e",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.data['Request priority'] }}",
+                    "rightValue": "Medium",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bf73bcc8-010c-4aa4-8e65-e1ef2b4b068a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a96ad7b3-2111-4f7c-a92d-29f73863a6c9",
+                    "leftValue": "={{ $json.data['Request priority'] }}",
+                    "rightValue": "High",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "870745f7-5d84-42a8-9e3e-61f0d2f03d51",
+                    "leftValue": "={{ $json.data['Request priority'] }}",
+                    "rightValue": "Low",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -752,
+        864
+      ],
+      "id": "10ba1558-5feb-48a2-9a0c-1c4eed0e97aa",
+      "name": "Switch",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "output": "fields",
+        "fields": [
+          "body"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        1616
+      ],
+      "id": "ea16d75b-22f6-483b-a4fd-71b4a7625a40",
+      "name": "Get a message",
+      "webhookId": "eb8ec76f-9520-4d10-a05c-1ab6cfa10219"
+    },
+    {
+      "parameters": {
+        "jiraVersion": "server",
+        "operation": "getAll",
+        "options": {
+          "jql": "={{ $json.output.replace(/\\n$/, \"\") }} and issuetype in StandardIssueTypes() ORDER BY created DESC"
+        }
+      },
+      "id": "127a8e82-f6d8-4afd-a995-8a3156162fe0",
+      "name": "Get Recent Similar Issues Resolved",
+      "type": "n8n-nodes-base.jira",
+      "position": [
+        1744,
+        912
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "bb352fe5-53cd-4b55-babd-69666c2598f6",
+      "name": "Issue Ref",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        2064,
+        1104
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jiraVersion": "server",
+        "resource": "issueComment",
+        "operation": "getAll",
+        "issueKey": "={{ $json.issueKey }}",
+        "options": {
+          "orderBy": "-created"
+        }
+      },
+      "id": "f6a37dd6-12db-4400-9cb5-9b7b5ab02de7",
+      "name": "Get Comments",
+      "type": "n8n-nodes-base.jira",
+      "position": [
+        2448,
+        1104
+      ],
+      "typeVersion": 1,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "faba7ffd-4f3a-4394-9bed-01014ddc12c1",
+              "name": "author",
+              "type": "string",
+              "value": "={{ $json.author.displayName }}"
+            },
+            {
+              "id": "76ed191c-6c43-47e7-bbaf-104bdde26993",
+              "name": "comment",
+              "type": "string",
+              "value": "={{ $json.body }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "84ebba1f-6cbe-4423-ba77-f4c145695a01",
+      "name": "Simplify Comments",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2640,
+        1104
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Issue\n{{ $('Simplify Issue').item.json.issueKey }} {{ $('Simplify Issue').item.json.summary }}\n{{ $('Simplify Issue').item.json.description }}\n{{ $('Simplify Issue').item.json.originalDescription }}\n\n## Comments\n{{ $json.comments.map((item,idx) => `${idx+1}. ${item.comment.replaceAll('\\n', ' ')}`).join('\\n') }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Analyse the given issue and its comments. Your task is to summarise the resolution of this issue."
+            }
+          ]
+        }
+      },
+      "id": "28dc25b5-ecac-4202-8db6-f2a40990fce0",
+      "name": "Summarise Resolution",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        3024,
+        1104
+      ],
+      "typeVersion": 1.6
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "267918d5-5193-48c8-8e3a-6542c8edf77c",
+              "name": "projectKey",
+              "type": "string",
+              "value": "={{ $json.fields.project.key }}"
+            },
+            {
+              "id": "8c44b6b1-a5e7-4312-b96c-727b24a82ac2",
+              "name": "issueKey",
+              "type": "string",
+              "value": "={{ $json.key }}"
+            },
+            {
+              "id": "3451a39f-1907-4406-beb9-fd4feebbf4c2",
+              "name": "issueType",
+              "type": "string",
+              "value": "={{ $json.fields.issuetype.name }}"
+            },
+            {
+              "id": "99f33276-50ad-424a-b307-2ed69094bc43",
+              "name": "createdAt",
+              "type": "string",
+              "value": "={{ $json.fields.created }}"
+            },
+            {
+              "id": "5463ff2e-4d42-4602-8278-555f369a37e5",
+              "name": "status",
+              "type": "string",
+              "value": "={{ $json.fields.status.name }}"
+            },
+            {
+              "id": "1df0588e-7916-4c4d-95f1-7c6d58ba094f",
+              "name": "summary",
+              "type": "string",
+              "value": "={{ $json.fields.summary }}"
+            },
+            {
+              "id": "ecf69a9b-18c9-4b04-9d6e-b77391728f33",
+              "name": "description",
+              "type": "string",
+              "value": "={{ $json.fields.description }}"
+            },
+            {
+              "id": "8f7b0876-4d6f-42b3-bc12-34396ce824ed",
+              "name": "reportedBy",
+              "type": "string",
+              "value": "={{ $json.fields.creator.displayName }}"
+            },
+            {
+              "id": "74504426-6ecd-4b32-866f-0e336c669650",
+              "name": "reportedByEmailAddress",
+              "type": "string",
+              "value": "={{ $json.fields.creator.emailAddress }}"
+            },
+            {
+              "id": "ce1714d8-2c84-4f45-9b4d-4b625be4b116",
+              "name": "originalDescription",
+              "value": "={{ $json.fields.customfield_10080 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "699dc409-4df1-47f2-9fbd-890d80564531",
+      "name": "Simplify Issue",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2240,
+        1104
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "comments",
+        "options": {}
+      },
+      "id": "3d31b6b3-9367-4f29-9a47-cbc5798c0890",
+      "name": "Aggregate",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        2816,
+        1104
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae761d50-f4b9-4baa-beec-ca1a91614d1c",
+              "name": "issueKey",
+              "type": "string",
+              "value": "={{ $('Simplify Issue').item.json.issueKey }}"
+            },
+            {
+              "id": "963b12a4-cf60-4380-9f71-4b9885e9f9b5",
+              "name": "summary",
+              "type": "string",
+              "value": "={{ $('Simplify Issue').item.json.summary }}"
+            },
+            {
+              "id": "62a6c941-ccd4-4d71-8685-e5a1144395ca",
+              "name": "description",
+              "type": "string",
+              "value": "={{ $('Simplify Issue').item.json.description }}"
+            },
+            {
+              "id": "47d26f5c-d360-4ca3-b48a-d36ea1746a3b",
+              "name": "resolution",
+              "type": "string",
+              "value": "={{ $json.text }}"
+            },
+            {
+              "id": "733e112d-3bd1-48a8-945a-f5bdb95b4090",
+              "name": "originalDescription",
+              "value": "={{ $('Simplify Issue').item.json.originalDescription }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b4d84d2b-7ef9-41d4-af57-ef47589dc492",
+      "name": "Return Fields",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        3328,
+        1104
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "model": "gemma3:27b-it-qat",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        1824
+      ],
+      "id": "dca41697-be86-466a-b027-7afce2d26c4d",
+      "name": "Ollama Chat Model"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small3.2:24b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        4736,
+        1600
+      ],
+      "id": "076533fd-2e3e-44c4-94f6-ac0d0df3ab97",
+      "name": "Ollama Chat Model1"
+    },
+    {
+      "parameters": {
+        "model": "llama3:8b",
+        "options": {
+          "temperature": 0,
+          "topK": -1,
+          "topP": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3024,
+        1264
+      ],
+      "id": "bc96ac11-d401-4eb7-b6c5-9b8cf6c0be78",
+      "name": "Ollama Chat Model2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b524ad38-a085-4efe-b912-119ae02c9878",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "Open ticket = Yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        1616
+      ],
+      "id": "98b55e73-79cd-48d7-9eb1-a0fe4b0a652f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "No need to open ticket"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        1792
+      ],
+      "id": "a6bec18c-602d-4ab4-98c1-1adfa9e0f469",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "model": "gpt-oss:20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        464,
+        1856
+      ],
+      "id": "819ba22e-9479-4934-8c60-ae8cfd0622b4",
+      "name": "Ollama Chat Model3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2848,
+        1616
+      ],
+      "id": "a88f4636-901b-4296-b586-1f4a1a6b2fbf",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small3.2:24b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3424,
+        1952
+      ],
+      "id": "c0c81a10-2862-43da-ad95-e76b7832988f",
+      "name": "Ollama Chat Model4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('HTML').item.json.Issue }}",
+        "options": {
+          "systemMessage": "Analyze the email to identify the single most relevant keyword for searching a Confluence page.\n\nThe keyword should be specific and non-generic (e.g., a technical term or a job name).\n\nThe keyword must be a single, singular word.\n\nOutput only the keyword, with no other text."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        1616
+      ],
+      "id": "dd2d1942-986c-448f-8947-c91ce01a7e36",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "model": "gpt-oss:20b",
+        "options": {
+          "temperature": 0,
+          "topK": -1,
+          "topP": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        1776
+      ],
+      "id": "4103368e-5c66-40e5-864e-01c8a3f1203e",
+      "name": "Ollama Chat Model5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Email chain:\n{{ $json.Issue }}",
+        "options": {
+          "systemMessage": "Instruction:\nRead the email chain. Consider the most recent email the most important factor (top, beginning of text).\n\nDecision rule:\n\nIf the issue still needs attention → Open ticket = Yes\n\nIf resolved or no action needed → Open ticket = No\n\nDo not do a deep analysis of the chain, decide only if there is an issue in need of attention or not.\n\nRespond with exactly one line. Do not include any other text, context, or explanation. The only valid outputs are \"Open ticket = Yes\" or \"Open ticket = No\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        464,
+        1616
+      ],
+      "id": "f72dbdab-4607-4059-9dbd-268fc5cfc930",
+      "name": "Decide on ticket"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Subject:\n{{ $('Microsoft Outlook Trigger').item.json.subject }}\nEmail content:\n{{ $('HTML').item.json.Issue }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "Analyze the email subject and body to generate a Jira JQL query for finding similar issues.\n\nThe query must search for meaningful keywords that are specific to the issue, such as technical terms, program names, or process names.\n\nAvoid generic terms like \"error\" or \"aborted,\" and unique identifiers like file names or record numbers. \n\nList of keywords that are too generic by themselves: abort, aborted, error, RMS, RIB.\n\nDo not include any accompanying text or explanation.\n\nResponse must be in the following output format, and nothing else:\n\n(project = KIRKLSUP) and (text ~ \"keyword 1\" OR text ~ \"keyword 2\")"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        1616
+      ],
+      "id": "ee0ac6db-5df0-4a04-9a73-007867853be2",
+      "name": "Get keywords"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "resolved_issues",
+        "options": {}
+      },
+      "id": "1b1618f3-f688-4a77-b00b-f54cc487342a",
+      "name": "Collect Jira info",
+      "type": "n8n-nodes-base.aggregate",
+      "position": [
+        3328,
+        912
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://qbcs.atlassian.net/wiki/rest/api/content/293274369?expand=body.storage",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        1616
+      ],
+      "id": "8e3a438f-7da3-4ac0-b67c-ab41f33e35fa",
+      "name": "Connect to Confluence",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df1f2f2e-c14f-4dfc-86cb-923f224d50f2",
+              "name": "html",
+              "value": "={{$json.body.storage.value}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2256,
+        1616
+      ],
+      "id": "c44faa87-56ee-4aad-bfc0-4e1222347eac",
+      "name": "Get html body"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "todo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        1616
+      ],
+      "id": "6f9d2816-8e41-4be9-9706-56ca4e48da20",
+      "name": "Split todo headers"
+    },
+    {
+      "parameters": {
+        "url": "https://qbcs.atlassian.net/wiki/rest/api/content/293274369?expand=body.storage",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3040,
+        1776
+      ],
+      "id": "c53b52ef-17e7-4c63-9b89-fbb725dbf3d4",
+      "name": "Connect again",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const htmlString = $input.first().json.body.storage.value; // Your HTML content\nconst h2Text = $('Split todo headers').first().json.todo; // Search phrase (even if interrupted by tags)\n\n// Escape special regex characters in the text\nconst escapedText = h2Text.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n\n// Match any <h2> that contains the desired phrase (even with HTML tags between words)\nconst h2Regex = new RegExp(\n  `<h2[^>]*>[\\\\s\\\\S]*?${escapedText.split(/\\s+/).join('[\\\\s\\\\S]*?')}[\\\\s\\\\S]*?<\\\\/h2>([\\\\s\\\\S]*?)(?=<h2[^>]*>|$)`,\n  'i'\n);\n\nconst match = htmlString.match(h2Regex);\n\nif (!match) {\n  return [{ json: { error: \"Could not find matching h2 by text.\" } }];\n}\n\nconst contentBetween = match[1].trim();\n\nreturn [{ json: { extractedContent: contentBetween } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3216,
+        1776
+      ],
+      "id": "4b23aa0d-2538-4fb2-a302-8219cad8a020",
+      "name": "Get todo content"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.extractedContent }}",
+        "options": {
+          "systemMessage": "Summarize the provided solution, stripping any HTML. Paraphrase the content while leaving out any code."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        3424,
+        1776
+      ],
+      "id": "960a6d3f-9129-4541-8387-6b8a762cfa8a",
+      "name": "Summarize todo"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "94133e2f-fcf4-4082-965b-84abbe5f9a6c",
+              "name": "Todo",
+              "value": "=Title: {{ $('Split todo headers').item.json.todo }}\nWiki page: \nhttps://qbcs.atlassian.net/wiki/spaces/MON/pages/293275525/Kirklands+Daytime+Support+Issues\n{{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3744,
+        1776
+      ],
+      "id": "a3324f1f-13ad-4338-a4e7-132e14630544",
+      "name": "Output results"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "Todo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3744,
+        1616
+      ],
+      "id": "b250cbfc-8a36-4a50-804b-c1c7405c0892",
+      "name": "Summarize todos"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        368,
+        -48
+      ],
+      "id": "73781059-7145-4fd1-b527-e97c8f212f3b",
+      "name": "Summarize all todos"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "todo",
+              "cssSelector": "=h2:contains('{{ $('AI Agent3').item.json.output }}') ",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": false,
+          "cleanUpText": false
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2464,
+        1616
+      ],
+      "id": "204dd05b-ce94-43fb-a332-2d4fd97567b9",
+      "name": "Extract titles",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        80,
+        -48
+      ],
+      "id": "48bbb940-4ae5-44c0-8322-5f3855774e8f",
+      "name": "Loop over keywords"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "08d85744-88bc-4372-ac69-38466d6d119b",
+      "name": "Loop Over Issues",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        1920,
+        912
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {
+          "destinationFieldName": "lookupkey"
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -48
+      ],
+      "id": "3d6c1e8a-3367-4c64-954a-a7be01ba3828",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This will take the stringified array in output and turn it into a real array\nreturn [\n  {\n    json: {\n      output: JSON.parse($json.output) // Convert string to array\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -48
+      ],
+      "id": "2370414f-33f2-47dd-8532-324da1120d20",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4128,
+        1616
+      ],
+      "id": "177d6806-892d-40c9-a1df-7f594051ea14",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Function node\n// This script normalizes \"resolved_issues\", \"Todo\", and includes Issue text from the HTML node.\n\nreturn items.map(item => {\n\tconst data = item.json;\n\n\t// Safely pull Issue text from the HTML node\n\tconst issueText = $('HTML').item.json.Issue ?? '';\n\n\treturn {\n\t\tjson: {\n\t\t\t// Pass through resolved_issues as-is, or empty array if missing\n\t\t\tresolved_issues: data.resolved_issues ?? [],\n\n\t\t\t// Convert \"Todo\" array-of-objects into array-of-strings, or empty array if missing\n\t\t\ttodo: Array.isArray(data.Todo)\n\t\t\t\t? data.Todo.map(t => t.Todo ?? null).filter(Boolean)\n\t\t\t\t: [],\n\n\t\t\t// Add Issue text\n\t\t\tissue: issueText\n\t\t}\n\t};\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4320,
+        1616
+      ],
+      "id": "5e8a559e-a7a6-4745-ac8d-20de6e19340b",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "content": "## TODO Branch",
+        "height": 624,
+        "width": 2208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        1392
+      ],
+      "id": "2e08355a-6f18-4531-890c-2b0d63ee8117",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## JIRA Branch",
+        "height": 544,
+        "width": 1776,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        832
+      ],
+      "id": "98be7ea7-812c-47b3-acbf-6403262390c8",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Previously resolved Issues\n{{ $json.data[0].resolved_issues.toJsonString() }}\n## Current issue\n{{ $json.data[0].issue }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Based on the previously resolved issues, summarize information found relevant to the issue in the following format:\nInformation derived from previous Jira issues:\n  [Issue Number] - [Brief summary of problem cause and resolution steps]  \n  [Issue Number] - [Brief summary of problem cause and resolution steps]  \n  Do not include any generic advice or information not derived from the provided data.  \nJira Link Format: \nhttps://support.qbcs.com/browse/KIRKLSUP-17949\n"
+            }
+          ]
+        }
+      },
+      "id": "caf202d4-c9f3-4094-9d1f-21965ae6a010",
+      "name": "Attempt to Resolve Issue",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        4736,
+        1440
+      ],
+      "typeVersion": 1.6
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Issue }}",
+        "options": {
+          "systemMessage": "Analyze the message to assign a Jira priority level.\n\nIf the message indicates the issue is urgent or requires immediate attention, assign \"Blocker\".\n\nOtherwise, assign \"Major\".\n\nResponse must be one of the following, and nothing else:\n\nBlocker\n\nMajor"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        304,
+        1152
+      ],
+      "id": "fab37a94-5033-44bb-b877-7f7643290989",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gpt-oss:20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        304,
+        1424
+      ],
+      "id": "f68624e8-ecd5-4b6f-94a3-cdf48ef97f3f",
+      "name": "Ollama Chat Model6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f0c353d1-4dd2-4553-b2c4-eaf824d4c68b",
+              "leftValue": "={{$json.from}}",
+              "rightValue": "@brandhouseco.com",
+              "operator": {
+                "type": "string",
+                "operation": "endsWith"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -1520,
+        1616
+      ],
+      "id": "ce435054-39e0-412b-8590-3a15b9131a17",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7cfb91af-9819-4e10-9da6-824e19d5f9eb",
+              "name": "body.content",
+              "value": "={{ $json.body.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -992,
+        1616
+      ],
+      "id": "6f716473-fba6-4be2-afba-7f339b24c0f1",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "body.content",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "Issue",
+              "cssSelector": "span",
+              "returnArray": true
+            },
+            {
+              "key": "Issue",
+              "cssSelector": "div",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": true,
+          "cleanUpText": true
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -592,
+        1616
+      ],
+      "id": "5124ecda-ec82-4cc5-9105-6b6a67e85682",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2816,
+        2320
+      ],
+      "id": "20d9058d-a475-4bb8-96e6-65e84795323d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small3.2:24b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3408,
+        2656
+      ],
+      "id": "3d8ec667-30da-4c11-a8ba-1c9abec612b3",
+      "name": "Ollama Chat Model7"
+    },
+    {
+      "parameters": {
+        "url": "=https://qbcs.atlassian.net/wiki/rest/api/content/293275525?expand=body.storage",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2064,
+        2320
+      ],
+      "id": "2ae27f53-cdbd-4a82-9d98-5642e327ac38",
+      "name": "Connect to Confluence1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df1f2f2e-c14f-4dfc-86cb-923f224d50f2",
+              "name": "html",
+              "value": "={{$json.body.storage.value}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2240,
+        2320
+      ],
+      "id": "67606227-88ea-40f2-acd8-99432af211f3",
+      "name": "Get html body1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "todo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        2320
+      ],
+      "id": "a82d9ef5-369e-4168-9990-00fb1596bcb5",
+      "name": "Split todo headers1"
+    },
+    {
+      "parameters": {
+        "url": "https://qbcs.atlassian.net/wiki/rest/api/content/293275525?expand=body.storage",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3024,
+        2480
+      ],
+      "id": "2f9a1e64-96bf-4abe-b84f-143879015b67",
+      "name": "Connect again1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const htmlString = $input.first().json.body.storage.value; // Your HTML content\nconst h2Text = $('Split todo headers1').first().json.todo; // Search phrase (even if interrupted by tags)\n\n// Escape special regex characters in the text\nconst escapedText = h2Text.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n\n// Match any <h2> that contains the desired phrase (even with HTML tags between words)\nconst h2Regex = new RegExp(\n  `<h2[^>]*>[\\\\s\\\\S]*?${escapedText.split(/\\s+/).join('[\\\\s\\\\S]*?')}[\\\\s\\\\S]*?<\\\\/h2>([\\\\s\\\\S]*?)(?=<h2[^>]*>|$)`,\n  'i'\n);\n\nconst match = htmlString.match(h2Regex);\n\nif (!match) {\n  return [{ json: { error: \"Could not find matching h2 by text.\" } }];\n}\n\nconst contentBetween = match[1].trim();\n\nreturn [{ json: { extractedContent: contentBetween } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3200,
+        2480
+      ],
+      "id": "5a091849-2aec-4a30-b80e-a74ed14621ce",
+      "name": "Get todo content1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.extractedContent }}",
+        "options": {
+          "systemMessage": "Summarize the provided solution, stripping any HTML. Paraphrase the content while leaving out any code."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        3408,
+        2480
+      ],
+      "id": "6eddf719-1b63-49f0-9301-3d471857e2ae",
+      "name": "Summarize todo1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "94133e2f-fcf4-4082-965b-84abbe5f9a6c",
+              "name": "Todo",
+              "value": "=Title: {{ $('Split todo headers1').item.json.todo }}\nWiki page: \nhttps://qbcs.atlassian.net/wiki/spaces/MON/pages/293275525/Kirklands+Daytime+Support+Issues\n{{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3728,
+        2480
+      ],
+      "id": "a7141f1c-c394-45c0-af60-92ef0c427132",
+      "name": "Output results1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "Todo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3728,
+        2320
+      ],
+      "id": "6add1484-6a6d-42be-8cb7-f6bdf3683cf9",
+      "name": "Summarize todos1"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "todo",
+              "cssSelector": "=h2:contains('{{ $('AI Agent3').item.json.output }}') ",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": false,
+          "cleanUpText": false
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2448,
+        2320
+      ],
+      "id": "22f72553-2072-4893-bb2b-4984ee4d45b4",
+      "name": "Extract titles1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2848,
+        2912
+      ],
+      "id": "ebc829e0-f533-4b74-98df-3e3d8102be84",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small3.2:24b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3424,
+        3312
+      ],
+      "id": "ecf7c653-8b1c-4e46-8c48-f787e3a03a5d",
+      "name": "Ollama Chat Model8"
+    },
+    {
+      "parameters": {
+        "url": "=https://qbcs.atlassian.net/wiki/rest/api/content/5603343?expand=body.storage",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2080,
+        2912
+      ],
+      "id": "7fc5fbe7-89f2-48aa-99da-8c2e1166cd23",
+      "name": "Connect to Confluence2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "df1f2f2e-c14f-4dfc-86cb-923f224d50f2",
+              "name": "html",
+              "value": "={{$json.body.storage.value}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2256,
+        2912
+      ],
+      "id": "85ffbd94-5c9a-4efc-9076-3af95387bc78",
+      "name": "Get html body2"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "todo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2640,
+        2912
+      ],
+      "id": "a5ea0551-bfef-4bcd-bedd-5057724874c4",
+      "name": "Split todo headers2"
+    },
+    {
+      "parameters": {
+        "url": "https://qbcs.atlassian.net/wiki/rest/api/content/5603343?expand=body.storage",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3040,
+        3072
+      ],
+      "id": "ed551f5c-57a3-49a2-8eda-d1b7798191c9",
+      "name": "Connect again2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const htmlString = $input.first().json.body.storage.value; // Your HTML content\nconst h2Text = $('Split todo headers2').first().json.todo; // Search phrase (even if interrupted by tags)\n\n// Escape special regex characters in the text\nconst escapedText = h2Text.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');\n\n// Match any <h2> that contains the desired phrase (even with HTML tags between words)\nconst h2Regex = new RegExp(\n  `<h2[^>]*>[\\\\s\\\\S]*?${escapedText.split(/\\s+/).join('[\\\\s\\\\S]*?')}[\\\\s\\\\S]*?<\\\\/h2>([\\\\s\\\\S]*?)(?=<h2[^>]*>|$)`,\n  'i'\n);\n\nconst match = htmlString.match(h2Regex);\n\nif (!match) {\n  return [{ json: { error: \"Could not find matching h2 by text.\" } }];\n}\n\nconst contentBetween = match[1].trim();\n\nreturn [{ json: { extractedContent: contentBetween } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3216,
+        3072
+      ],
+      "id": "976a7cfd-dfcd-4f6e-bb48-e01e70fe16fb",
+      "name": "Get todo content2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.extractedContent }}",
+        "options": {
+          "systemMessage": "Summarize the provided solution, stripping any HTML. Paraphrase the content while leaving out any code."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        3424,
+        3072
+      ],
+      "id": "0e911247-ea28-4f70-b356-5d7303b8b9b2",
+      "name": "Summarize todo2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "94133e2f-fcf4-4082-965b-84abbe5f9a6c",
+              "name": "Todo",
+              "value": "=Title: {{ $('Split todo headers2').item.json.todo }}\nWiki page: \nhttps://qbcs.atlassian.net/wiki/spaces/MON/pages/5603343/Monitoring+TODO\n{{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3744,
+        3072
+      ],
+      "id": "f08993de-00f2-47d6-a718-cfd3a1ab235d",
+      "name": "Output results2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "Todo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        3744,
+        2912
+      ],
+      "id": "9f29eafe-1973-40a7-823b-acf964778646",
+      "name": "Summarize todos2"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "todo",
+              "cssSelector": "=h2:contains('{{ $('AI Agent3').item.json.output }}') ",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {
+          "trimValues": false,
+          "cleanUpText": false
+        }
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2464,
+        2912
+      ],
+      "id": "c54eda3f-c811-47ca-9e58-07171e0ba077",
+      "name": "Extract titles2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "content": "## Daytime issues Branch",
+        "height": 624,
+        "width": 2208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        2240
+      ],
+      "id": "7755d7f3-c2e5-40e4-8a9c-828c620551a4",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Monitoring Todo Branch",
+        "height": 624,
+        "width": 2208,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        2880
+      ],
+      "id": "193603df-f2c9-4a6c-baaf-c56da80796e6",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "toRecipients": "attila.zubor@qbcs.com, szabolcs.beres@qbcs.com, david.rozsahegyi@qbcs.com",
+        "subject": "=AI SUGGESTION: {{ $('Microsoft Outlook Trigger').item.json.subject }}",
+        "bodyContent": "={{ $json.data[0].text }}\n\n{{ $json.data[1].text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        5664,
+        1616
+      ],
+      "id": "ebea9462-ac86-4396-9e0b-1249e0c06320",
+      "name": "Send a message",
+      "webhookId": "e8287420-5bd5-4044-92a2-0b983fb2a1ce"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4496,
+        1616
+      ],
+      "id": "f9a215a5-67d8-440d-897b-0f92c3ccf3a2",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Current issue\n{{ $json.data[1].issue }}\n## Todo page\n{{ $json.data[1].todo }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Based on the todo page information, summarize information found relevant to the issue in the following format:\nInformation derived from Wiki [Wiki page]:\n[To-do Page Title] - [Brief summary of the to-do's resolution]\n  Do not include any generic advice or information not derived from the provided data.  \n"
+            }
+          ]
+        }
+      },
+      "id": "f2d768e3-a759-44e6-9713-1bf54c768b72",
+      "name": "Attempt to Resolve Issue1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        4720,
+        1776
+      ],
+      "typeVersion": 1.6
+    },
+    {
+      "parameters": {
+        "model": "mistral-small3.2:24b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        3984,
+        1696
+      ],
+      "id": "112a17b4-546a-4b02-97ac-7caf7b129fcd",
+      "name": "Ollama Chat Model9"
+    },
+    {
+      "parameters": {
+        "model": "mistral-small3.2:24b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        4720,
+        1952
+      ],
+      "id": "17da96fc-da73-49da-a11a-fc7288387a52",
+      "name": "Ollama Chat Model10"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5168,
+        1616
+      ],
+      "id": "b732f5ed-9a56-4f3b-ae47-dd543b67abb3",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        5376,
+        1616
+      ],
+      "id": "6112ee8c-694b-4dd4-9bcd-3884b9318c01",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6f3c7c97-a4cb-44f9-a12a-d8a4534d70ea",
+              "name": "Issue",
+              "value": "={{ $json.Issue }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        1616
+      ],
+      "id": "3546a58c-59b9-4e93-a815-cb7918feac94",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=## Text to clean:\n{{ $json.Issue }}",
+        "options": {
+          "systemMessage": "Please remove email adresses and links from the text but nothing else."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        1616
+      ],
+      "id": "5ac1f89d-24c1-4387-8432-654e3c147f47",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "model": "gemma3:27b-it-qat",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1840
+      ],
+      "id": "285df281-86c8-4f3f-b3a8-6d61f5750f3f",
+      "name": "Ollama Chat Model11"
+    }
+  ],
+  "pinData": {
+    "Microsoft Outlook Trigger": [
+      {
+        "json": {
+          "id": "AAMkADYzMjAyMDBhLTIwMDktNGU5NC05YTA4LWQ1ZTFiNWU4YTg3ZABGAAAAAACObOFn7GoXTL-btUyUBYQ1BwCAvoxMfdnYRJMRq-GCfNBVAAAAAAEMAACAvoxMfdnYRJMRq-GCfNBVAAA2NazpAAA=",
+          "conversationId": "AAQkADYzMjAyMDBhLTIwMDktNGU5NC05YTA4LWQ1ZTFiNWU4YTg3ZAAQALpMVlZsS0uLorepeVVEEcs=",
+          "subject": "RE: SKU 337769 - do you see any errors on the backend? ",
+          "bodyPreview": "Still hasn’t come through, I might have put it through more than once thinking I missed it.\r\n\r\nFrom: Attila Zubor <attila.zubor@qbcs.com>\r\nSent: Wednesday, September 10, 2025 5:54 PM\r\nTo: Kelli Maitland <Kelli.Maitland@brandhouseco.com>; EXT_Quickborn Mon",
+          "from": "Kelli.Maitland@brandhouseco.com",
+          "to": [
+            "attila.zubor@qbcs.com",
+            "monitoringteam@qbcs.com",
+            "kirksupp@qbcs.com"
+          ],
+          "categories": [],
+          "hasAttachments": false
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-09-12T07:10:09.737Z",
+      "createdAt": "2025-09-12T07:10:09.737Z",
+      "role": "workflow:owner",
+      "workflowId": "zRFxSv2gTIdCSU9a",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-09-12T07:18:21.000Z",
+  "versionId": "0fb9374b-78d0-4719-871b-91b5be02276d"
+}
