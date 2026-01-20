@@ -1,90 +1,639 @@
 {
-  "active": false,
-  "activeVersion": null,
-  "activeVersionId": null,
-  "connections": {
-    "Call 'Upload to Kafka topic'": {
-      "main": [
-        [
-          {
-            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Failed to upload file to Kafka topic",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
-      "main": [
-        [
-          {
-            "node": "Call 'Check Allocation in MFCS v2'",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "DAG Run failed or wait too long",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'Check Allocation in Database'": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Can not find Allocation in DB",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-15T12:38:06.000Z",
+    "createdAt": "2026-01-15T12:38:04.601Z",
+    "versionId": "2bc45dd3-bab2-4363-bf4a-24b4a5628345",
+    "workflowId": "D8bvizUafrQoEjDR",
+    "nodes": [
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+              },
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ]
           },
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $('Code in JavaScript').item.json.data }}",
+          "options": {}
+        },
+        "id": "618f5ddf-3e7a-41ca-bfd3-2e0f3a30c8f8",
+        "name": "Airflow: dag_run",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -832,
+          224
+        ],
+        "typeVersion": 4.2
+      },
+      {
+        "parameters": {
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5378feec-22be-426d-802e-83014028268f",
+        "name": "Airflow: dag_run - state",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -336,
+          208
+        ],
+        "typeVersion": 4.2
+      },
+      {
+        "parameters": {
+          "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+        },
+        "id": "4643fc89-1e8c-4598-8e43-9603fc6bbe80",
+        "name": "count",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          0,
+          192
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "errorMessage": "dag run fail"
+        },
+        "id": "ba1f8295-1945-4bb7-a63e-c9270c7a7c91",
+        "name": "dag run fail",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          0,
+          544
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "combinator": "and",
+            "conditions": [
+              {
+                "id": "0ae67986-09c0-443d-9262-075bfe94ca2e",
+                "operator": {
+                  "name": "filter.operator.equals",
+                  "type": "string",
+                  "operation": "equals"
+                },
+                "leftValue": "={{ $json.state }}",
+                "rightValue": "queued"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "5bd0e028-e71b-4b10-97d4-f7fa0762fb2a",
+        "name": "if state == queued",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          -656,
+          208
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "errorMessage": "dag run wait too long"
+        },
+        "id": "5fac7773-5be5-4844-98c3-6fdf22e9e608",
+        "name": "dag run wait too long",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          320,
+          192
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}/taskInstances/Sample%20Task%201/xcomEntries/return_value",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ae464aab-781c-4fd5-a509-1f3ce5378155",
+        "name": "Airflow: dag_run - get result",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 4.2,
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "4d4ecf8a-c02b-4722-9528-1919cdf9b83e",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "success"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "=success"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "queued"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "queued"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "fa5d8524-334a-4ab1-b543-bba75cafd0ec",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "running"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "running"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "dd853677-c51c-4c06-8680-3c9d1829d6bd",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "failed"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "failed"
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": 3
           }
+        },
+        "id": "1623c4f5-6fcd-4d1e-ab2c-ea574cbf6852",
+        "name": "Switch: state",
+        "type": "n8n-nodes-base.switch",
+        "position": [
+          -176,
+          160
+        ],
+        "typeVersion": 3.2
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "dag_run_id"
+              },
+              {
+                "name": "data"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "id": "1cfebc3f-fc89-4f63-b6b8-678c5ae8a4f9",
+        "name": "in data",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -1904,
+          176
+        ],
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "amount": "={{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 10 }}"
+        },
+        "id": "e9f51834-557e-4b42-96f2-5da7895c118a",
+        "name": "Wait",
+        "type": "n8n-nodes-base.wait",
+        "position": [
+          -480,
+          112
+        ],
+        "webhookId": "3d164954-2926-4174-afc1-261dfdfa9e46",
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                },
+                "leftValue": "={{ $json.count }}",
+                "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "f2bc53d8-b14d-4ae0-b4ba-86d56c59a9df",
+        "name": "If count > wait_time",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          144,
+          288
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "40a5ab5b-dee1-44c4-910a-d6b85af75aed",
+                "name": "prefix",
+                "type": "string",
+                "value": "http://192.168.135.37:8080"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e500b9df-bb4b-4e1f-8fd3-57a7bf3273ed",
+        "name": "airflow-api",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -1216,
+          176
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $('airflow-api').item.json.prefix }}/auth/token",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "{\n    \"username\": \"admin\",\n    \"password\": \"k4PeYSwP63RUfTeh\"\n  }",
+          "options": {}
+        },
+        "id": "d86b8a54-8266-48ee-a7da-f4018a84d1b8",
+        "name": "Airflow: getToken",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -1040,
+          176
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "8lZfgqP2sh9kax5i",
+            "name": "airflow"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  if (item.json.dag_run_id == null || item.json.dag_run_id === \"\") {\n    item.json.dag_run_id ='example_display_name'\n    //item.json.wait=10\n    //item.json.wait_time=12\n  }\n  item.json.data ='{\\\"dag_run_id\\\": null,\\\"logical_date\\\": null}'\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1488,
+          176
+        ],
+        "id": "62401dc4-f6fc-40be-920c-a34add381161",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "jsCode": "\nreturn $('Switch: state').item.json;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          208,
+          0
+        ],
+        "id": "163af6af-fd7f-4dc2-a8bf-dd850a64d2a0",
+        "name": "Code in JavaScript1"
+      }
+    ],
+    "connections": {
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run - state",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
-      ]
+      },
+      "count": {
+        "main": [
+          [
+            {
+              "node": "If count > wait_time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "airflow-api": {
+        "main": [
+          [
+            {
+              "node": "Airflow: getToken",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch: state": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run - get result",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "dag run fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: dag_run": {
+        "main": [
+          [
+            {
+              "node": "if state == queued",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "if state == queued": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "dag run fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If count > wait_time": {
+        "main": [
+          [
+            {
+              "node": "dag run wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: dag_run - state": {
+        "main": [
+          [
+            {
+              "node": "Switch: state",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: getToken": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "airflow-api",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: dag_run - get result": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
     },
-    "When clicking ‘Execute workflow’": {
+    "authors": "Attila Zubor",
+    "name": "Version 2bc45dd3",
+    "description": ""
+  },
+  "activeVersionId": "2bc45dd3-bab2-4363-bf4a-24b4a5628345",
+  "connections": {
+    "Wait": {
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Airflow: dag_run - state",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "HTTP Request": {
+    "count": {
+      "main": [
+        [
+          {
+            "node": "If count > wait_time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "in data": {
       "main": [
         [
           {
@@ -92,10 +641,115 @@
             "type": "main",
             "index": 0
           }
+        ]
+      ]
+    },
+    "airflow-api": {
+      "main": [
+        [
+          {
+            "node": "Airflow: getToken",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch: state": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run - get result",
+            "type": "main",
+            "index": 0
+          }
         ],
         [
           {
-            "node": "Unable to get allocation JSON template from MFCS.",
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "dag run fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: dag_run": {
+      "main": [
+        [
+          {
+            "node": "if state == queued",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if state == queued": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "dag run fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If count > wait_time": {
+      "main": [
+        [
+          {
+            "node": "dag run wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: dag_run - state": {
+      "main": [
+        [
+          {
+            "node": "Switch: state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: getToken": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run",
             "type": "main",
             "index": 0
           }
@@ -106,135 +760,18 @@
       "main": [
         [
           {
-            "node": "Call 'Upload to Kafka topic'",
+            "node": "airflow-api",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Schedule Trigger": {
+    "Airflow: dag_run - get result": {
       "main": [
         [
           {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "On form submission": {
-      "main": [
-        [
-          {
-            "node": "Extract from File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Extract from File": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Unable to get allocation JSON template from MFCS.": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Failed to upload file to Kafka topic": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "DAG Run failed or wait too long": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Can not find Allocation in MFCS": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Can not find Allocation in DB": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent1": {
-      "main": [
-        [
-          {
-            "node": "Send  error message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Call 'Check Allocation in MFCS v2'": {
-      "main": [
-        [
-          {
-            "node": "Call 'Check Allocation in Database'",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Can not find Allocation in MFCS",
+            "node": "Code in JavaScript1",
             "type": "main",
             "index": 0
           }
@@ -242,655 +779,442 @@
       ]
     }
   },
-  "createdAt": "2025-11-17T09:31:32.614Z",
-  "id": "636i3W9ZLBDAif38",
+  "createdAt": "2025-11-11T07:55:35.948Z",
+  "id": "D8bvizUafrQoEjDR",
   "isArchived": false,
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "name": "5B - Test case - Allocation - AI - 2",
+  "name": "Run Apache Airflow DAG and Retrieve XCom Value",
   "nodes": [
     {
       "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "VlDj9LN2gLFegtM0",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/VlDj9LN2gLFegtM0",
-          "cachedResultName": "Upload to Kafka topic"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "data": "={{ $json.toJsonString() }}"
-          },
-          "matchingColumns": [
-            "data"
-          ],
-          "schema": [
+        "method": "POST",
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
             {
-              "id": "data",
-              "displayName": "data",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        480,
-        176
-      ],
-      "id": "f54f93af-d40b-4584-ad26-e10ebbc4960f",
-      "name": "Call 'Upload to Kafka topic'",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "D8bvizUafrQoEjDR",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/D8bvizUafrQoEjDR",
-          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "dag_run_id": "kafka_topic_consumer",
-            "wait": 10,
-            "wait_time": 24
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "dag_run_id",
-              "displayName": "dag_run_id",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
             },
             {
-              "id": "data",
-              "displayName": "data",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string"
-            },
-            {
-              "id": "wait",
-              "displayName": "wait",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "number"
-            },
-            {
-              "id": "wait_time",
-              "displayName": "wait_time",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "number"
+              "name": "content-type",
+              "value": "application/json"
             }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
+          ]
         },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $('Code in JavaScript').item.json.data }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        704,
-        176
-      ],
-      "id": "45173722-f708-4680-a30a-012142f2d632",
-      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "errorMessage": "=Failed to upload file to Kafka topic.\n{{ $json.error }}"
-      },
-      "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
-      "position": [
-        480,
-        416
-      ],
-      "id": "4d1b13b7-aeb3-4934-8af2-99036f290d8f",
-      "name": "Failed to upload file to Kafka topic",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "errorMessage": "=Can not find Allocation in MFCS\n{{ $json.error }}"
-      },
-      "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
-      "position": [
-        928,
-        416
-      ],
-      "id": "9dffcbda-28d6-4b57-b82e-d3996756ea0d",
-      "name": "Can not find Allocation in MFCS",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "G7bYISuerlFQuuv2",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/G7bYISuerlFQuuv2",
-          "cachedResultName": "Check Allocation in Database"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "alloc_no": "={{ $('Code in JavaScript').item.json.items[0].allocationNo.toString() }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "alloc_no",
-              "displayName": "alloc_no",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        1152,
-        176
-      ],
-      "id": "940ad1dd-2fa6-42e3-9952-9c381967744e",
-      "name": "Call 'Check Allocation in Database'",
-      "disabled": true,
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $if ($('Call \\'Upload to Kafka topic\\'').isExecuted,\"Input from \\\"Upload to Kafka topic\\\" node: \\n \"+$('Call \\'Upload to Kafka topic\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Check Allocation in MFCS v2\\'').isExecuted,\"Input from \\\"Call Check Allocation in MFCS\\\" node: \\n \"+$('Call \\'Check Allocation in MFCS v2\\'').item.json.toJsonString(),\"\" )}}\n\n",
-        "options": {
-          "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        1376,
-        160
-      ],
-      "id": "3185e698-b890-4919-8ed7-3fdf20656715",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        1376,
-        288
-      ],
-      "id": "a65b909d-f9c4-49e3-a222-d092d81805db",
-      "name": "Google Gemini Chat Model",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "tbdCvA5cfazz8mkQ",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -208,
-        464
-      ],
-      "id": "64af133b-66c3-431b-bea9-69d2c79fa0e7",
-      "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/juvockdzchgzhbvsyuoo/ords/mfcs/testservice/getAllocJSONv2",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "oAuth2Api",
-        "options": {}
-      },
+      "id": "618f5ddf-3e7a-41ca-bfd3-2e0f3a30c8f8",
+      "name": "Airflow: dag_run",
       "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
       "position": [
-        32,
-        272
+        -832,
+        224
       ],
-      "id": "c0e1da09-bac1-4f0f-b1db-ab9fd4e75c19",
-      "name": "HTTP Request",
-      "credentials": {
-        "oAuth2Api": {
-          "id": "Uff1mmJ7d42hSbJ5",
-          "name": "QB Cloud MFCS"
-        }
-      },
-      "onError": "continueErrorOutput"
+      "typeVersion": 4.2
     },
     {
       "parameters": {
-        "jsCode": "try {\n  if ($input.first().json.items[0].request_body_clob == null || $input.first().json.items[0].request_body_clob !== \"\") {\n  return JSON.parse($input.first().json.items[0].request_body_clob)\n}\n} catch (error) {\n  return $input.first().json.data\n \n}\n\n"
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
       },
+      "id": "5378feec-22be-426d-802e-83014028268f",
+      "name": "Airflow: dag_run - state",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -336,
+        208
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+      },
+      "id": "4643fc89-1e8c-4598-8e43-9603fc6bbe80",
+      "name": "count",
       "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
       "position": [
-        256,
-        176
+        0,
+        192
       ],
-      "id": "22a53e2c-beca-4fd0-abf0-bbb431ead200",
-      "name": "Code in JavaScript"
+      "typeVersion": 2
     },
     {
       "parameters": {
-        "errorMessage": "=Unable to get allocation JSON template from MFCS.\n{{ $json.error }}"
+        "errorMessage": "dag run fail"
       },
+      "id": "ba1f8295-1945-4bb7-a63e-c9270c7a7c91",
+      "name": "dag run fail",
       "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
       "position": [
-        256,
-        416
+        0,
+        544
       ],
-      "id": "34ddd652-7661-4573-9c5f-aa082ca01cc2",
-      "name": "Unable to get allocation JSON template from MFCS.",
-      "onError": "continueErrorOutput"
+      "typeVersion": 1
     },
     {
       "parameters": {
-        "errorMessage": "={{ $json.error }}"
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "0ae67986-09c0-443d-9262-075bfe94ca2e",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.state }}",
+              "rightValue": "queued"
+            }
+          ]
+        },
+        "options": {}
       },
+      "id": "5bd0e028-e71b-4b10-97d4-f7fa0762fb2a",
+      "name": "if state == queued",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -656,
+        208
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "errorMessage": "dag run wait too long"
+      },
+      "id": "5fac7773-5be5-4844-98c3-6fdf22e9e608",
+      "name": "dag run wait too long",
       "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
       "position": [
-        704,
-        416
+        320,
+        192
       ],
-      "id": "9bea98e2-c3fd-42ee-be39-1a654b41621b",
-      "name": "DAG Run failed or wait too long",
-      "onError": "continueErrorOutput"
+      "typeVersion": 1
     },
     {
       "parameters": {
-        "content": "## JSON File generation \n**Create JSON file for allocation using Custom REST Api developed in RDS**",
-        "height": 624,
-        "width": 416
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}/taskInstances/Sample%20Task%201/xcomEntries/return_value",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.stickyNote",
+      "id": "ae464aab-781c-4fd5-a509-1f3ce5378155",
+      "name": "Airflow: dag_run - get result",
+      "type": "n8n-nodes-base.httpRequest",
       "position": [
         0,
         0
       ],
-      "typeVersion": 1,
-      "id": "00eba56b-450a-4a06-8f60-39daf8321af5",
-      "name": "Sticky Note"
+      "typeVersion": 4.2,
+      "disabled": true
     },
     {
       "parameters": {
-        "content": "## Upload JSON to Kafka \n**Demo topic, no conversions are made on the message**",
-        "height": 624,
-        "width": 224,
-        "color": 2
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        416,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "527b30e9-f641-41da-9438-ac10ea0da030",
-      "name": "Sticky Note1"
-    },
-    {
-      "parameters": {
-        "content": "## Run DAG in Airflow\n**Get JSON from Kafka topic and call MFCS Rest API to create Allocation** ",
-        "height": 624,
-        "width": 224,
-        "color": 4
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        640,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "10ad3320-65d7-4fad-b586-39b3c0e40cc8",
-      "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "content": "## Check Allication in MFCS \n**REST API** ",
-        "height": 624,
-        "width": 224,
-        "color": 5
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        864,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "052db9c9-1e85-4908-aea0-277e597c9e4d",
-      "name": "Sticky Note3"
-    },
-    {
-      "parameters": {
-        "content": "## Check Allocation in DB \n**(Dummy check, since we have no DAS schema)**",
-        "height": 624,
-        "width": 224,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1088,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "febc6d8c-4375-4dce-8766-2100cfb879f4",
-      "name": "Sticky Note4"
-    },
-    {
-      "parameters": {
-        "content": "## Result evaluation with AI \n",
-        "height": 624,
-        "width": 528,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        1312,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "dad9399e-20ca-4351-b721-9626fd952df8",
-      "name": "Sticky Note5"
-    },
-    {
-      "parameters": {
-        "rule": {
-          "interval": [
-            {
-              "field": "weeks",
-              "triggerAtHour": 18
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        -208,
-        256
-      ],
-      "id": "62e293ff-4b54-43c7-8c78-e0167103a39a",
-      "name": "Schedule Trigger"
-    },
-    {
-      "parameters": {
-        "formTitle": "Upload JSON file",
-        "formFields": {
+        "rules": {
           "values": [
             {
-              "fieldLabel": "data",
-              "fieldType": "file",
-              "acceptFileTypes": ".json",
-              "requiredField": true
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "4d4ecf8a-c02b-4722-9528-1919cdf9b83e",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "success"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "=success"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "queued"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "queued"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "fa5d8524-334a-4ab1-b543-bba75cafd0ec",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "running"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "running"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "dd853677-c51c-4c06-8680-3c9d1829d6bd",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "failed"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "failed"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 3
+        }
+      },
+      "id": "1623c4f5-6fcd-4d1e-ab2c-ea574cbf6852",
+      "name": "Switch: state",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -176,
+        160
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "dag_run_id"
+            },
+            {
+              "name": "data"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "id": "1cfebc3f-fc89-4f63-b6b8-678c5ae8a4f9",
+      "name": "in data",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -1904,
+        176
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "amount": "={{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 10 }}"
+      },
+      "id": "e9f51834-557e-4b42-96f2-5da7895c118a",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        -480,
+        112
+      ],
+      "webhookId": "3d164954-2926-4174-afc1-261dfdfa9e46",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.count }}",
+              "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f2bc53d8-b14d-4ae0-b4ba-86d56c59a9df",
+      "name": "If count > wait_time",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        144,
+        288
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "40a5ab5b-dee1-44c4-910a-d6b85af75aed",
+              "name": "prefix",
+              "type": "string",
+              "value": "http://192.168.135.37:8080"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.3,
+      "id": "e500b9df-bb4b-4e1f-8fd3-57a7bf3273ed",
+      "name": "airflow-api",
+      "type": "n8n-nodes-base.set",
       "position": [
-        -288,
-        32
-      ],
-      "id": "656266a2-1d46-4655-8778-4bef5e3ff338",
-      "name": "On form submission",
-      "webhookId": "6612f5c6-3722-483f-b141-368f3cf1b1af"
-    },
-    {
-      "parameters": {
-        "operation": "fromJson",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        -160,
-        32
-      ],
-      "id": "87d96fb8-ae09-4f32-a099-a790732c2d02",
-      "name": "Extract from File"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get allocation JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Kafka topic').isExecuted,\"Error from \\\"Upload to Kafka topic\\\" node: \\n \"+$('Failed to upload file to Kafka topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check Transfer in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in DB').isExecuted,\"Error from \\\"Check Allocation in Database\\\" node: \\n \"+$('Can not find Allocation in DB').item.json.error.toJsonString(),\"\" )}}",
-        "options": {
-          "systemMessage": "Use the incoming errors to create a summary from all nodes."
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        1376,
-        416
-      ],
-      "id": "0429b53d-d969-4b9a-80e0-cac623499568",
-      "name": "AI Agent1"
-    },
-    {
-      "parameters": {
-        "errorMessage": "=Can not find Allocation in DB\n{{ $json.error }}"
-      },
-      "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
-      "position": [
-        1152,
-        416
-      ],
-      "id": "537603fb-d4c5-4673-8a91-7ad1cd462fed",
-      "name": "Can not find Allocation in DB",
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "toRecipients": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "5B - Test case - Allocation - v2 - Failed",
-        "bodyContent": "={{ $json.output.replace(/[#*`~>]/g, '') }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.microsoftOutlook",
-      "typeVersion": 2,
-      "position": [
-        1664,
-        416
-      ],
-      "id": "7693e9d7-7b5f-42b6-8052-c3398884fda5",
-      "name": "Send  error message",
-      "webhookId": "07fd9650-d6a5-4d09-ab79-d7d7740980ea",
-      "credentials": {
-        "microsoftOutlookOAuth2Api": {
-          "id": "sIpsyXB2BEbZqRKi",
-          "name": "Microsoft Outlook account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "toRecipients": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "5B - Test case - Allocation - v2",
-        "bodyContent": "={{ $json.output.replace(/[#*`~>]/g, '') }}",
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.microsoftOutlook",
-      "typeVersion": 2,
-      "position": [
-        1664,
-        160
-      ],
-      "id": "300b159a-014c-4f86-90d1-f35e942e2811",
-      "name": "Send a message",
-      "webhookId": "7189fdb7-d1f1-4c68-9045-f062c219944f",
-      "credentials": {
-        "microsoftOutlookOAuth2Api": {
-          "id": "sIpsyXB2BEbZqRKi",
-          "name": "Microsoft Outlook account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "content": "## Schedule run\n**Automatically generates \nAlloc JSON using REST API** ",
-        "height": 176,
-        "width": 464,
-        "color": 7
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -496,
-        224
-      ],
-      "typeVersion": 1,
-      "id": "5bcf86c6-0f92-4a93-bc5d-3b4c1dd823be",
-      "name": "Sticky Note6"
-    },
-    {
-      "parameters": {
-        "content": "## Upload JSON File \n**Run test case with\na manually created file** ",
-        "height": 192,
-        "width": 464,
-        "color": 7
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -496,
-        0
-      ],
-      "typeVersion": 1,
-      "id": "82c03130-688b-4e58-aff0-ee568759e932",
-      "name": "Sticky Note7"
-    },
-    {
-      "parameters": {
-        "content": "## Trigger run manually \n**Automatically generates \nAlloc JSON using REST API** ",
-        "height": 192,
-        "width": 464,
-        "color": 7
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        -496,
-        432
-      ],
-      "typeVersion": 1,
-      "id": "3cfd07c1-a090-41d7-bc1f-4f4964925b01",
-      "name": "Sticky Note8"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "dwYudhFfTGG2aJuZ",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/dwYudhFfTGG2aJuZ",
-          "cachedResultName": "Check Allocation in MFCS v2"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "data": "={{ $('Code in JavaScript').item.json }}",
-            "wait": 5,
-            "wait_time": 12
-          },
-          "matchingColumns": [
-            "data"
-          ],
-          "schema": [
-            {
-              "id": "data",
-              "displayName": "data",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "object",
-              "removed": false
-            },
-            {
-              "id": "wait",
-              "displayName": "wait",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "number",
-              "removed": false
-            },
-            {
-              "id": "wait_time",
-              "displayName": "wait_time",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "number",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.3,
-      "position": [
-        928,
+        -1216,
         176
       ],
-      "id": "617b0bd7-6919-485a-97d1-d97912889b07",
-      "name": "Call 'Check Allocation in MFCS v2'",
-      "alwaysOutputData": false,
-      "onError": "continueErrorOutput"
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('airflow-api').item.json.prefix }}/auth/token",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n    \"username\": \"admin\",\n    \"password\": \"k4PeYSwP63RUfTeh\"\n  }",
+        "options": {}
+      },
+      "id": "d86b8a54-8266-48ee-a7da-f4018a84d1b8",
+      "name": "Airflow: getToken",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -1040,
+        176
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "8lZfgqP2sh9kax5i",
+          "name": "airflow"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  if (item.json.dag_run_id == null || item.json.dag_run_id === \"\") {\n    item.json.dag_run_id ='example_display_name'\n    //item.json.wait=10\n    //item.json.wait_time=12\n  }\n  item.json.data ='{\\\"dag_run_id\\\": null,\\\"logical_date\\\": null}'\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1488,
+        176
+      ],
+      "id": "62401dc4-f6fc-40be-920c-a34add381161",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn $('Switch: state').item.json;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "163af6af-fd7f-4dc2-a8bf-dd850a64d2a0",
+      "name": "Code in JavaScript1"
     }
   ],
   "pinData": {},
@@ -902,10 +1226,10 @@
   },
   "shared": [
     {
-      "updatedAt": "2025-11-17T09:31:32.617Z",
-      "createdAt": "2025-11-17T09:31:32.617Z",
+      "updatedAt": "2025-11-11T07:55:35.949Z",
+      "createdAt": "2025-11-11T07:55:35.949Z",
       "role": "workflow:owner",
-      "workflowId": "636i3W9ZLBDAif38",
+      "workflowId": "D8bvizUafrQoEjDR",
       "projectId": "0hv468Xl53uN8xuI"
     }
   ],
@@ -919,6 +1243,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2025-11-18T14:44:40.000Z",
-  "versionId": "7048c92a-64a1-4ad7-8fd9-c698402ec5a0"
+  "updatedAt": "2026-01-15T12:38:04.601Z",
+  "versionId": "2bc45dd3-bab2-4363-bf4a-24b4a5628345"
 }
