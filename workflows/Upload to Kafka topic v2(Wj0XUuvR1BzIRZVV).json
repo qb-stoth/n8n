@@ -1,0 +1,292 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-16T15:27:13.212Z",
+    "createdAt": "2025-12-16T15:27:13.212Z",
+    "versionId": "f947e2c0-3467-4467-8f9a-a3b8074e4202",
+    "workflowId": "Wj0XUuvR1BzIRZVV",
+    "nodes": [
+      {
+        "parameters": {
+          "topic": "={{ $json.topicName }}",
+          "sendInputData": false,
+          "message": "={{ $json.data }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.kafka",
+        "typeVersion": 1,
+        "position": [
+          672,
+          80
+        ],
+        "id": "d3344393-3313-4d89-9a34-6750a6f70396",
+        "name": "Kafka",
+        "credentials": {
+          "kafka": {
+            "id": "fQCKiJZ9PAB5ZChe",
+            "name": "Kafka account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data"
+              },
+              {
+                "name": "topicName"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "7f83f47b-1e12-4e3c-8ba0-86a228a1745b",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "formTitle": "Upload",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "data",
+                "fieldType": "file",
+                "acceptFileTypes": ".json",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.3,
+        "position": [
+          -96,
+          224
+        ],
+        "id": "f7686716-57b5-48b4-b406-270b6a57bc69",
+        "name": "On form submission",
+        "webhookId": "2a0c6fb8-0676-413b-9470-53f3aa25f37d",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "operation": "fromJson",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1,
+        "position": [
+          96,
+          224
+        ],
+        "id": "ce22839a-1fef-4eba-b679-b1ac1d126552",
+        "name": "Extract from File",
+        "disabled": true
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Kafka",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On form submission": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Kafka",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "f947e2c0-3467-4467-8f9a-a3b8074e4202",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-19T08:06:13.561Z",
+  "id": "Wj0XUuvR1BzIRZVV",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Upload to Kafka topic v2",
+  "nodes": [
+    {
+      "parameters": {
+        "topic": "={{ $json.topicName }}",
+        "sendInputData": false,
+        "message": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.kafka",
+      "typeVersion": 1,
+      "position": [
+        672,
+        80
+      ],
+      "id": "d3344393-3313-4d89-9a34-6750a6f70396",
+      "name": "Kafka",
+      "credentials": {
+        "kafka": {
+          "id": "fQCKiJZ9PAB5ZChe",
+          "name": "Kafka account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data"
+            },
+            {
+              "name": "topicName"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7f83f47b-1e12-4e3c-8ba0-86a228a1745b",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "formTitle": "Upload",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "data",
+              "fieldType": "file",
+              "acceptFileTypes": ".json",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -96,
+        224
+      ],
+      "id": "f7686716-57b5-48b4-b406-270b6a57bc69",
+      "name": "On form submission",
+      "webhookId": "2a0c6fb8-0676-413b-9470-53f3aa25f37d",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        96,
+        224
+      ],
+      "id": "ce22839a-1fef-4eba-b679-b1ac1d126552",
+      "name": "Extract from File",
+      "disabled": true
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-19T08:06:13.562Z",
+      "createdAt": "2025-11-19T08:06:13.562Z",
+      "role": "workflow:owner",
+      "workflowId": "Wj0XUuvR1BzIRZVV",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-11T07:55:20.064Z",
+      "createdAt": "2025-11-11T07:55:20.064Z",
+      "id": "14E43CzOqTBt95Td",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-19T08:06:49.000Z",
+  "versionId": "f947e2c0-3467-4467-8f9a-a3b8074e4202"
+}
