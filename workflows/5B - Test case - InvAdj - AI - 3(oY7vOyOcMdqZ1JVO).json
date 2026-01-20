@@ -1,0 +1,1732 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-16T15:27:13.212Z",
+    "createdAt": "2025-12-16T15:27:13.212Z",
+    "versionId": "b844f9fe-1495-4e28-acfa-eb9fc245d9e3",
+    "workflowId": "oY7vOyOcMdqZ1JVO",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "D8bvizUafrQoEjDR",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/D8bvizUafrQoEjDR",
+            "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "dag_run_id": "kafka_topic_consumer_2",
+              "wait": 10,
+              "wait_time": 24
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dag_run_id",
+                "displayName": "dag_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          704,
+          176
+        ],
+        "id": "dbfb80ea-6950-4028-9bac-4d76df1b66f4",
+        "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload file to Kafka topic.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          480,
+          416
+        ],
+        "id": "f881081d-a473-44b7-b64a-64b8326a2e71",
+        "name": "Failed to upload file to Kafka topic",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find InvAdj in MFCS\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          928,
+          416
+        ],
+        "id": "02db8c71-445c-4f80-b2f0-ac98b25e7248",
+        "name": "Can not find Allocation in MFCS",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "G7bYISuerlFQuuv2",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/G7bYISuerlFQuuv2",
+            "cachedResultName": "Check Allocation in Database"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "alloc_no": "={{ $('Code in JavaScript').item.json.items[0].allocationNo.toString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "alloc_no",
+                "displayName": "alloc_no",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1152,
+          176
+        ],
+        "id": "b09a6e57-1534-4ec3-bf98-ecae4df4505e",
+        "name": "Call 'Check Allocation in Database'",
+        "disabled": true,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Call \\'Upload to Kafka topic\\'').isExecuted,\"Input from \\\"Upload to Kafka topic\\\" node: \\n \"+$('Call \\'Upload to Kafka topic\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n\n",
+          "options": {
+            "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1376,
+          160
+        ],
+        "id": "38b715f7-65eb-4bd0-ad22-e23192c86481",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          1376,
+          288
+        ],
+        "id": "d74f6e54-0cc6-4c25-b388-4feb6fcd55e3",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "tbdCvA5cfazz8mkQ",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/juvockdzchgzhbvsyuoo/ords/mfcs/testservice/GetInvAdjJSON",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          16,
+          416
+        ],
+        "id": "34313d31-a9c1-4e03-86ff-153bbc653563",
+        "name": "HTTP Request",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "Uff1mmJ7d42hSbJ5",
+            "name": "QB Cloud MFCS"
+          }
+        },
+        "disabled": true,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "//try {\n//  if ($input.first().json.items[0].request_body_clob == null || $input.first().json.items[0].request_body_clob !== \"\") {\n//  return JSON.parse($input.first().json.items[0].request_body_clob)\n//}\n//} catch (error) {\n//  return $input.first().json.data \n//}\ntry {\n  if ($input.first().json.items.request_body_clob == null || $input.first().json.items.request_body_clob !== \"\") {\n  return JSON.parse($input.first().json.items.request_body_clob)\n}\n} catch (error) {\n  return $input.first().json.data\n \n}\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          272,
+          176
+        ],
+        "id": "1700a64c-cb33-4da4-a86f-62db473ceb3c",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Unable to get InvAdj JSON template from MFCS.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          272,
+          416
+        ],
+        "id": "7505d1b4-a552-440d-b1bc-69e3482bb6ed",
+        "name": "Unable to get allocation JSON template from MFCS.",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          704,
+          416
+        ],
+        "id": "122b2aa3-caed-4a4f-82b4-c6ebf4a0d38c",
+        "name": "DAG Run failed or wait too long",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## JSON File generation \n**Create JSON file for InvAdj using Custom REST Api developed in RDS**",
+          "height": 624,
+          "width": 416
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "bc7f1e0b-44c7-4aac-9c7a-7346ba9c6c15",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## Upload JSON to Kafka \n**Demo topic, no conversions are made on the message**",
+          "height": 624,
+          "width": 224,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          416,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "087099e6-2ecb-4183-8ca9-fe58fd594d46",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "## Run DAG in Airflow\n**Get JSON from Kafka topic and call MFCS Rest API to create Allocation** ",
+          "height": 624,
+          "width": 224,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          640,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "548a6478-fdfd-4a9f-9df8-dbdfb372031a",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "content": "## Check InvAdj MFCS \n**REST API** ",
+          "height": 624,
+          "width": 224,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          864,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "8a73a5a6-de6b-4fe3-9f30-eff878196eaf",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "content": "## Check InvAdj in DB \n**(Dummy check, since we have no DAS schema)**",
+          "height": 624,
+          "width": 224,
+          "color": 6
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1088,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "c6b766db-b5db-41d1-8750-1e79c6bfc6a6",
+        "name": "Sticky Note4"
+      },
+      {
+        "parameters": {
+          "content": "## Result evaluation with AI \n",
+          "height": 624,
+          "width": 528,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1312,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "fe7b9735-c3c3-4705-83b3-0b0dfda02c65",
+        "name": "Sticky Note5"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get InvAdj JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Kafka topic').isExecuted,\"Error from \\\"Upload to Kafka topic\\\" node: \\n \"+$('Failed to upload file to Kafka topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check InvAdj in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in DB').isExecuted,\"Error from \\\"Check InvAdj in Database\\\" node: \\n \"+$('Can not find Allocation in DB').item.json.error.toJsonString(),\"\" )}}",
+          "options": {
+            "systemMessage": "Use the incoming errors to create a summary from all nodes."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1376,
+          416
+        ],
+        "id": "f83a2ff6-f825-45d9-960c-5a802df9b625",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find InvAdj in DB\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1152,
+          416
+        ],
+        "id": "ed35d4d9-328b-4541-9aee-4ac0f3db26df",
+        "name": "Can not find Allocation in DB",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "toRecipients": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+          "subject": "5B - Test case - InvAdj- v2 - Failed",
+          "bodyContent": "={{ $json.output.replace(/[#*`~>]/g, '') }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.microsoftOutlook",
+        "typeVersion": 2,
+        "position": [
+          1664,
+          416
+        ],
+        "id": "56f7bcc7-16d0-4c2a-b1bf-0fb92855639a",
+        "name": "Send  error message",
+        "webhookId": "9a57224e-b3ef-43bb-aa9f-cae50ee96963",
+        "credentials": {
+          "microsoftOutlookOAuth2Api": {
+            "id": "sIpsyXB2BEbZqRKi",
+            "name": "Microsoft Outlook account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "toRecipients": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+          "subject": "5B - Test case - InvAdj- v2",
+          "bodyContent": "={{ $json.output.replace(/[#*`~>]/g, '') }}",
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.microsoftOutlook",
+        "typeVersion": 2,
+        "position": [
+          1664,
+          160
+        ],
+        "id": "258005a3-fd3c-470b-a7a6-bd38e62151ae",
+        "name": "Send a message",
+        "webhookId": "c03c02d1-5573-4a79-ae4c-1c42b8220618",
+        "credentials": {
+          "microsoftOutlookOAuth2Api": {
+            "id": "sIpsyXB2BEbZqRKi",
+            "name": "Microsoft Outlook account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**Automatically generates \n JSON using REST API** ",
+          "height": 624,
+          "width": 368,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -400,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "7eaa9285-e592-43f8-91fd-243049b82a87",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "dwYudhFfTGG2aJuZ",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/dwYudhFfTGG2aJuZ",
+            "cachedResultName": "Check Allocation in MFCS v2"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $('Code in JavaScript').item.json }}",
+              "wait": 5,
+              "wait_time": 12
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          928,
+          176
+        ],
+        "id": "8559193b-8e5e-4a55-b764-bc60dad043b6",
+        "name": "Call 'Check Allocation in MFCS v2'",
+        "alwaysOutputData": false,
+        "disabled": true,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -304,
+          272
+        ],
+        "id": "ab566be6-90e2-47c3-96cb-33d28cb6925f",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "Wj0XUuvR1BzIRZVV",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/Wj0XUuvR1BzIRZVV",
+            "cachedResultName": "Upload to Kafka topic v2"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $json.toJsonString().replace(/\\\\/g, \"\") }}",
+              "topicName": "demo2"
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "topicName",
+                "displayName": "topicName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          464,
+          176
+        ],
+        "id": "9a20ee3f-5ed1-41f2-b163-d2ca5ff099f4",
+        "name": "Call 'Upload to Kafka topic'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/juvockdzchgzhbvsyuoo/ords/mfcs/testservice/GetInvAdjJSONv2",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\"item\":\"{{ $json.item }}\"}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          16,
+          176
+        ],
+        "id": "e670c5cc-095a-40c9-8612-e198755d9d54",
+        "name": "HTTP Request1",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "Uff1mmJ7d42hSbJ5",
+            "name": "QB Cloud MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "858a2390-c506-4958-9eb4-7b4ea66925bc",
+                "name": "items",
+                "value": "={{ $json.data }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          144,
+          176
+        ],
+        "id": "4f5d626e-8341-46b3-a303-4a18a885f071",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Check Allocation in MFCS v2'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "DAG Run failed or wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Check Allocation in Database'": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Can not find Allocation in DB",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [],
+          []
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Call 'Upload to Kafka topic'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Unable to get allocation JSON template from MFCS.": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Failed to upload file to Kafka topic": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DAG Run failed or wait too long": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Can not find Allocation in MFCS": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Can not find Allocation in DB": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Send  error message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Check Allocation in MFCS v2'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Check Allocation in Database'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Can not find Allocation in MFCS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Upload to Kafka topic'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to upload file to Kafka topic",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Unable to get allocation JSON template from MFCS.",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "b844f9fe-1495-4e28-acfa-eb9fc245d9e3",
+  "connections": {
+    "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Check Allocation in MFCS v2'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DAG Run failed or wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Check Allocation in Database'": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Can not find Allocation in DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Call 'Upload to Kafka topic'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unable to get allocation JSON template from MFCS.": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed to upload file to Kafka topic": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DAG Run failed or wait too long": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can not find Allocation in MFCS": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can not find Allocation in DB": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Send  error message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Check Allocation in MFCS v2'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Check Allocation in Database'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Can not find Allocation in MFCS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Upload to Kafka topic'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to upload file to Kafka topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Unable to get allocation JSON template from MFCS.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-19T08:01:48.779Z",
+  "id": "oY7vOyOcMdqZ1JVO",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "5B - Test case - InvAdj - AI - 3",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "D8bvizUafrQoEjDR",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/D8bvizUafrQoEjDR",
+          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "dag_run_id": "kafka_topic_consumer_2",
+            "wait": 10,
+            "wait_time": 24
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dag_run_id",
+              "displayName": "dag_run_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        176
+      ],
+      "id": "dbfb80ea-6950-4028-9bac-4d76df1b66f4",
+      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload file to Kafka topic.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        480,
+        416
+      ],
+      "id": "f881081d-a473-44b7-b64a-64b8326a2e71",
+      "name": "Failed to upload file to Kafka topic",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find InvAdj in MFCS\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        928,
+        416
+      ],
+      "id": "02db8c71-445c-4f80-b2f0-ac98b25e7248",
+      "name": "Can not find Allocation in MFCS",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "G7bYISuerlFQuuv2",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/G7bYISuerlFQuuv2",
+          "cachedResultName": "Check Allocation in Database"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "alloc_no": "={{ $('Code in JavaScript').item.json.items[0].allocationNo.toString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "alloc_no",
+              "displayName": "alloc_no",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1152,
+        176
+      ],
+      "id": "b09a6e57-1534-4ec3-bf98-ecae4df4505e",
+      "name": "Call 'Check Allocation in Database'",
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Call \\'Upload to Kafka topic\\'').isExecuted,\"Input from \\\"Upload to Kafka topic\\\" node: \\n \"+$('Call \\'Upload to Kafka topic\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n\n",
+        "options": {
+          "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        160
+      ],
+      "id": "38b715f7-65eb-4bd0-ad22-e23192c86481",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        288
+      ],
+      "id": "d74f6e54-0cc6-4c25-b388-4feb6fcd55e3",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tbdCvA5cfazz8mkQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/juvockdzchgzhbvsyuoo/ords/mfcs/testservice/GetInvAdjJSON",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        16,
+        416
+      ],
+      "id": "34313d31-a9c1-4e03-86ff-153bbc653563",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "Uff1mmJ7d42hSbJ5",
+          "name": "QB Cloud MFCS"
+        }
+      },
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "//try {\n//  if ($input.first().json.items[0].request_body_clob == null || $input.first().json.items[0].request_body_clob !== \"\") {\n//  return JSON.parse($input.first().json.items[0].request_body_clob)\n//}\n//} catch (error) {\n//  return $input.first().json.data \n//}\ntry {\n  if ($input.first().json.items.request_body_clob == null || $input.first().json.items.request_body_clob !== \"\") {\n  return JSON.parse($input.first().json.items.request_body_clob)\n}\n} catch (error) {\n  return $input.first().json.data\n \n}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        176
+      ],
+      "id": "1700a64c-cb33-4da4-a86f-62db473ceb3c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Unable to get InvAdj JSON template from MFCS.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        272,
+        416
+      ],
+      "id": "7505d1b4-a552-440d-b1bc-69e3482bb6ed",
+      "name": "Unable to get allocation JSON template from MFCS.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        704,
+        416
+      ],
+      "id": "122b2aa3-caed-4a4f-82b4-c6ebf4a0d38c",
+      "name": "DAG Run failed or wait too long",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## JSON File generation \n**Create JSON file for InvAdj using Custom REST Api developed in RDS**",
+        "height": 624,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "bc7f1e0b-44c7-4aac-9c7a-7346ba9c6c15",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Upload JSON to Kafka \n**Demo topic, no conversions are made on the message**",
+        "height": 624,
+        "width": 224,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "087099e6-2ecb-4183-8ca9-fe58fd594d46",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Run DAG in Airflow\n**Get JSON from Kafka topic and call MFCS Rest API to create Allocation** ",
+        "height": 624,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "548a6478-fdfd-4a9f-9df8-dbdfb372031a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Check InvAdj MFCS \n**REST API** ",
+        "height": 624,
+        "width": 224,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "8a73a5a6-de6b-4fe3-9f30-eff878196eaf",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Check InvAdj in DB \n**(Dummy check, since we have no DAS schema)**",
+        "height": 624,
+        "width": 224,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1088,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c6b766db-b5db-41d1-8750-1e79c6bfc6a6",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Result evaluation with AI \n",
+        "height": 624,
+        "width": 528,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1312,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "fe7b9735-c3c3-4705-83b3-0b0dfda02c65",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get InvAdj JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Kafka topic').isExecuted,\"Error from \\\"Upload to Kafka topic\\\" node: \\n \"+$('Failed to upload file to Kafka topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check InvAdj in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in DB').isExecuted,\"Error from \\\"Check InvAdj in Database\\\" node: \\n \"+$('Can not find Allocation in DB').item.json.error.toJsonString(),\"\" )}}",
+        "options": {
+          "systemMessage": "Use the incoming errors to create a summary from all nodes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1376,
+        416
+      ],
+      "id": "f83a2ff6-f825-45d9-960c-5a802df9b625",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find InvAdj in DB\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        416
+      ],
+      "id": "ed35d4d9-328b-4541-9aee-4ac0f3db26df",
+      "name": "Can not find Allocation in DB",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "toRecipients": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+        "subject": "5B - Test case - InvAdj- v2 - Failed",
+        "bodyContent": "={{ $json.output.replace(/[#*`~>]/g, '') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        416
+      ],
+      "id": "56f7bcc7-16d0-4c2a-b1bf-0fb92855639a",
+      "name": "Send  error message",
+      "webhookId": "9a57224e-b3ef-43bb-aa9f-cae50ee96963",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "sIpsyXB2BEbZqRKi",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toRecipients": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+        "subject": "5B - Test case - InvAdj- v2",
+        "bodyContent": "={{ $json.output.replace(/[#*`~>]/g, '') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        1664,
+        160
+      ],
+      "id": "258005a3-fd3c-470b-a7a6-bd38e62151ae",
+      "name": "Send a message",
+      "webhookId": "c03c02d1-5573-4a79-ae4c-1c42b8220618",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "sIpsyXB2BEbZqRKi",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**Automatically generates \n JSON using REST API** ",
+        "height": 624,
+        "width": 368,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "7eaa9285-e592-43f8-91fd-243049b82a87",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "dwYudhFfTGG2aJuZ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/dwYudhFfTGG2aJuZ",
+          "cachedResultName": "Check Allocation in MFCS v2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $('Code in JavaScript').item.json }}",
+            "wait": 5,
+            "wait_time": 12
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        928,
+        176
+      ],
+      "id": "8559193b-8e5e-4a55-b764-bc60dad043b6",
+      "name": "Call 'Check Allocation in MFCS v2'",
+      "alwaysOutputData": false,
+      "disabled": true,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -304,
+        272
+      ],
+      "id": "ab566be6-90e2-47c3-96cb-33d28cb6925f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "Wj0XUuvR1BzIRZVV",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Wj0XUuvR1BzIRZVV",
+          "cachedResultName": "Upload to Kafka topic v2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.toJsonString().replace(/\\\\/g, \"\") }}",
+            "topicName": "demo2"
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topicName",
+              "displayName": "topicName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        464,
+        176
+      ],
+      "id": "9a20ee3f-5ed1-41f2-b163-d2ca5ff099f4",
+      "name": "Call 'Upload to Kafka topic'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/juvockdzchgzhbvsyuoo/ords/mfcs/testservice/GetInvAdjJSONv2",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"item\":\"{{ $json.item }}\"}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        16,
+        176
+      ],
+      "id": "e670c5cc-095a-40c9-8612-e198755d9d54",
+      "name": "HTTP Request1",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "Uff1mmJ7d42hSbJ5",
+          "name": "QB Cloud MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "858a2390-c506-4958-9eb4-7b4ea66925bc",
+              "name": "items",
+              "value": "={{ $json.data }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        144,
+        176
+      ],
+      "id": "4f5d626e-8341-46b3-a303-4a18a885f071",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-19T08:01:48.781Z",
+      "createdAt": "2025-11-19T08:01:48.781Z",
+      "role": "workflow:owner",
+      "workflowId": "oY7vOyOcMdqZ1JVO",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-11T07:55:20.064Z",
+      "createdAt": "2025-11-11T07:55:20.064Z",
+      "id": "14E43CzOqTBt95Td",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-21T12:02:34.000Z",
+  "versionId": "b844f9fe-1495-4e28-acfa-eb9fc245d9e3"
+}
