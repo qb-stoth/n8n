@@ -1,0 +1,1958 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-16T15:27:13.212Z",
+    "createdAt": "2025-12-16T15:27:13.212Z",
+    "versionId": "d26e2af4-e2ba-48a5-a1fc-cc56dfdf8594",
+    "workflowId": "dwYudhFfTGG2aJuZ",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data",
+                "type": "object"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -2048,
+          432
+        ],
+        "id": "91f7efcb-8a82-4905-a2b2-03e0318fb0fc",
+        "name": "in data"
+      },
+      {
+        "parameters": {
+          "url": "=https://rex-npe.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-qkbn-par1-mfcs/MerchIntegrations/services/inventory/allocation/{{ $('Loop Over Items').item.json.allocationNo }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "count",
+                "value": "1"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -512,
+          256
+        ],
+        "id": "8b91890d-6d48-434d-a23d-68a2d71a83e7",
+        "name": "Get transfer number",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "Uff1mmJ7d42hSbJ5",
+            "name": "QB Cloud MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find allocation using MFCS Rest API\n{{ $('Get row(s)').all().toJsonString() }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          592,
+          -144
+        ],
+        "id": "1ca165e6-14c0-4cc7-b583-f9b4f485145a",
+        "name": "Can not find allocation",
+        "alwaysOutputData": false,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+        },
+        "id": "9e8ede5f-53af-4669-bc2f-27519c8d5c86",
+        "name": "count",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          -512,
+          112
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                },
+                "leftValue": "={{ $('count').item.json.count }}",
+                "rightValue": "={{ $('in data').all().first().json.wait_time != null ? $('in data').all().first().json.wait_time : 12 }} \n\n"
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "id": "0248e3fa-9884-4fd7-8305-2e4b1de96b3c",
+        "name": "If count > wait_time",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          -304,
+          64
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "86a38758-272d-43cc-8663-77307aad9538",
+                "leftValue": "={{ $json.error.status }}",
+                "rightValue": 399,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              },
+              {
+                "id": "00a08ce1-b7de-4cb2-a6df-a53f7f6721ea",
+                "leftValue": "={{ $json.error.status }}",
+                "rightValue": 500,
+                "operator": {
+                  "type": "number",
+                  "operation": "lt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          -288,
+          464
+        ],
+        "id": "b97bc8e6-6c1c-495f-ba8e-dbb30dcb38c1",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=MFCS Rest API fail\n{{ $json.error }}"
+        },
+        "id": "071d1f66-3ae7-444e-a9d8-0939729d9353",
+        "name": "MFCS Rest Api fail",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          -64,
+          656
+        ],
+        "typeVersion": 1,
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -736,
+          240
+        ],
+        "id": "cabcd594-02ba-40c5-8e35-aaeb7741ca51",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "=items",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -960,
+          240
+        ],
+        "id": "00ae5440-974d-4e57-b91c-d3a1b4a4c1c0",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "lgSrcyFsk3i0aa3g",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -1648,
+          176
+        ],
+        "id": "f0e87337-af95-4150-ac0e-7e8b86aa491e",
+        "name": "Delete row(s)"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "lgSrcyFsk3i0aa3g",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAlloc",
+              "message_id": "={{ $json.allocationNo }}",
+              "error_message": "={{ $json.error.message }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -64,
+          464
+        ],
+        "id": "cd491261-5715-4364-87e3-0ddd7ff73208",
+        "name": "Insert row"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "lgSrcyFsk3i0aa3g",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $json.items[0].allocNo }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          240
+        ],
+        "id": "dc005057-702d-4e13-b92d-5c7830424523",
+        "name": "Delete row(s)1",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "823e6f6e-dfd8-4c46-800c-182783fe6d91",
+                "leftValue": "={{ $('If row exists').item.json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          160,
+          624
+        ],
+        "id": "f877b565-5474-4981-9146-768a6d9cb5f8",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "lgSrcyFsk3i0aa3g",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -64,
+          -144
+        ],
+        "id": "e8ee51da-23d6-46ec-9eb3-fd4fdd2dbc2c",
+        "name": "Get row(s)"
+      },
+      {
+        "parameters": {
+          "operation": "rowExists",
+          "dataTableId": {
+            "__rl": true,
+            "value": "lgSrcyFsk3i0aa3g",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -80,
+          80
+        ],
+        "id": "c6714f6b-c7db-4953-89df-404842875461",
+        "name": "If row exists",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "jsCode": "\n // return $('in data').first().json.data\n\n return JSON.parse($('in data').first().json.data)\n\n\n\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1184,
+          240
+        ],
+        "id": "5e760e8d-adb3-4003-be8a-428c96b7eab1",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "42JVsNGueIb1oFek",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+          },
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -1648,
+          352
+        ],
+        "id": "a8766941-cb90-49c1-b600-c148d6289b7a",
+        "name": "Delete row(s)2"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "42JVsNGueIb1oFek",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAlloc",
+              "message_id": "={{ $('Get transfer number').item.json.items[0].allocNo }}",
+              "message_data": "={{ $('Get transfer number').item.json.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_data",
+                "displayName": "message_data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          16,
+          240
+        ],
+        "id": "a927bf8a-1458-4021-8220-ccb1ab02f79e",
+        "name": "Insert row1"
+      },
+      {
+        "parameters": {
+          "operation": "rowNotExists",
+          "dataTableId": {
+            "__rl": true,
+            "value": "42JVsNGueIb1oFek",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Get transfer number').item.json.items[0].allocNo }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -144,
+          240
+        ],
+        "id": "8f066b89-b35d-4410-9072-dcbe46db851a",
+        "name": "If row does not exist"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.data = '{\"Message\" : \"All allocation was created successfully.\"}';\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1552,
+          624
+        ],
+        "id": "60bdf697-5c62-4f2a-8181-63af989c24bd",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "language": "python",
+          "pythonCode": "import time\ntime.sleep(_(\"in data\").first().json.wait)\nreturn _input.all()"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1648,
+          528
+        ],
+        "id": "8351b555-4240-44ac-a31f-952914132d20",
+        "name": "Wait1"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "42JVsNGueIb1oFek",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          384,
+          640
+        ],
+        "id": "e3324460-ecaf-46f4-8309-d3a9926ea7e0",
+        "name": "Get row(s)1"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Allocation data in JSON format:\n{{ $json.message_data.toJsonString() }}",
+          "options": {
+            "systemMessage": "You are a helpful assistant. Use the incoming allocation json data to create a excel table."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          832,
+          640
+        ],
+        "id": "768495e2-c53c-4367-9ab0-74de18b23404",
+        "name": "AI Agent",
+        "executeOnce": true
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "message_data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          592,
+          640
+        ],
+        "id": "c6c1f7c0-a44f-4d04-a738-b9d69975639e",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          752,
+          864
+        ],
+        "id": "b032ef3e-0be7-4006-906d-db54b3554852",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "tbdCvA5cfazz8mkQ",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Delete row(s)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Delete row(s)2",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get transfer number": {
+        "main": [
+          [
+            {
+              "node": "Delete row(s)1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "count": {
+        "main": [
+          [
+            {
+              "node": "If count > wait_time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If count > wait_time": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If row exists",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Insert row",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "MFCS Rest Api fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get transfer number",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert row": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get row(s)1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "Can not find allocation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If row exists": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete row(s)1": {
+        "main": [
+          [
+            {
+              "node": "If row does not exist",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete row(s)2": {
+        "main": [
+          []
+        ]
+      },
+      "Insert row1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If row does not exist": {
+        "main": [
+          [
+            {
+              "node": "Insert row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)1": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "system migration",
+    "name": null,
+    "description": null
+  },
+  "activeVersionId": "d26e2af4-e2ba-48a5-a1fc-cc56dfdf8594",
+  "connections": {
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete row(s)2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get transfer number": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "count": {
+      "main": [
+        [
+          {
+            "node": "If count > wait_time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If count > wait_time": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If row exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "MFCS Rest Api fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get transfer number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Can not find allocation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row exists": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete row(s)1": {
+      "main": [
+        [
+          {
+            "node": "If row does not exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete row(s)2": {
+      "main": [
+        []
+      ]
+    },
+    "Insert row1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If row does not exist": {
+      "main": [
+        [
+          {
+            "node": "Insert row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-17T09:33:13.616Z",
+  "id": "dwYudhFfTGG2aJuZ",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Check Allocation in MFCS v2",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data",
+              "type": "object"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2048,
+        432
+      ],
+      "id": "91f7efcb-8a82-4905-a2b2-03e0318fb0fc",
+      "name": "in data"
+    },
+    {
+      "parameters": {
+        "url": "=https://rex-npe.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-qkbn-par1-mfcs/MerchIntegrations/services/inventory/allocation/{{ $('Loop Over Items').item.json.allocationNo }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "count",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -512,
+        256
+      ],
+      "id": "8b91890d-6d48-434d-a23d-68a2d71a83e7",
+      "name": "Get transfer number",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "Uff1mmJ7d42hSbJ5",
+          "name": "QB Cloud MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find allocation using MFCS Rest API\n{{ $('Get row(s)').all().toJsonString() }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -144
+      ],
+      "id": "1ca165e6-14c0-4cc7-b583-f9b4f485145a",
+      "name": "Can not find allocation",
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+      },
+      "id": "9e8ede5f-53af-4669-bc2f-27519c8d5c86",
+      "name": "count",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -512,
+        112
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $('count').item.json.count }}",
+              "rightValue": "={{ $('in data').all().first().json.wait_time != null ? $('in data').all().first().json.wait_time : 12 }} \n\n"
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "0248e3fa-9884-4fd7-8305-2e4b1de96b3c",
+      "name": "If count > wait_time",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -304,
+        64
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "86a38758-272d-43cc-8663-77307aad9538",
+              "leftValue": "={{ $json.error.status }}",
+              "rightValue": 399,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "00a08ce1-b7de-4cb2-a6df-a53f7f6721ea",
+              "leftValue": "={{ $json.error.status }}",
+              "rightValue": 500,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        464
+      ],
+      "id": "b97bc8e6-6c1c-495f-ba8e-dbb30dcb38c1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=MFCS Rest API fail\n{{ $json.error }}"
+      },
+      "id": "071d1f66-3ae7-444e-a9d8-0939729d9353",
+      "name": "MFCS Rest Api fail",
+      "type": "n8n-nodes-base.stopAndError",
+      "position": [
+        -64,
+        656
+      ],
+      "typeVersion": 1,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -736,
+        240
+      ],
+      "id": "cabcd594-02ba-40c5-8e35-aaeb7741ca51",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "=items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        240
+      ],
+      "id": "00ae5440-974d-4e57-b91c-d3a1b4a4c1c0",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lgSrcyFsk3i0aa3g",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1648,
+        176
+      ],
+      "id": "f0e87337-af95-4150-ac0e-7e8b86aa491e",
+      "name": "Delete row(s)"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "lgSrcyFsk3i0aa3g",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAlloc",
+            "message_id": "={{ $json.allocationNo }}",
+            "error_message": "={{ $json.error.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        464
+      ],
+      "id": "cd491261-5715-4364-87e3-0ddd7ff73208",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lgSrcyFsk3i0aa3g",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $json.items[0].allocNo }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        240
+      ],
+      "id": "dc005057-702d-4e13-b92d-5c7830424523",
+      "name": "Delete row(s)1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "823e6f6e-dfd8-4c46-800c-182783fe6d91",
+              "leftValue": "={{ $('If row exists').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        160,
+        624
+      ],
+      "id": "f877b565-5474-4981-9146-768a6d9cb5f8",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lgSrcyFsk3i0aa3g",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -64,
+        -144
+      ],
+      "id": "e8ee51da-23d6-46ec-9eb3-fd4fdd2dbc2c",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "operation": "rowExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lgSrcyFsk3i0aa3g",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/lgSrcyFsk3i0aa3g"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        80
+      ],
+      "id": "c6714f6b-c7db-4953-89df-404842875461",
+      "name": "If row exists",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "\n // return $('in data').first().json.data\n\n return JSON.parse($('in data').first().json.data)\n\n\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1184,
+        240
+      ],
+      "id": "5e760e8d-adb3-4003-be8a-428c96b7eab1",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "42JVsNGueIb1oFek",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1648,
+        352
+      ],
+      "id": "a8766941-cb90-49c1-b600-c148d6289b7a",
+      "name": "Delete row(s)2"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "42JVsNGueIb1oFek",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAlloc",
+            "message_id": "={{ $('Get transfer number').item.json.items[0].allocNo }}",
+            "message_data": "={{ $('Get transfer number').item.json.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_data",
+              "displayName": "message_data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        16,
+        240
+      ],
+      "id": "a927bf8a-1458-4021-8220-ccb1ab02f79e",
+      "name": "Insert row1"
+    },
+    {
+      "parameters": {
+        "operation": "rowNotExists",
+        "dataTableId": {
+          "__rl": true,
+          "value": "42JVsNGueIb1oFek",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Get transfer number').item.json.items[0].allocNo }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        240
+      ],
+      "id": "8f066b89-b35d-4410-9072-dcbe46db851a",
+      "name": "If row does not exist"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.data = '{\"Message\" : \"All allocation was created successfully.\"}';\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1552,
+        624
+      ],
+      "id": "60bdf697-5c62-4f2a-8181-63af989c24bd",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import time\ntime.sleep(_(\"in data\").first().json.wait)\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1648,
+        528
+      ],
+      "id": "8351b555-4240-44ac-a31f-952914132d20",
+      "name": "Wait1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "42JVsNGueIb1oFek",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/0hv468Xl53uN8xuI/datatables/42JVsNGueIb1oFek"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        384,
+        640
+      ],
+      "id": "e3324460-ecaf-46f4-8309-d3a9926ea7e0",
+      "name": "Get row(s)1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Allocation data in JSON format:\n{{ $json.message_data.toJsonString() }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant. Use the incoming allocation json data to create a excel table."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        640
+      ],
+      "id": "768495e2-c53c-4367-9ab0-74de18b23404",
+      "name": "AI Agent",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message_data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        592,
+        640
+      ],
+      "id": "c6c1f7c0-a44f-4d04-a738-b9d69975639e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        752,
+        864
+      ],
+      "id": "b032ef3e-0be7-4006-906d-db54b3554852",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tbdCvA5cfazz8mkQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "in data": [
+      {
+        "json": {
+          "data": "{    \"collectionSize\": 3,    \"items\": [    {      \"allocationNo\": 15051,      \"allocationDescription\": \"XAllocCre20251031112941.870\",      \"item\": \"100015014\",      \"fromLocation\": 5000,      \"originInd\": \"EG\",      \"allocStatus\": \"Y\",      \"details\": [{              \"toLocation\": 1000,              \"toLocationType\": \"S\",              \"quantityAllocated\": 1          }      ]    },    {      \"allocationNo\": 15052,      \"allocationDescription\": \"XAllocCre20251031112941.870\",      \"item\": \"100015014\",      \"fromLocation\": 5000,      \"originInd\": \"EG\",      \"allocStatus\": \"Y\",      \"details\": [{              \"toLocation\": 1000,              \"toLocationType\": \"S\",              \"quantityAllocated\": 1          }      ]    },    {      \"allocationNo\": 15053,      \"allocationDescription\": \"XAllocCre20251031112941.870\",      \"item\": \"100015014\",      \"fromLocation\": 5000,      \"originInd\": \"EG\",      \"allocStatus\": \"Y\",      \"details\": [{              \"toLocation\": 1000,              \"toLocationType\": \"S\",              \"quantityAllocated\": 1          }      ]    }    ]  }",
+          "wait": 5,
+          "wait_time": 2
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-17T09:33:13.617Z",
+      "createdAt": "2025-11-17T09:33:13.617Z",
+      "role": "workflow:owner",
+      "workflowId": "dwYudhFfTGG2aJuZ",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-11T07:55:20.064Z",
+      "createdAt": "2025-11-11T07:55:20.064Z",
+      "id": "14E43CzOqTBt95Td",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-08T13:51:52.000Z",
+  "versionId": "d26e2af4-e2ba-48a5-a1fc-cc56dfdf8594"
+}
