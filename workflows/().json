@@ -1,0 +1,87 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Alloc CSV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-26T09:14:55.243Z",
+  "id": "4k5T2r6BN22uCeCm",
+  "isArchived": false,
+  "meta": null,
+  "name": "Get Alloc CSV",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d3acc8e8-1571-433b-ac07-77e5d7970ee4",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/juvockdzchgzhbvsyuoo/ords/mfcs/testservice/getAllocCSV",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "alloc.csv"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "5b188bcc-ed96-4412-bfef-e2b1fc36255c",
+      "name": "Get Alloc CSV",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "Uff1mmJ7d42hSbJ5",
+          "name": "QB Cloud MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-26T09:14:55.246Z",
+      "createdAt": "2025-11-26T09:14:55.246Z",
+      "role": "workflow:owner",
+      "workflowId": "4k5T2r6BN22uCeCm",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2025-11-26T09:17:36.000Z",
+  "versionId": "7e95e3a1-1bcb-49d5-97a4-b9e56b58e156"
+}
