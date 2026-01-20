@@ -1,0 +1,240 @@
+{
+  "active": false,
+  "activeVersion": null,
+  "activeVersionId": null,
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-04T11:44:27.756Z",
+  "id": "J28QZ1kpmRJTzrQ5",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Generate a few lines of data for a sample csv file, do not add any other comment",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        -48
+      ],
+      "id": "f9c41252-b0cb-4183-853f-f6996a483247",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        128
+      ],
+      "id": "754f1c7e-a6e3-4242-a214-8e869712db5d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tbdCvA5cfazz8mkQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "delimiter": ",",
+          "headerRow": true
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        -48
+      ],
+      "id": "13540c61-25e5-4126-9e9d-25193bc1dd36",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {
+          "format": false
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        336,
+        -48
+      ],
+      "id": "1a64b785-cf13-4a50-b815-1936f0847e83",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -48
+      ],
+      "id": "ff024b6a-5d1a-4dd6-8011-00a054972f6a",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        -48
+      ],
+      "id": "ad603599-0a13-47bf-9ccb-f96befc1db17",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        16,
+        208
+      ],
+      "id": "225a9f91-a6ab-4010-9328-17a9757c6426",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "qb-stoth"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "n8n"
+        },
+        "filePath": "worklfo15/12/test44.txt",
+        "fileContent": "teszt",
+        "commitMessage": "teszt commit"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        208
+      ],
+      "id": "3304e80d-ddd6-41d3-b4a8-880aed03091d",
+      "name": "Create a file",
+      "webhookId": "308856a9-0cea-4f99-b31f-019a2a774c7d",
+      "credentials": {
+        "githubApi": {
+          "id": "Eoa9E7aVyyWkclRw",
+          "name": "GitHub account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-04T11:44:27.757Z",
+      "createdAt": "2025-12-04T11:44:27.757Z",
+      "role": "workflow:owner",
+      "workflowId": "J28QZ1kpmRJTzrQ5",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-09T13:50:16.331Z",
+  "versionId": "2ec99565-82e2-496e-af68-9f12682d6814"
+}
