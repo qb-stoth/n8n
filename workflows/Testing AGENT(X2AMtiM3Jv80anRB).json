@@ -1,0 +1,1338 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-15T11:47:36.000Z",
+    "createdAt": "2026-01-15T11:47:34.353Z",
+    "versionId": "77486b8a-b292-45dc-98f7-99a590b6a7f0",
+    "workflowId": "X2AMtiM3Jv80anRB",
+    "nodes": [
+      {
+        "parameters": {
+          "public": true,
+          "authentication": "n8nUserAuth",
+          "initialMessages": "Testing AI assistant.",
+          "options": {
+            "allowFileUploads": true,
+            "responseMode": "responseNodes"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -64,
+          -16
+        ],
+        "id": "5aa0c7af-3c62-40a7-b2fc-47a369df3b86",
+        "name": "When chat message received",
+        "webhookId": "e5c363e7-fafe-4ecf-b02d-ec42ccfb77ef"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.chatInput }}",
+          "hasOutputParser": true,
+          "options": {
+            "systemMessage": "=You are an AI assistant that determines the appropriate flowName based on the user request.\n\n- If the user's request is related to \"Allocation\", you MUST return:\n  flowName = \"sxVSMVbu5Ps280Zw\"\n  type = Allocation\n\n- If the user's request is related to \"Inventory adjustment\" or \"invadj\", you MUST return:\n  flowName = \"oY7vOyOcMdqZ1JVO\"\n  type = Inventory adjustment\n\n- Anything else, you MUST return:\n  flowName = \"\"\n  type = \"\"\n",
+            "enableStreaming": true
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          432,
+          -16
+        ],
+        "id": "64f890f0-f728-4230-9072-2781aca10469",
+        "name": "AI Agent",
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          928,
+          464
+        ],
+        "id": "bc2707c5-d83e-498f-b191-80b4f52c558f",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "tbdCvA5cfazz8mkQ",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          1056,
+          464
+        ],
+        "id": "56198fc4-2705-4a80-80f5-9bcb941ae997",
+        "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "schemaType": "manual",
+          "inputSchema": "={\n\t\"type\": \"\",\n\t\"flowName\": \"\",\n    \"item\":\"\"\n}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "typeVersion": 1.3,
+        "position": [
+          576,
+          192
+        ],
+        "id": "6cc6a526-7290-4e0a-87cc-7ee80aa6b25a",
+        "name": "Structured Output Parser"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "60d888c5-132d-4879-bcb4-6617bea903a0",
+                "leftValue": "={{ $json.output.execute }}",
+                "rightValue": "yes",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          2080,
+          144
+        ],
+        "id": "b664d910-bccb-4080-a8fb-a4187a84e304",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "hasOutputParser": true,
+          "options": {
+            "systemMessage": "You are an AI assistant base on the user input, return \"yes\" or \"no\".\nIf no , You MUST return:\n  execute = \"no\"\nif yes, You MUST return:\n  execcute = \"yes\""
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1728,
+          144
+        ],
+        "id": "2d7ca8b3-7737-427e-89e5-25747801a75b",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "jsonSchemaExample": "{\n\t\"execute\": \"\"\n}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "typeVersion": 1.3,
+        "position": [
+          1808,
+          368
+        ],
+        "id": "d414da83-ea03-4bba-9e4c-97d5a27914ea",
+        "name": "Structured Output Parser1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "63134624-f3cb-4415-8a38-9cc0adffc3bb",
+                "leftValue": "={{ $json.error }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "73758be4-6c8d-4edf-a63a-89e8e791fcc1",
+                "leftValue": "={{ $json.output.flowName }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          832,
+          -80
+        ],
+        "id": "0192ba79-e633-469a-9e6e-4c0aee295ffa",
+        "name": "If1",
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "cb6a9ae7-7b5a-4029-92f4-92cad3fda906",
+                "leftValue": "={{ $json.output.flowName }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1056,
+          16
+        ],
+        "id": "1eea9efd-be5c-4dbc-99cc-b6acb254bbc2",
+        "name": "If2"
+      },
+      {
+        "parameters": {
+          "message": "=Please specify what you want to test (Allocation, Inventory Adjustment)?",
+          "options": {
+            "limitWaitTime": {
+              "values": {
+                "resumeAmount": 5,
+                "resumeUnit": "minutes"
+              }
+            }
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chat",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          -128
+        ],
+        "id": "27e32690-35bd-46a1-9718-bc38e9bac2c9",
+        "name": "Specify test case"
+      },
+      {
+        "parameters": {
+          "message": "=Are you sure to run test for {{ $json.output.type }} ?",
+          "options": {
+            "limitWaitTime": {
+              "values": {
+                "resumeAmount": 5,
+                "resumeUnit": "minutes"
+              }
+            }
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chat",
+        "typeVersion": 1,
+        "position": [
+          1280,
+          112
+        ],
+        "id": "211b4571-2b59-4a8c-8091-16b95a5d7e3b",
+        "name": "Confirmation to run"
+      },
+      {
+        "parameters": {
+          "message": "={{ $('AI Agent').item.json.output.type }} testing run cancelled.",
+          "waitUserReply": false,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chat",
+        "typeVersion": 1,
+        "position": [
+          2512,
+          304
+        ],
+        "id": "3ed55a82-fde8-45f5-a75a-f7d320e2b946",
+        "name": "Cancelled"
+      },
+      {
+        "parameters": {
+          "message": "={{ $('AI Agent').item.json.output.type }} testing was triggered successfully.",
+          "waitUserReply": false,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.chat",
+        "typeVersion": 1,
+        "position": [
+          2912,
+          128
+        ],
+        "id": "1ea37b1d-d8f7-4caa-a4bf-5b16bd57a4f3",
+        "name": "Run triggered",
+        "executeOnce": false
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "bfd9fb0a-6730-459c-be0d-8c3acab157ed",
+                "leftValue": "={{ $json.chatInput }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "1a3fd8f4-18e6-41c8-a39d-58121ce54af0",
+                "leftValue": "={{ $json.action.toString() }}",
+                "rightValue": "sendMessage",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1504,
+          -80
+        ],
+        "id": "78d2c4ca-1b6b-4422-947d-876cb96c9c62",
+        "name": "If3"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "bfd9fb0a-6730-459c-be0d-8c3acab157ed",
+                "leftValue": "={{ $json.chatInput }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "1a3fd8f4-18e6-41c8-a39d-58121ce54af0",
+                "leftValue": "={{ $json.action.toString() }}",
+                "rightValue": "sendMessage",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1504,
+          144
+        ],
+        "id": "9b7f1b91-a20f-449d-8146-865ae5baf9b7",
+        "name": "If4"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "={{ $('AI Agent').item.json.output.flowName }}",
+            "mode": "id",
+            "cachedResultUrl": "/workflow/=%7B%7B%20$('AI%20Agent').item.json.output.flowName%20%7D%7D"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [],
+            "schema": [],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {
+            "waitForSubWorkflow": false
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          2736,
+          128
+        ],
+        "id": "3e5f543f-2220-4c56-bc04-1fbcef64854a",
+        "name": "Call workflow",
+        "alwaysOutputData": false,
+        "executeOnce": false
+      },
+      {
+        "parameters": {
+          "jsCode": "/**try {\n if(!!$('Specify test case').first() && $('Specify test case').first().binary !== undefined && $('Specify test case').first().binary !== null ){ \n  return $('Specify test case').first().binary;\n}\n} catch (e) {\n  return $('When chat message received').first().binary;\n}**/\nfor (const item of $input.all()) {\n  \n  try {\n     if(!!$('Specify test case').first() && $('Specify test case').first().binary !== undefined && $('Specify test case').first().binary !== null ){ \n      item.json.binary= $('Specify test case').first().binary;\n      item.json.output= $('AI Agent').first().json.output\n      item.json.userid= $('When chat message received').first().json.metadata.user.id;\n    }\n    } catch (e) {\n      item.json.binary= $('When chat message received').first().binary;\n      item.json.output= $('AI Agent').first().json.output\n      item.json.userid= $('When chat message received').first().json.metadata.user.id;\n    }\n}\n\nreturn $input.all();\n\n  //return $('When chat message received').first().json.files?.at(0)\n//return $('Specify test case').first().binary\n\n//return $('AI Agent').first().json.output"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2432,
+          128
+        ],
+        "id": "174d95f6-a7cb-4e25-a7db-e5d1d3969a94",
+        "name": "Code in JavaScript"
+      }
+    ],
+    "connections": {
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Structured Output Parser": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Structured Output Parser1": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Cancelled",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Specify test case",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "Specify test case",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Confirmation to run",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Specify test case": {
+        "main": [
+          [
+            {
+              "node": "If3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Confirmation to run": {
+        "main": [
+          [
+            {
+              "node": "If4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If3": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If4": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call workflow": {
+        "main": [
+          [
+            {
+              "node": "Run triggered",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Call workflow",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version 77486b8a",
+    "description": ""
+  },
+  "activeVersionId": "77486b8a-b292-45dc-98f7-99a590b6a7f0",
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cancelled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Specify test case",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Specify test case",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Confirmation to run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Specify test case": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Confirmation to run": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call workflow": {
+      "main": [
+        [
+          {
+            "node": "Run triggered",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Call workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-11-19T07:42:47.851Z",
+  "id": "X2AMtiM3Jv80anRB",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Testing AGENT",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "authentication": "n8nUserAuth",
+        "initialMessages": "Testing AI assistant.",
+        "options": {
+          "allowFileUploads": true,
+          "responseMode": "responseNodes"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        -16
+      ],
+      "id": "5aa0c7af-3c62-40a7-b2fc-47a369df3b86",
+      "name": "When chat message received",
+      "webhookId": "e5c363e7-fafe-4ecf-b02d-ec42ccfb77ef"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an AI assistant that determines the appropriate flowName based on the user request.\n\n- If the user's request is related to \"Allocation\", you MUST return:\n  flowName = \"sxVSMVbu5Ps280Zw\"\n  type = Allocation\n\n- If the user's request is related to \"Inventory adjustment\" or \"invadj\", you MUST return:\n  flowName = \"oY7vOyOcMdqZ1JVO\"\n  type = Inventory adjustment\n\n- Anything else, you MUST return:\n  flowName = \"\"\n  type = \"\"\n",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -16
+      ],
+      "id": "64f890f0-f728-4230-9072-2781aca10469",
+      "name": "AI Agent",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        928,
+        464
+      ],
+      "id": "bc2707c5-d83e-498f-b191-80b4f52c558f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tbdCvA5cfazz8mkQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        464
+      ],
+      "id": "56198fc4-2705-4a80-80f5-9bcb941ae997",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "={\n\t\"type\": \"\",\n\t\"flowName\": \"\",\n    \"item\":\"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        192
+      ],
+      "id": "6cc6a526-7290-4e0a-87cc-7ee80aa6b25a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "60d888c5-132d-4879-bcb4-6617bea903a0",
+              "leftValue": "={{ $json.output.execute }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2080,
+        144
+      ],
+      "id": "b664d910-bccb-4080-a8fb-a4187a84e304",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are an AI assistant base on the user input, return \"yes\" or \"no\".\nIf no , You MUST return:\n  execute = \"no\"\nif yes, You MUST return:\n  execcute = \"yes\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        144
+      ],
+      "id": "2d7ca8b3-7737-427e-89e5-25747801a75b",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"execute\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1808,
+        368
+      ],
+      "id": "d414da83-ea03-4bba-9e4c-97d5a27914ea",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "63134624-f3cb-4415-8a38-9cc0adffc3bb",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "73758be4-6c8d-4edf-a63a-89e8e791fcc1",
+              "leftValue": "={{ $json.output.flowName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -80
+      ],
+      "id": "0192ba79-e633-469a-9e6e-4c0aee295ffa",
+      "name": "If1",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cb6a9ae7-7b5a-4029-92f4-92cad3fda906",
+              "leftValue": "={{ $json.output.flowName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1056,
+        16
+      ],
+      "id": "1eea9efd-be5c-4dbc-99cc-b6acb254bbc2",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "message": "=Please specify what you want to test (Allocation, Inventory Adjustment)?",
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 5,
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -128
+      ],
+      "id": "27e32690-35bd-46a1-9718-bc38e9bac2c9",
+      "name": "Specify test case"
+    },
+    {
+      "parameters": {
+        "message": "=Are you sure to run test for {{ $json.output.type }} ?",
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 5,
+              "resumeUnit": "minutes"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        112
+      ],
+      "id": "211b4571-2b59-4a8c-8091-16b95a5d7e3b",
+      "name": "Confirmation to run"
+    },
+    {
+      "parameters": {
+        "message": "={{ $('AI Agent').item.json.output.type }} testing run cancelled.",
+        "waitUserReply": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        304
+      ],
+      "id": "3ed55a82-fde8-45f5-a75a-f7d320e2b946",
+      "name": "Cancelled"
+    },
+    {
+      "parameters": {
+        "message": "={{ $('AI Agent').item.json.output.type }} testing was triggered successfully.",
+        "waitUserReply": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        2912,
+        128
+      ],
+      "id": "1ea37b1d-d8f7-4caa-a4bf-5b16bd57a4f3",
+      "name": "Run triggered",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bfd9fb0a-6730-459c-be0d-8c3acab157ed",
+              "leftValue": "={{ $json.chatInput }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1a3fd8f4-18e6-41c8-a39d-58121ce54af0",
+              "leftValue": "={{ $json.action.toString() }}",
+              "rightValue": "sendMessage",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        -80
+      ],
+      "id": "78d2c4ca-1b6b-4422-947d-876cb96c9c62",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bfd9fb0a-6730-459c-be0d-8c3acab157ed",
+              "leftValue": "={{ $json.chatInput }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "1a3fd8f4-18e6-41c8-a39d-58121ce54af0",
+              "leftValue": "={{ $json.action.toString() }}",
+              "rightValue": "sendMessage",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        144
+      ],
+      "id": "9b7f1b91-a20f-449d-8146-865ae5baf9b7",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $('AI Agent').item.json.output.flowName }}",
+          "mode": "id",
+          "cachedResultUrl": "/workflow/=%7B%7B%20$('AI%20Agent').item.json.output.flowName%20%7D%7D"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2736,
+        128
+      ],
+      "id": "3e5f543f-2220-4c56-bc04-1fbcef64854a",
+      "name": "Call workflow",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "/**try {\n if(!!$('Specify test case').first() && $('Specify test case').first().binary !== undefined && $('Specify test case').first().binary !== null ){ \n  return $('Specify test case').first().binary;\n}\n} catch (e) {\n  return $('When chat message received').first().binary;\n}**/\nfor (const item of $input.all()) {\n  \n  try {\n     if(!!$('Specify test case').first() && $('Specify test case').first().binary !== undefined && $('Specify test case').first().binary !== null ){ \n      item.json.binary= $('Specify test case').first().binary;\n      item.json.output= $('AI Agent').first().json.output\n      item.json.userid= $('When chat message received').first().json.metadata.user.id;\n    }\n    } catch (e) {\n      item.json.binary= $('When chat message received').first().binary;\n      item.json.output= $('AI Agent').first().json.output\n      item.json.userid= $('When chat message received').first().json.metadata.user.id;\n    }\n}\n\nreturn $input.all();\n\n  //return $('When chat message received').first().json.files?.at(0)\n//return $('Specify test case').first().binary\n\n//return $('AI Agent').first().json.output"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        128
+      ],
+      "id": "174d95f6-a7cb-4e25-a7db-e5d1d3969a94",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "workflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-11-19T07:42:47.854Z",
+      "createdAt": "2025-11-19T07:42:47.854Z",
+      "role": "workflow:owner",
+      "workflowId": "X2AMtiM3Jv80anRB",
+      "projectId": "0hv468Xl53uN8xuI"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-11-11T07:55:20.064Z",
+      "createdAt": "2025-11-11T07:55:20.064Z",
+      "id": "14E43CzOqTBt95Td",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-15T11:47:34.353Z",
+  "versionId": "77486b8a-b292-45dc-98f7-99a590b6a7f0"
+}
