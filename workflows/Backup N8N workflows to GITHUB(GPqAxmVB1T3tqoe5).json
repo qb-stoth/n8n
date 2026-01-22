@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-21T07:13:48.000Z",
-    "createdAt": "2026-01-21T07:12:32.592Z",
-    "versionId": "353b76bd-b03d-4661-9a1f-b79e536ebe8a",
+    "updatedAt": "2026-01-21T07:59:53.000Z",
+    "createdAt": "2026-01-21T07:59:51.336Z",
+    "versionId": "5dc108dd-dead-4db4-a502-127626e0dce6",
     "workflowId": "GPqAxmVB1T3tqoe5",
     "nodes": [
       {
@@ -552,7 +552,7 @@
       },
       {
         "parameters": {
-          "url": "https://10.13.40.83:22443/api/v1/workflows?limit=250",
+          "url": "=https://10.13.40.83:22443/api/v1/workflows?limit=250",
           "authentication": "predefinedCredentialType",
           "nodeCredentialType": "n8nApi",
           "sendHeaders": true,
@@ -565,7 +565,21 @@
             ]
           },
           "options": {
-            "allowUnauthorizedCerts": true
+            "allowUnauthorizedCerts": true,
+            "pagination": {
+              "pagination": {
+                "parameters": {
+                  "parameters": [
+                    {
+                      "name": "cursor",
+                      "value": "={{$response.body.nextCursor}}"
+                    }
+                  ]
+                },
+                "paginationCompleteWhen": "other",
+                "completeExpression": "={{ $response.body.nextCursor == null }}"
+              }
+            }
           }
         },
         "type": "n8n-nodes-base.httpRequest",
@@ -1098,10 +1112,10 @@
       }
     },
     "authors": "Attila Zubor",
-    "name": "Version 353b76bd",
+    "name": "Version 5dc108dd",
     "description": ""
   },
-  "activeVersionId": "353b76bd-b03d-4661-9a1f-b79e536ebe8a",
+  "activeVersionId": "5dc108dd-dead-4db4-a502-127626e0dce6",
   "connections": {
     "n8n": {
       "main": [
@@ -1974,7 +1988,7 @@
     },
     {
       "parameters": {
-        "url": "https://10.13.40.83:22443/api/v1/workflows?limit=250",
+        "url": "=https://10.13.40.83:22443/api/v1/workflows?limit=250",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "n8nApi",
         "sendHeaders": true,
@@ -1987,7 +2001,21 @@
           ]
         },
         "options": {
-          "allowUnauthorizedCerts": true
+          "allowUnauthorizedCerts": true,
+          "pagination": {
+            "pagination": {
+              "parameters": {
+                "parameters": [
+                  {
+                    "name": "cursor",
+                    "value": "={{$response.body.nextCursor}}"
+                  }
+                ]
+              },
+              "paginationCompleteWhen": "other",
+              "completeExpression": "={{ $response.body.nextCursor == null }}"
+            }
+          }
         }
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -3148,6 +3176,6 @@
   },
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-01-21T07:12:32.591Z",
-  "versionId": "353b76bd-b03d-4661-9a1f-b79e536ebe8a"
+  "updatedAt": "2026-01-21T07:59:51.336Z",
+  "versionId": "5dc108dd-dead-4db4-a502-127626e0dce6"
 }
