@@ -1,0 +1,1191 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-27T13:27:52.096Z",
+    "createdAt": "2026-01-27T13:27:49.613Z",
+    "versionId": "fbd6e8a6-d231-4c1d-a17f-7abb152b7c0f",
+    "workflowId": "w1tHRoLY57jNiy3V",
+    "nodes": [
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "httpBearerAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $('Code in JavaScript').item.json.data }}",
+          "options": {}
+        },
+        "id": "bb43fed3-4553-437e-bdb9-a54b8eacc9d6",
+        "name": "Airflow: dag_run",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -832,
+          224
+        ],
+        "typeVersion": 4.2,
+        "executeOnce": true,
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "sb5iHdFXYIMMfdhI",
+            "name": "Bearer Auth Airfow"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "httpBearerAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "options": {}
+        },
+        "id": "9772ee19-a6c6-411b-b402-7693ca11d29e",
+        "name": "Airflow: dag_run - state",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -208,
+          144
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "sb5iHdFXYIMMfdhI",
+            "name": "Bearer Auth Airfow"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+        },
+        "id": "415578f9-5e3a-4a64-ac97-68aea53dc277",
+        "name": "count",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          208,
+          192
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "errorMessage": "dag run fail"
+        },
+        "id": "e00cca82-352d-4d03-b4ca-d2415a5fb6aa",
+        "name": "dag run fail",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          208,
+          544
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "combinator": "and",
+            "conditions": [
+              {
+                "id": "0ae67986-09c0-443d-9262-075bfe94ca2e",
+                "operator": {
+                  "name": "filter.operator.equals",
+                  "type": "string",
+                  "operation": "equals"
+                },
+                "leftValue": "={{ $json.state }}",
+                "rightValue": "queued"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "8734c5a9-63aa-49ad-b3d0-376dfc62e5f1",
+        "name": "if state == queued",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          -656,
+          208
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "errorMessage": "dag run wait too long"
+        },
+        "id": "43578f91-d71a-4e5d-a99d-9510aef192d9",
+        "name": "dag run wait too long",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          528,
+          192
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}/taskInstances/Sample%20Task%201/xcomEntries/return_value",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Authorization",
+                "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "ea22ce49-a8f6-4043-857e-e5d94d648dea",
+        "name": "Airflow: dag_run - get result",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          208,
+          0
+        ],
+        "typeVersion": 4.2,
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "4d4ecf8a-c02b-4722-9528-1919cdf9b83e",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "success"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "=success"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "queued"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "queued"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "fa5d8524-334a-4ab1-b543-bba75cafd0ec",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "running"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "running"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "version": 2,
+                    "leftValue": "",
+                    "caseSensitive": true,
+                    "typeValidation": "strict"
+                  },
+                  "combinator": "and",
+                  "conditions": [
+                    {
+                      "id": "dd853677-c51c-4c06-8680-3c9d1829d6bd",
+                      "operator": {
+                        "name": "filter.operator.equals",
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "leftValue": "={{ $json.state }}",
+                      "rightValue": "failed"
+                    }
+                  ]
+                },
+                "renameOutput": true,
+                "outputKey": "failed"
+              }
+            ]
+          },
+          "options": {
+            "fallbackOutput": 3
+          }
+        },
+        "id": "6a6edaf8-0bf9-4413-b93d-cfb6fd6f46b6",
+        "name": "Switch: state",
+        "type": "n8n-nodes-base.switch",
+        "position": [
+          32,
+          160
+        ],
+        "typeVersion": 3.2
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "dag_run_id"
+              },
+              {
+                "name": "data"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "id": "dbfba9f9-a14c-42bb-8334-c588cf4a425d",
+        "name": "in data",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -1904,
+          176
+        ],
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                },
+                "leftValue": "={{ $json.count }}",
+                "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "8e610960-96d1-4d89-9941-68a6fdd9445d",
+        "name": "If count > wait_time",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          352,
+          288
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "40a5ab5b-dee1-44c4-910a-d6b85af75aed",
+                "name": "prefix",
+                "type": "string",
+                "value": "https://cm3t505g80qd701npsdp26d79.astronomer.run/dzkj7sag"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "fa003c5a-1abd-422c-8fb7-47ec40eb9d00",
+        "name": "airflow-api",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -1216,
+          176
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  if (item.json.dag_run_id == null || item.json.dag_run_id === \"\") {\n    item.json.dag_run_id ='example_display_name'\n    //item.json.wait=10\n    //item.json.wait_time=12\n  }\n  item.json.data ='{\\\"dag_run_id\\\": \"manual_'+new Date().toISOString()+'+00:00\",\\\"logical_date\\\": \"'+new Date().toISOString()+'\"}'\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1488,
+          176
+        ],
+        "id": "343af976-220a-46e1-9e41-cbdd76d66638",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "command": "=ping -c {{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 60 }} 127.0.0.1 > /dev/null 2>&1"
+        },
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          -432,
+          96
+        ],
+        "id": "47d0b631-79f4-45ce-af3c-50d95a45e520",
+        "name": "Wait"
+      },
+      {
+        "parameters": {
+          "jsCode": "\nreturn $('Switch: state').item.json;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ],
+        "id": "fa70029f-fb86-4c23-a9b4-22adc63e8187",
+        "name": "Code in JavaScript1"
+      }
+    ],
+    "connections": {
+      "count": {
+        "main": [
+          [
+            {
+              "node": "If count > wait_time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "airflow-api": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch: state": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run - get result",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "dag run fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: dag_run": {
+        "main": [
+          [
+            {
+              "node": "if state == queued",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "if state == queued": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "dag run fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If count > wait_time": {
+        "main": [
+          [
+            {
+              "node": "dag run wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: dag_run - state": {
+        "main": [
+          [
+            {
+              "node": "Switch: state",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "airflow-api",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Airflow: dag_run - get result": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run - state",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version fbd6e8a6",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "fbd6e8a6-d231-4c1d-a17f-7abb152b7c0f",
+  "connections": {
+    "count": {
+      "main": [
+        [
+          {
+            "node": "If count > wait_time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "airflow-api": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch: state": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run - get result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "dag run fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: dag_run": {
+      "main": [
+        [
+          {
+            "node": "if state == queued",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if state == queued": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "dag run fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If count > wait_time": {
+      "main": [
+        [
+          {
+            "node": "dag run wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: dag_run - state": {
+      "main": [
+        [
+          {
+            "node": "Switch: state",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "airflow-api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: dag_run - get result": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run - state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-03T08:29:57.603Z",
+  "id": "w1tHRoLY57jNiy3V",
+  "isArchived": false,
+  "meta": null,
+  "name": "Run Apache Airflow DAG and Retrieve XCom Value",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $('Code in JavaScript').item.json.data }}",
+        "options": {}
+      },
+      "id": "bb43fed3-4553-437e-bdb9-a54b8eacc9d6",
+      "name": "Airflow: dag_run",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -832,
+        224
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": true,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "sb5iHdFXYIMMfdhI",
+          "name": "Bearer Auth Airfow"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "9772ee19-a6c6-411b-b402-7693ca11d29e",
+      "name": "Airflow: dag_run - state",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -208,
+        144
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "sb5iHdFXYIMMfdhI",
+          "name": "Bearer Auth Airfow"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+      },
+      "id": "415578f9-5e3a-4a64-ac97-68aea53dc277",
+      "name": "count",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        208,
+        192
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "errorMessage": "dag run fail"
+      },
+      "id": "e00cca82-352d-4d03-b4ca-d2415a5fb6aa",
+      "name": "dag run fail",
+      "type": "n8n-nodes-base.stopAndError",
+      "position": [
+        208,
+        544
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "0ae67986-09c0-443d-9262-075bfe94ca2e",
+              "operator": {
+                "name": "filter.operator.equals",
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.state }}",
+              "rightValue": "queued"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8734c5a9-63aa-49ad-b3d0-376dfc62e5f1",
+      "name": "if state == queued",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -656,
+        208
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "errorMessage": "dag run wait too long"
+      },
+      "id": "43578f91-d71a-4e5d-a99d-9510aef192d9",
+      "name": "dag run wait too long",
+      "type": "n8n-nodes-base.stopAndError",
+      "position": [
+        528,
+        192
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}/dagRuns/{{ $('Airflow: dag_run').item.json.dag_run_id }}/taskInstances/Sample%20Task%201/xcomEntries/return_value",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $('Airflow: getToken').item.json.access_token }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ea22ce49-a8f6-4043-857e-e5d94d648dea",
+      "name": "Airflow: dag_run - get result",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        208,
+        0
+      ],
+      "typeVersion": 4.2,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "4d4ecf8a-c02b-4722-9528-1919cdf9b83e",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "success"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "=success"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "queued"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "queued"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "fa5d8524-334a-4ab1-b543-bba75cafd0ec",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "running"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "running"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "dd853677-c51c-4c06-8680-3c9d1829d6bd",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.state }}",
+                    "rightValue": "failed"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "failed"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": 3
+        }
+      },
+      "id": "6a6edaf8-0bf9-4413-b93d-cfb6fd6f46b6",
+      "name": "Switch: state",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        32,
+        160
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "dag_run_id"
+            },
+            {
+              "name": "data"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "id": "dbfba9f9-a14c-42bb-8334-c588cf4a425d",
+      "name": "in data",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -1904,
+        176
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.count }}",
+              "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8e610960-96d1-4d89-9941-68a6fdd9445d",
+      "name": "If count > wait_time",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        352,
+        288
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "40a5ab5b-dee1-44c4-910a-d6b85af75aed",
+              "name": "prefix",
+              "type": "string",
+              "value": "https://cm3t505g80qd701npsdp26d79.astronomer.run/dzkj7sag"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fa003c5a-1abd-422c-8fb7-47ec40eb9d00",
+      "name": "airflow-api",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -1216,
+        176
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  if (item.json.dag_run_id == null || item.json.dag_run_id === \"\") {\n    item.json.dag_run_id ='example_display_name'\n    //item.json.wait=10\n    //item.json.wait_time=12\n  }\n  item.json.data ='{\\\"dag_run_id\\\": \"manual_'+new Date().toISOString()+'+00:00\",\\\"logical_date\\\": \"'+new Date().toISOString()+'\"}'\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1488,
+        176
+      ],
+      "id": "343af976-220a-46e1-9e41-cbdd76d66638",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "command": "=ping -c {{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 60 }} 127.0.0.1 > /dev/null 2>&1"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -432,
+        96
+      ],
+      "id": "47d0b631-79f4-45ce-af3c-50d95a45e520",
+      "name": "Wait"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn $('Switch: state').item.json;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "fa70029f-fb86-4c23-a9b4-22adc63e8187",
+      "name": "Code in JavaScript1"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-03T08:29:57.610Z",
+      "createdAt": "2025-12-03T08:29:57.610Z",
+      "role": "workflow:owner",
+      "workflowId": "w1tHRoLY57jNiy3V",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:47.106Z",
+      "createdAt": "2026-01-28T08:40:47.106Z",
+      "id": "NN19Km37JJKZjXr6",
+      "name": "Common"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:40:52.469Z",
+  "versionId": "fbd6e8a6-d231-4c1d-a17f-7abb152b7c0f"
+}
