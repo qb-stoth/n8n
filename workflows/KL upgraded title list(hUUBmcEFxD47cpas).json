@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2025-12-16T15:27:13.212Z",
-    "createdAt": "2025-12-16T15:27:13.212Z",
-    "versionId": "41fac99d-87de-4545-a2ab-5973aeca7582",
+    "updatedAt": "2026-01-27T09:05:07.000Z",
+    "createdAt": "2026-01-15T12:23:13.960Z",
+    "versionId": "1b848da7-4b7b-4ba3-af7e-d1c1402a2a6d",
     "workflowId": "hUUBmcEFxD47cpas",
     "nodes": [
       {
@@ -523,40 +523,6 @@
       },
       {
         "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "b524ad38-a085-4efe-b912-119ae02c9878",
-                "leftValue": "={{ $json.output }}",
-                "rightValue": "Open ticket = Yes",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals",
-                  "name": "filter.operator.equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
-        "position": [
-          928,
-          2880
-        ],
-        "id": "3b5fc551-e6e4-4f34-82f2-0900293f9aaf",
-        "name": "If"
-      },
-      {
-        "parameters": {
           "model": "gpt-oss:20b",
           "options": {}
         },
@@ -644,23 +610,6 @@
             "name": "Ollama account"
           }
         }
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "=## Email chain:\n{{ $json.data[0].cleaned }}\n## Sender:\n{{ $('Microsoft Outlook Trigger').item.json.from }}",
-          "options": {
-            "systemMessage": "You are a decision engine. \n\nTask:\nRead the email chain. The most recent email (at the top) is the most important.\n\nRules:\n- If the issue still needs attention → respond exactly with: Open ticket = Yes\n- If resolved or no action needed → respond exactly with: Open ticket = No\n- If Sender is: noReply-UC4PROD@weberpapp03.kirklands.com  → respond exactly with: Open ticket = No\n\n- If uncertain, choose: Open ticket = Yes\n\nOutput format:\nRespond with EXACTLY one of these two options, nothing else:\nOpen ticket = Yes\nOpen ticket = No"
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 2,
-        "position": [
-          560,
-          2880
-        ],
-        "id": "a63813f4-e0f3-44a4-a076-43df3dd32732",
-        "name": "Decide on ticket"
       },
       {
         "parameters": {
@@ -2750,26 +2699,9 @@
           ]
         ]
       },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "Get keywords",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Ollama Chat Model3": {
         "ai_languageModel": [
-          [
-            {
-              "node": "Decide on ticket",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "Loop Over Items1": {
@@ -2817,17 +2749,6 @@
           [
             {
               "node": "Edit Fields5",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Decide on ticket": {
-        "main": [
-          [
-            {
-              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -3310,11 +3231,6 @@
         "main": [
           [
             {
-              "node": "Decide on ticket",
-              "type": "main",
-              "index": 0
-            },
-            {
               "node": "Connect to Confluence3",
               "type": "main",
               "index": 0
@@ -3331,6 +3247,11 @@
             },
             {
               "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get keywords",
               "type": "main",
               "index": 0
             }
@@ -3646,11 +3567,11 @@
         ]
       }
     },
-    "authors": "system migration",
-    "name": null,
-    "description": null
+    "authors": "Attila Zubor",
+    "name": "Version 1b848da7",
+    "description": ""
   },
-  "activeVersionId": "41fac99d-87de-4545-a2ab-5973aeca7582",
+  "activeVersionId": "1b848da7-4b7b-4ba3-af7e-d1c1402a2a6d",
   "connections": {
     "Microsoft Outlook Trigger": {
       "main": [
@@ -7267,7 +7188,7 @@
   ],
   "staticData": {
     "node:Microsoft Outlook Trigger": {
-      "lastTimeChecked": "2026-01-27T01:21:43.002+01:00"
+      "lastTimeChecked": "2026-01-28T01:09:45.005+01:00"
     }
   },
   "tags": [],
