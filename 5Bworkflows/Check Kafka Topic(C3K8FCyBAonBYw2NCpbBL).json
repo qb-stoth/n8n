@@ -1,0 +1,159 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T10:26:03.049Z",
+    "createdAt": "2026-01-28T10:25:51.044Z",
+    "versionId": "0b0bf83e-29e9-4e3e-bd4f-3cdbd458315a",
+    "workflowId": "C3K8FCyBAonBYw2NCpbBL",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data"
+              },
+              {
+                "name": "topicName"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "ad881b43-2744-4dfc-898c-e9aff95471d0",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "topic": "Order_stage",
+          "groupId": "n8n-order-stage-consumer",
+          "options": {
+            "fromBeginning": true,
+            "jsonParseMessage": true,
+            "parallelProcessing": false
+          }
+        },
+        "type": "n8n-nodes-base.kafkaTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          208,
+          0
+        ],
+        "id": "2de992b3-8609-4124-87e1-8c73db4b4c71",
+        "name": "Kafka Trigger",
+        "credentials": {
+          "kafka": {
+            "id": "rIqZVpegxwYRz8cx",
+            "name": "Kafka account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "topic": "Order_Stage",
+          "sendInputData": false,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.kafka",
+        "typeVersion": 1,
+        "position": [
+          416,
+          0
+        ],
+        "id": "7c4b402e-dffe-462f-9416-e8f836f3b35d",
+        "name": "Kafka",
+        "credentials": {
+          "kafka": {
+            "id": "rIqZVpegxwYRz8cx",
+            "name": "Kafka account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          []
+        ]
+      },
+      "Kafka Trigger": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version 0b0bf83e",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "0b0bf83e-29e9-4e3e-bd4f-3cdbd458315a",
+  "connections": {
+    "Kafka Trigger": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2026-01-28T09:36:45.696Z",
+  "id": "C3K8FCyBAonBYw2NCpbBL",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Check Kafka Topic",
+  "nodes": [
+    {
+      "parameters": {
+        "topic": "Order_stage",
+        "groupId": "n8n-order-stage-consumer",
+        "options": {
+          "fromBeginning": true,
+          "jsonParseMessage": true,
+          "parallelProcessing": false
+        }
+      },
+      "type": "n8n-nodes-base.kafkaTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        -48
+      ],
+      "id": "2de992b3-8609-4124-87e1-8c73db4b4c71",
+      "name": "Kafka Trigger",
+      "credentials": {
+        "kafka": {
+          "id": "rIqZVpegxwYRz8cx",
+          "name": "Kafka account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T09:36:45.696Z",
+      "createdAt": "2026-01-28T09:36:45.696Z",
+      "role": "workflow:owner",
+      "workflowId": "C3K8FCyBAonBYw2NCpbBL",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 1,
+  "updatedAt": "2026-01-28T11:08:04.419Z",
+  "versionId": "fab33397-f339-4d9e-a474-031cbdb7d952"
+}
