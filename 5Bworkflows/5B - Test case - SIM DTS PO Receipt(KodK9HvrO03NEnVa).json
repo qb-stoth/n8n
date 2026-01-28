@@ -1,0 +1,137 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T08:47:09.401Z",
+    "createdAt": "2026-01-28T08:46:24.157Z",
+    "versionId": "4ee394f6-98fd-4328-a79a-ebca73e2eb28",
+    "workflowId": "KodK9HvrO03NEnVa",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**** ",
+          "height": 640,
+          "width": 256,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "906b28ed-89c4-4868-9ce6-3fea3cedb513",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          80,
+          256
+        ],
+        "id": "0c678de0-f362-4877-94ec-e7b336811737",
+        "name": "When Executed by Another Workflow"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 4ee394f6",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "4ee394f6-98fd-4328-a79a-ebca73e2eb28",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2026-01-28T08:45:55.352Z",
+  "id": "KodK9HvrO03NEnVa",
+  "isArchived": false,
+  "meta": null,
+  "name": "5B - Test case - SIM DTS PO Receipt",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**** ",
+        "height": 640,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "906b28ed-89c4-4868-9ce6-3fea3cedb513",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        256
+      ],
+      "id": "0c678de0-f362-4877-94ec-e7b336811737",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "SIM DTS PO Receipt",
+            "flowName": "KodK9HvrO03NEnVa",
+            "item": ""
+          },
+          "userid": "93ef244a-02d4-4d06-8930-7603d92e50ef"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T08:45:55.352Z",
+      "createdAt": "2026-01-28T08:45:55.352Z",
+      "role": "workflow:owner",
+      "workflowId": "KodK9HvrO03NEnVa",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:47:06.675Z",
+  "versionId": "4ee394f6-98fd-4328-a79a-ebca73e2eb28"
+}
