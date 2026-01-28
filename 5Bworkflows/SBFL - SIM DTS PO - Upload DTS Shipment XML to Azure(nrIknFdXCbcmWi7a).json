@@ -1,0 +1,494 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T08:22:38.052Z",
+    "createdAt": "2026-01-28T08:22:33.570Z",
+    "versionId": "d956562d-86c9-45e4-93de-760d6af213fa",
+    "workflowId": "nrIknFdXCbcmWi7a",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              },
+              {
+                "name": "data",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -3392,
+          144
+        ],
+        "id": "fee11a58-019b-42d3-9f66-3859b0803fe7",
+        "name": "in data"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -2864,
+          144
+        ],
+        "id": "3e8441aa-1503-4587-91cf-c97bd2e92654",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -3152,
+          144
+        ],
+        "id": "fec50460-6a01-40bb-8ac9-d35ed3208602",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "qjwFWh6uEelWF0hR",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/qjwFWh6uEelWF0hR",
+            "cachedResultName": "Upload File To Azure"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $binary }}",
+              "container": "purchaseorder",
+              "path": "=/edi/edi856/edp/inbound/dts/xml/{{ $now.format(\"yyyyMMdd\")}}/",
+              "filename": "=XML_ASN_{{ $now.format(\"yyyyMMdd_HHmmssSSS\")}}_TEST.xml"
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "path",
+                "displayName": "path",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "filename",
+                "displayName": "filename",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "container",
+                "displayName": "container",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          -2432,
+          208
+        ],
+        "id": "a318d308-c3f0-4210-8b22-31715e2b9dde",
+        "name": "Call 'Upload File To Azure'1",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload file to Azure.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          -2176,
+          224
+        ],
+        "id": "2eaac648-5962-4646-9136-2e858dfcfa77",
+        "name": "Failed to upload file to Azure",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "toText",
+          "sourceProperty": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          -2688,
+          208
+        ],
+        "id": "85056b20-d25f-4de3-a9fa-078087dee74d",
+        "name": "Convert to File"
+      }
+    ],
+    "connections": {
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Convert to File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Upload File To Azure'1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to upload file to Azure",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File": {
+        "main": [
+          [
+            {
+              "node": "Call 'Upload File To Azure'1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version d956562d",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "d956562d-86c9-45e4-93de-760d6af213fa",
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Upload File To Azure'1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to upload file to Azure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Call 'Upload File To Azure'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-27T13:35:25.968Z",
+  "id": "nrIknFdXCbcmWi7a",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "data",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -3392,
+        144
+      ],
+      "id": "fee11a58-019b-42d3-9f66-3859b0803fe7",
+      "name": "in data"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -2864,
+        144
+      ],
+      "id": "3e8441aa-1503-4587-91cf-c97bd2e92654",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -3152,
+        144
+      ],
+      "id": "fec50460-6a01-40bb-8ac9-d35ed3208602",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "qjwFWh6uEelWF0hR",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/qjwFWh6uEelWF0hR",
+          "cachedResultName": "Upload File To Azure"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $binary }}",
+            "container": "purchaseorder",
+            "path": "=/edi/edi856/edp/inbound/dts/xml/{{ $now.format(\"yyyyMMdd\")}}/",
+            "filename": "=XML_ASN_{{ $now.format(\"yyyyMMdd_HHmmssSSS\")}}_TEST.xml"
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "path",
+              "displayName": "path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "filename",
+              "displayName": "filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "container",
+              "displayName": "container",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -2432,
+        208
+      ],
+      "id": "a318d308-c3f0-4210-8b22-31715e2b9dde",
+      "name": "Call 'Upload File To Azure'1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload file to Azure.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -2176,
+        224
+      ],
+      "id": "2eaac648-5962-4646-9136-2e858dfcfa77",
+      "name": "Failed to upload file to Azure",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -2688,
+        208
+      ],
+      "id": "85056b20-d25f-4de3-a9fa-078087dee74d",
+      "name": "Convert to File"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-27T13:35:25.968Z",
+      "createdAt": "2026-01-27T13:35:25.968Z",
+      "role": "workflow:owner",
+      "workflowId": "nrIknFdXCbcmWi7a",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:39:37.467Z",
+      "createdAt": "2026-01-28T08:38:52.110Z",
+      "id": "JkY12UxMieTvHe5N",
+      "name": "Sim_DTS_Po"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:39:00.118Z",
+  "versionId": "d956562d-86c9-45e4-93de-760d6af213fa"
+}
