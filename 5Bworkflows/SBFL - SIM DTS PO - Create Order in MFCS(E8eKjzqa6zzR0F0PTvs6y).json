@@ -1,0 +1,196 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-20T14:06:04.521Z",
+    "createdAt": "2026-01-20T14:06:02.304Z",
+    "versionId": "25516360-2c23-4424-b4b6-a57c925d4042",
+    "workflowId": "E8eKjzqa6zzR0F0PTvs6y",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              },
+              {
+                "name": "data",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "009d4896-63b6-4caf-8896-991a57be9164",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://rex.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-five-stg1-mfcs/MerchIntegrations/services/purchaseOrders/create",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $json.data }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          208,
+          0
+        ],
+        "id": "b005e437-ce5c-4c3e-84f1-674bfdda228d",
+        "name": "Create PO",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Create PO",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version 25516360",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "25516360-2c23-4424-b4b6-a57c925d4042",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Create PO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-20T12:56:32.881Z",
+  "id": "E8eKjzqa6zzR0F0PTvs6y",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - SIM DTS PO - Create Order in MFCS",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "data",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "009d4896-63b6-4caf-8896-991a57be9164",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rex.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-five-stg1-mfcs/MerchIntegrations/services/purchaseOrders/create",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "b005e437-ce5c-4c3e-84f1-674bfdda228d",
+      "name": "Create PO",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-20T12:56:32.881Z",
+      "createdAt": "2026-01-20T12:56:32.881Z",
+      "role": "workflow:owner",
+      "workflowId": "E8eKjzqa6zzR0F0PTvs6y",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:39:37.467Z",
+      "createdAt": "2026-01-28T08:38:52.110Z",
+      "id": "JkY12UxMieTvHe5N",
+      "name": "Sim_DTS_Po"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:45:19.542Z",
+  "versionId": "25516360-2c23-4424-b4b6-a57c925d4042"
+}
