@@ -1,0 +1,384 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-26T08:39:55.355Z",
+    "createdAt": "2026-01-26T08:39:53.426Z",
+    "versionId": "deea1872-2c30-4cda-afb8-7303dd4dbbd3",
+    "workflowId": "qjwFWh6uEelWF0hR",
+    "nodes": [
+      {
+        "parameters": {
+          "resource": "blob",
+          "operation": "create",
+          "container": {
+            "__rl": true,
+            "value": "={{ $json.container }}",
+            "mode": "id"
+          },
+          "blobCreate": "={{ $json.path }}{{ $json.filename }}",
+          "options": {},
+          "requestOptions": {}
+        },
+        "type": "n8n-nodes-base.azureStorage",
+        "typeVersion": 1,
+        "position": [
+          160,
+          -336
+        ],
+        "id": "585f6151-6f66-42d7-bac3-74d19ecc3a19",
+        "name": "Create blob",
+        "credentials": {
+          "azureStorageSharedKeyApi": {
+            "id": "fNhgEh3xk94ZyfKZ",
+            "name": "Azure Storage Shared Key account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data",
+                "type": "object"
+              },
+              {
+                "name": "path"
+              },
+              {
+                "name": "filename"
+              },
+              {
+                "name": "container"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -240,
+          -112
+        ],
+        "id": "5444738c-994c-4bf0-8ada-4245a07b3a15",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "options": {
+            "headerRow": true,
+            "includeEmptyCells": true
+          }
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          -16,
+          -80
+        ],
+        "id": "f0e8da65-5db2-4ebc-a944-4c1c5b790e4f",
+        "name": "Extract from File",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "options": {
+            "fileName": "={{ $('When Executed by Another Workflow').item.json.filename }}",
+            "headerRow": false
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          160,
+          -80
+        ],
+        "id": "8ec8f4b4-52ef-4554-9668-e5a64f5e1ca5",
+        "name": "Convert to File",
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "resource": "blob",
+          "operation": "create",
+          "container": {
+            "__rl": true,
+            "value": "={{ $('When Executed by Another Workflow').item.json.container }}",
+            "mode": "id"
+          },
+          "blobCreate": "={{ $('When Executed by Another Workflow').item.json.path + $('When Executed by Another Workflow').item.json.filename }}",
+          "options": {},
+          "requestOptions": {}
+        },
+        "type": "n8n-nodes-base.azureStorage",
+        "typeVersion": 1,
+        "position": [
+          384,
+          -96
+        ],
+        "id": "1d0ff6b0-dfee-47cb-8ef7-81f3ab09284e",
+        "name": "Create blob1",
+        "credentials": {
+          "azureStorageSharedKeyApi": {
+            "id": "fNhgEh3xk94ZyfKZ",
+            "name": "Azure Storage Shared Key account"
+          }
+        },
+        "disabled": true
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Create blob",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Convert to File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File": {
+        "main": [
+          [
+            {
+              "node": "Create blob1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version deea1872",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "deea1872-2c30-4cda-afb8-7303dd4dbbd3",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Create blob",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Create blob1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-02T14:35:21.512Z",
+  "id": "qjwFWh6uEelWF0hR",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Upload File To Azure",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "blob",
+        "operation": "create",
+        "container": {
+          "__rl": true,
+          "value": "={{ $json.container }}",
+          "mode": "id"
+        },
+        "blobCreate": "={{ $json.path }}{{ $json.filename }}",
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.azureStorage",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -336
+      ],
+      "id": "585f6151-6f66-42d7-bac3-74d19ecc3a19",
+      "name": "Create blob",
+      "credentials": {
+        "azureStorageSharedKeyApi": {
+          "id": "fNhgEh3xk94ZyfKZ",
+          "name": "Azure Storage Shared Key account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data",
+              "type": "object"
+            },
+            {
+              "name": "path"
+            },
+            {
+              "name": "filename"
+            },
+            {
+              "name": "container"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -240,
+        -112
+      ],
+      "id": "5444738c-994c-4bf0-8ada-4245a07b3a15",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {
+          "headerRow": true,
+          "includeEmptyCells": true
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        -80
+      ],
+      "id": "f0e8da65-5db2-4ebc-a944-4c1c5b790e4f",
+      "name": "Extract from File",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "fileName": "={{ $('When Executed by Another Workflow').item.json.filename }}",
+          "headerRow": false
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "8ec8f4b4-52ef-4554-9668-e5a64f5e1ca5",
+      "name": "Convert to File",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "blob",
+        "operation": "create",
+        "container": {
+          "__rl": true,
+          "value": "={{ $('When Executed by Another Workflow').item.json.container }}",
+          "mode": "id"
+        },
+        "blobCreate": "={{ $('When Executed by Another Workflow').item.json.path + $('When Executed by Another Workflow').item.json.filename }}",
+        "options": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.azureStorage",
+      "typeVersion": 1,
+      "position": [
+        384,
+        -96
+      ],
+      "id": "1d0ff6b0-dfee-47cb-8ef7-81f3ab09284e",
+      "name": "Create blob1",
+      "credentials": {
+        "azureStorageSharedKeyApi": {
+          "id": "fNhgEh3xk94ZyfKZ",
+          "name": "Azure Storage Shared Key account"
+        }
+      },
+      "disabled": true
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "data": "data",
+          "path": "/allocation/jda/merch-type-8/inbound/csv/",
+          "filename": "test.txt",
+          "container": "inventory"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-02T14:35:21.519Z",
+      "createdAt": "2025-12-02T14:35:21.519Z",
+      "role": "workflow:owner",
+      "workflowId": "qjwFWh6uEelWF0hR",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:47.106Z",
+      "createdAt": "2026-01-28T08:40:47.106Z",
+      "id": "NN19Km37JJKZjXr6",
+      "name": "Common"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:43:13.825Z",
+  "versionId": "deea1872-2c30-4cda-afb8-7303dd4dbbd3"
+}
