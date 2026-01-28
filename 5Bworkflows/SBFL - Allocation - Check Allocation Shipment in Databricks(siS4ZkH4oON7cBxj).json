@@ -1,0 +1,1606 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-22T14:43:01.232Z",
+    "createdAt": "2026-01-22T14:42:44.732Z",
+    "versionId": "947f3f6b-0477-44ae-82ad-ff77531fa8cd",
+    "workflowId": "siS4ZkH4oON7cBxj",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data",
+                "type": "object"
+              },
+              {
+                "name": "user_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -1728,
+          672
+        ],
+        "id": "52da5c0d-1988-496a-8d4a-e6034b99a37c",
+        "name": "in data"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -1072,
+          560
+        ],
+        "id": "3c62d8e8-0698-42c6-9935-2f089d587fa7",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocDatabricks"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "limit": 1001
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -768,
+          320
+        ],
+        "id": "489f7165-996f-4838-90b1-701ea10a94aa",
+        "name": "Get row(s)",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.data = '{\"Message\" : \"All shipment was found in databricks.\"}';\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -352,
+          480
+        ],
+        "id": "a4ae9c6b-99e9-4700-874a-c578c8122850",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet msg='';\nfor (const item of $input.all()) {\n  msg +='Error message: '+ item.json.error_message+ '\\n '\n\n}\n\nreturn {\n  json:{\n    error_message : msg\n  }\n}"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -368,
+          304
+        ],
+        "id": "c7cc3404-8803-481f-8195-cf9a01ee52fa",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocDatabricks"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading +'_'+$('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.FacilityName +'_'+ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAllocDatabricks",
+              "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading +'_'+$('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.FacilityName +'_'+ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}",
+              "error_message": "= Coundn't find bol: {{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading}} in databricks.",
+              "user_id": "={{ $('in data').first().json.user_id}}",
+              "hospital": "N"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "hospital",
+                "displayName": "hospital",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          32,
+          656
+        ],
+        "id": "950c4cd8-5eee-4de7-9ec2-67feea72fed2",
+        "name": "Upsert row(s)"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "YKyhbJ0rt4Qxuf3yuuneC",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/YKyhbJ0rt4Qxuf3yuuneC",
+            "cachedResultName": "Run Databricks SQL"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wait": 10,
+              "wait_time": 60,
+              "warehouse_id": "da7f1770b4ccf374",
+              "catalog": "corp_technology_test",
+              "schema": "db_stage_rms",
+              "statement": "=SELECT * from corp_technology_test.db_stage_rms.shipconfirm_out_json_007_raw_v3 where value like '%{{ $json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading }}%'"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "warehouse_id",
+                "displayName": "warehouse_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "catalog",
+                "displayName": "catalog",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "schema",
+                "displayName": "schema",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "statement",
+                "displayName": "statement",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          -832,
+          560
+        ],
+        "id": "356d7ff4-dfe6-4a7c-8be2-59a6c0dd7f45",
+        "name": "Call 'Run Databricks SQL'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "f3c510ae-c866-426c-ad60-c24f77ff3d83",
+                "leftValue": "={{ $json.result }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              },
+              {
+                "id": "194d3cd8-441b-4a18-8b0a-78481ea644c0",
+                "leftValue": "={{ $json.result }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -240,
+          640
+        ],
+        "id": "673a9a87-bc07-4346-ba21-c1199e1e38ca",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          -624,
+          656
+        ],
+        "id": "6564a48f-1e56-495f-a6ea-621513f192ce",
+        "name": "Databricks query execution fail"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error_message }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          -192,
+          304
+        ],
+        "id": "8f7a4bd3-f47d-4031-b2ca-8b3831a55dc5",
+        "name": "Can not find shipment in databricks",
+        "alwaysOutputData": false,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "0c36ba5b-8971-4189-9510-ed1e4b992ab3",
+                "leftValue": "={{ $json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -624,
+          320
+        ],
+        "id": "3e8ed39b-147a-42e2-a094-da26f7a82c12",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocDatabricks"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          -1456,
+          496
+        ],
+        "id": "73a55734-74ce-46a0-97e5-cecf9ac1575f",
+        "name": "Delete row(s)"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "\nreturn _items[0][\"json\"][\"data\"][\"data\"]"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1456,
+          672
+        ],
+        "id": "6d7baf73-f588-43fd-83a0-d6deae27a62f",
+        "name": "Code in Python (Native)"
+      },
+      {
+        "parameters": {
+          "jsCode": "return {\n  json:{\n    \n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -928,
+          320
+        ],
+        "id": "6dd6c54c-b79e-454c-bf77-0e6b0b975859",
+        "name": "clear input"
+      }
+    ],
+    "connections": {
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Delete row(s)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "clear input",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call 'Run Databricks SQL'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Can not find shipment in databricks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Run Databricks SQL'": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Databricks query execution fail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Upsert row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete row(s)": {
+        "main": [
+          []
+        ]
+      },
+      "Code in Python (Native)": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "clear input": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 947f3f6b",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "947f3f6b-0477-44ae-82ad-ff77531fa8cd",
+  "connections": {
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "clear input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'Run Databricks SQL'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Can not find shipment in databricks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Run Databricks SQL'": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Databricks query execution fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete row(s)": {
+      "main": [
+        []
+      ]
+    },
+    "Code in Python (Native)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "clear input": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-22T10:01:00.213Z",
+  "id": "siS4ZkH4oON7cBxj",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - Allocation - Check Allocation Shipment in Databricks",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data",
+              "type": "object"
+            },
+            {
+              "name": "user_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1728,
+        672
+      ],
+      "id": "52da5c0d-1988-496a-8d4a-e6034b99a37c",
+      "name": "in data"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1072,
+        560
+      ],
+      "id": "3c62d8e8-0698-42c6-9935-2f089d587fa7",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocDatabricks"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "limit": 1001
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -768,
+        320
+      ],
+      "id": "489f7165-996f-4838-90b1-701ea10a94aa",
+      "name": "Get row(s)",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.data = '{\"Message\" : \"All shipment was found in databricks.\"}';\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        480
+      ],
+      "id": "a4ae9c6b-99e9-4700-874a-c578c8122850",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet msg='';\nfor (const item of $input.all()) {\n  msg +='Error message: '+ item.json.error_message+ '\\n '\n\n}\n\nreturn {\n  json:{\n    error_message : msg\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        304
+      ],
+      "id": "c7cc3404-8803-481f-8195-cf9a01ee52fa",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocDatabricks"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading +'_'+$('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.FacilityName +'_'+ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAllocDatabricks",
+            "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading +'_'+$('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.FacilityName +'_'+ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}",
+            "error_message": "= Coundn't find bol: {{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading}} in databricks.",
+            "user_id": "={{ $('in data').first().json.user_id}}",
+            "hospital": "N"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hospital",
+              "displayName": "hospital",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        32,
+        656
+      ],
+      "id": "950c4cd8-5eee-4de7-9ec2-67feea72fed2",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "YKyhbJ0rt4Qxuf3yuuneC",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/YKyhbJ0rt4Qxuf3yuuneC",
+          "cachedResultName": "Run Databricks SQL"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "wait": 10,
+            "wait_time": 60,
+            "warehouse_id": "da7f1770b4ccf374",
+            "catalog": "corp_technology_test",
+            "schema": "db_stage_rms",
+            "statement": "=SELECT * from corp_technology_test.db_stage_rms.shipconfirm_out_json_007_raw_v3 where value like '%{{ $json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading }}%'"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "warehouse_id",
+              "displayName": "warehouse_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "catalog",
+              "displayName": "catalog",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "schema",
+              "displayName": "schema",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "statement",
+              "displayName": "statement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        -832,
+        560
+      ],
+      "id": "356d7ff4-dfe6-4a7c-8be2-59a6c0dd7f45",
+      "name": "Call 'Run Databricks SQL'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f3c510ae-c866-426c-ad60-c24f77ff3d83",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "194d3cd8-441b-4a18-8b0a-78481ea644c0",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -240,
+        640
+      ],
+      "id": "673a9a87-bc07-4346-ba21-c1199e1e38ca",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        656
+      ],
+      "id": "6564a48f-1e56-495f-a6ea-621513f192ce",
+      "name": "Databricks query execution fail"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error_message }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        304
+      ],
+      "id": "8f7a4bd3-f47d-4031-b2ca-8b3831a55dc5",
+      "name": "Can not find shipment in databricks",
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0c36ba5b-8971-4189-9510-ed1e4b992ab3",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -624,
+        320
+      ],
+      "id": "3e8ed39b-147a-42e2-a094-da26f7a82c12",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocDatabricks"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -1456,
+        496
+      ],
+      "id": "73a55734-74ce-46a0-97e5-cecf9ac1575f",
+      "name": "Delete row(s)"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "\nreturn _items[0][\"json\"][\"data\"][\"data\"]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1456,
+        672
+      ],
+      "id": "6d7baf73-f588-43fd-83a0-d6deae27a62f",
+      "name": "Code in Python (Native)"
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json:{\n    \n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -928,
+        320
+      ],
+      "id": "6dd6c54c-b79e-454c-bf77-0e6b0b975859",
+      "name": "clear input"
+    }
+  ],
+  "pinData": {
+    "in data": [
+      {
+        "json": {
+          "data": {
+            "data": [
+              {
+                "tXML": {
+                  "Header": {
+                    "Source": "MANH_wmsprodrf",
+                    "Batch_ID": null
+                  },
+                  "Message": {
+                    "ShipConfirm": {
+                      "ShipConfirmSummary": {
+                        "CompanyName": null,
+                        "FacilityName": "4",
+                        "ShipConfirmHeaderInfo": {
+                          "DestinationFacilityName": "5447 ECOM SHIP CENTER INDY",
+                          "InvcBatchNbr": "2078178",
+                          "LastInvcDttm": "01/22/26 09:20",
+                          "ShippedDttm": "01/22/26 09:20",
+                          "DateCreated": "01/22/26 09:20",
+                          "PartialShipConfirmStatus": "1",
+                          "BillOfLading": "01222026092002250",
+                          "NbrOfLpns": "1",
+                          "TotalWt": "0.0",
+                          "UserID": "WMADMIN"
+                        }
+                      },
+                      "ShipConfirmDetails": {
+                        "Orders": {
+                          "ExtPurchaseOrder": "1024326",
+                          "InvcBatchNbr": "2078178",
+                          "OrderDateDttm": "7/24/25 00:00",
+                          "OrderType": "R",
+                          "ShipDate": "01/22/26 09:20",
+                          "DoStatus": "Shipped",
+                          "PartialShipConfirmStatus": "1",
+                          "OrderDestInfo": {
+                            "DestAddress1": "12050 EAST MCGREGOR ROAD",
+                            "DestAddress2": null,
+                            "DestCity": "INDIANAPOLIS",
+                            "DestCountryCode": "US",
+                            "DestFacilityAliasId": "5447",
+                            "DestFacilityId": "5447"
+                          },
+                          "OrderOriginInfo": {
+                            "OriginAddress1": "12050 E McGregor Rd",
+                            "OriginCity": "Indianapolis",
+                            "OriginFacilityAliasId": "4",
+                            "OriginFacilityName": "SCIN",
+                            "OriginPostalCode": "46259",
+                            "OriginStateProv": "IN"
+                          },
+                          "OrderLineItem": {
+                            "ExtPurchaseOrder": null,
+                            "InvcBatchNbr": "2078178",
+                            "ItemName": "1017896",
+                            "TcOrderLineId": "1017896",
+                            "UserCanceledQty": "0"
+                          },
+                          "Shipment": {
+                            "DestCity": "INDIANAPOLIS",
+                            "DestCountryCode": "US",
+                            "DestFacilityId": "5447",
+                            "DestinationFacilityName": "5447",
+                            "OriginCity": "Indianapolis",
+                            "OriginPostalCode": "46259",
+                            "OriginStateProv": "IN",
+                            "TcShipmentId": "000006261",
+                            "TrailerNumber": null,
+                            "Stop": {
+                              "FacilityAliasId": "5447",
+                              "StopSeq": "2"
+                            }
+                          },
+                          "Lpn": {
+                            "ActualVolume": "780.312",
+                            "EstimatedWeight": "5.1",
+                            "InvcBatchNbr": "2078178",
+                            "ProcDttm": "01/22/26 09:20",
+                            "QtyUom": "EA",
+                            "ShippedDttm": "01/22/26 09:20",
+                            "TcLpnId": "01222026092002250",
+                            "TcParentLpnId": null,
+                            "TcShipmentId": "000006261",
+                            "Weight": "0",
+                            "RefField1": null,
+                            "RefField2": null,
+                            "RefField3": null,
+                            "RefField4": null,
+                            "LpnDetail": {
+                              "InvcBatchNbr": "2078178",
+                              "ItemName": "1017896",
+                              "LpnDetailId": "67780750",
+                              "QtyUom": "EA",
+                              "SizeValue": "1",
+                              "TcLpnId": "01222026092002250",
+                              "TcOrderLineId": "1017896",
+                              "MinorOrderNbr": "10243262022",
+                              "MinorPoNbr": "1024326"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "tXML": {
+                  "Header": {
+                    "Source": "MANH_wmsprodrf",
+                    "Batch_ID": null
+                  },
+                  "Message": {
+                    "ShipConfirm": {
+                      "ShipConfirmSummary": {
+                        "CompanyName": null,
+                        "FacilityName": "4",
+                        "ShipConfirmHeaderInfo": {
+                          "DestinationFacilityName": "6207 ECOM SHIP CENTER INDY",
+                          "InvcBatchNbr": "2078178",
+                          "LastInvcDttm": "01/22/26 09:20",
+                          "ShippedDttm": "01/22/26 09:20",
+                          "DateCreated": "01/22/26 09:20",
+                          "PartialShipConfirmStatus": "1",
+                          "BillOfLading": "01222026092005913",
+                          "NbrOfLpns": "1",
+                          "TotalWt": "0.0",
+                          "UserID": "WMADMIN"
+                        }
+                      },
+                      "ShipConfirmDetails": {
+                        "Orders": {
+                          "ExtPurchaseOrder": "1024326",
+                          "InvcBatchNbr": "2078178",
+                          "OrderDateDttm": "7/24/25 00:00",
+                          "OrderType": "R",
+                          "ShipDate": "01/22/26 09:20",
+                          "DoStatus": "Shipped",
+                          "PartialShipConfirmStatus": "1",
+                          "OrderDestInfo": {
+                            "DestAddress1": "12050 EAST MCGREGOR ROAD",
+                            "DestAddress2": null,
+                            "DestCity": "INDIANAPOLIS",
+                            "DestCountryCode": "US",
+                            "DestFacilityAliasId": "6207",
+                            "DestFacilityId": "6207"
+                          },
+                          "OrderOriginInfo": {
+                            "OriginAddress1": "12050 E McGregor Rd",
+                            "OriginCity": "Indianapolis",
+                            "OriginFacilityAliasId": "4",
+                            "OriginFacilityName": "SCIN",
+                            "OriginPostalCode": "46259",
+                            "OriginStateProv": "IN"
+                          },
+                          "OrderLineItem": {
+                            "ExtPurchaseOrder": null,
+                            "InvcBatchNbr": "2078178",
+                            "ItemName": "1017896",
+                            "TcOrderLineId": "1017896",
+                            "UserCanceledQty": "0"
+                          },
+                          "Shipment": {
+                            "DestCity": "INDIANAPOLIS",
+                            "DestCountryCode": "US",
+                            "DestFacilityId": "6207",
+                            "DestinationFacilityName": "6207",
+                            "OriginCity": "Indianapolis",
+                            "OriginPostalCode": "46259",
+                            "OriginStateProv": "IN",
+                            "TcShipmentId": "000006261",
+                            "TrailerNumber": null,
+                            "Stop": {
+                              "FacilityAliasId": "6207",
+                              "StopSeq": "2"
+                            }
+                          },
+                          "Lpn": {
+                            "ActualVolume": "780.312",
+                            "EstimatedWeight": "5.1",
+                            "InvcBatchNbr": "2078178",
+                            "ProcDttm": "01/22/26 09:20",
+                            "QtyUom": "EA",
+                            "ShippedDttm": "01/22/26 09:20",
+                            "TcLpnId": "01222026092005913",
+                            "TcParentLpnId": null,
+                            "TcShipmentId": "000006261",
+                            "Weight": "0",
+                            "RefField1": null,
+                            "RefField2": null,
+                            "RefField3": null,
+                            "RefField4": null,
+                            "LpnDetail": {
+                              "InvcBatchNbr": "2078178",
+                              "ItemName": "1017896",
+                              "LpnDetailId": "67780750",
+                              "QtyUom": "EA",
+                              "SizeValue": "1",
+                              "TcLpnId": "01222026092005913",
+                              "TcOrderLineId": "1017896",
+                              "MinorOrderNbr": "10243262022",
+                              "MinorPoNbr": "1024326"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "tXML": {
+                  "Header": {
+                    "Source": "MANH_wmsprodrf",
+                    "Batch_ID": null
+                  },
+                  "Message": {
+                    "ShipConfirm": {
+                      "ShipConfirmSummary": {
+                        "CompanyName": null,
+                        "FacilityName": "4",
+                        "ShipConfirmHeaderInfo": {
+                          "DestinationFacilityName": "596 ECOM SHIP CENTER INDY",
+                          "InvcBatchNbr": "2078178",
+                          "LastInvcDttm": "01/22/26 09:20",
+                          "ShippedDttm": "01/22/26 09:20",
+                          "DateCreated": "01/22/26 09:20",
+                          "PartialShipConfirmStatus": "1",
+                          "BillOfLading": "01222026092006646",
+                          "NbrOfLpns": "1",
+                          "TotalWt": "0.0",
+                          "UserID": "WMADMIN"
+                        }
+                      },
+                      "ShipConfirmDetails": {
+                        "Orders": {
+                          "ExtPurchaseOrder": "1024332",
+                          "InvcBatchNbr": "2078178",
+                          "OrderDateDttm": "7/24/25 00:00",
+                          "OrderType": "R",
+                          "ShipDate": "01/22/26 09:20",
+                          "DoStatus": "Shipped",
+                          "PartialShipConfirmStatus": "1",
+                          "OrderDestInfo": {
+                            "DestAddress1": "12050 EAST MCGREGOR ROAD",
+                            "DestAddress2": null,
+                            "DestCity": "INDIANAPOLIS",
+                            "DestCountryCode": "US",
+                            "DestFacilityAliasId": "596",
+                            "DestFacilityId": "596"
+                          },
+                          "OrderOriginInfo": {
+                            "OriginAddress1": "12050 E McGregor Rd",
+                            "OriginCity": "Indianapolis",
+                            "OriginFacilityAliasId": "4",
+                            "OriginFacilityName": "SCIN",
+                            "OriginPostalCode": "46259",
+                            "OriginStateProv": "IN"
+                          },
+                          "OrderLineItem": {
+                            "ExtPurchaseOrder": null,
+                            "InvcBatchNbr": "2078178",
+                            "ItemName": "1017904",
+                            "TcOrderLineId": "1017904",
+                            "UserCanceledQty": "0"
+                          },
+                          "Shipment": {
+                            "DestCity": "INDIANAPOLIS",
+                            "DestCountryCode": "US",
+                            "DestFacilityId": "596",
+                            "DestinationFacilityName": "596",
+                            "OriginCity": "Indianapolis",
+                            "OriginPostalCode": "46259",
+                            "OriginStateProv": "IN",
+                            "TcShipmentId": "000006261",
+                            "TrailerNumber": null,
+                            "Stop": {
+                              "FacilityAliasId": "596",
+                              "StopSeq": "2"
+                            }
+                          },
+                          "Lpn": {
+                            "ActualVolume": "780.312",
+                            "EstimatedWeight": "5.1",
+                            "InvcBatchNbr": "2078178",
+                            "ProcDttm": "01/22/26 09:20",
+                            "QtyUom": "EA",
+                            "ShippedDttm": "01/22/26 09:20",
+                            "TcLpnId": "01222026092006646",
+                            "TcParentLpnId": null,
+                            "TcShipmentId": "000006261",
+                            "Weight": "0",
+                            "RefField1": null,
+                            "RefField2": null,
+                            "RefField3": null,
+                            "RefField4": null,
+                            "LpnDetail": {
+                              "InvcBatchNbr": "2078178",
+                              "ItemName": "1017904",
+                              "LpnDetailId": "67780750",
+                              "QtyUom": "EA",
+                              "SizeValue": "1",
+                              "TcLpnId": "01222026092006646",
+                              "TcOrderLineId": "1017904",
+                              "MinorOrderNbr": "10243322022",
+                              "MinorPoNbr": "1024332"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "user_id": "62a17d6f-9dec-4fb8-8784-268462326ad5"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 10800,
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-22T10:01:00.213Z",
+      "createdAt": "2026-01-22T10:01:00.213Z",
+      "role": "workflow:owner",
+      "workflowId": "siS4ZkH4oON7cBxj",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:44:41.595Z",
+  "versionId": "947f3f6b-0477-44ae-82ad-ff77531fa8cd"
+}
