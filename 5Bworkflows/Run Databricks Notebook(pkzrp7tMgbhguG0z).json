@@ -1,0 +1,693 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T10:02:42.215Z",
+    "createdAt": "2026-01-28T10:02:40.007Z",
+    "versionId": "60672ccb-939b-4ec9-b60c-929c4b71c743",
+    "workflowId": "pkzrp7tMgbhguG0z",
+    "nodes": [
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://adb-8355844096453102.2.azuredatabricks.net/api/2.2/jobs/runs/submit",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "=\n{\n  \"run_name\": \"{{ $json.run_name }}\",\n  \"existing_cluster_id\": \"{{ $json.cluster_id }}\",\n  \"notebook_task\": {\n    \"notebook_path\": \"{{ $json.notebook_path }}\",\n    \"base_parameters\":{{ $json.base_parameters }}\n  }\n}\n\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          512,
+          -64
+        ],
+        "id": "12293052-9171-4b77-9aa6-d0813a023562",
+        "name": "DataBricksQuery",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "U4l7Fp6PXpz4iCRN",
+            "name": "Databricks credential"
+          },
+          "httpBearerAuth": {
+            "id": "OadHk8Vf8pdAuY9b",
+            "name": "Bearer Auth Databricks"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "\nreturn _items[0][\"json\"]"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1472,
+          256
+        ],
+        "id": "d874b1d8-be97-472d-9082-11fc852e6c68",
+        "name": "Code in Python (Native)"
+      },
+      {
+        "parameters": {
+          "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+        },
+        "id": "28801a4e-ba55-485e-8408-4823229cd4a7",
+        "name": "count",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1552,
+          -64
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                },
+                "leftValue": "={{ $json.count }}",
+                "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "0c1acbd4-ad31-4ec2-a148-c521d52f62ff",
+        "name": "If count > wait_time",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          1728,
+          -64
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "executeOnce": false,
+          "command": "=ping -c {{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 10 }} 127.0.0.1 > /dev/null 2>&1"
+        },
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          896,
+          -96
+        ],
+        "id": "55b912b9-a7c6-4728-b27d-905000e66179",
+        "name": "Wait"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "run_name"
+              },
+              {
+                "name": "cluster_id"
+              },
+              {
+                "name": "notebook_path"
+              },
+              {
+                "name": "base_parameters"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          352,
+          -64
+        ],
+        "id": "d3ab0577-a18c-4c46-82e0-dc5e28b492dd",
+        "name": "in data"
+      },
+      {
+        "parameters": {
+          "url": "=https://adb-8355844096453102.2.azuredatabricks.net/api/2.2/jobs/runs/get?run_id={{ $('DataBricksQuery').item.json.run_id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          1056,
+          -96
+        ],
+        "id": "44b3356d-4cc3-4108-ac06-3ce4aaac484e",
+        "name": "DataBricksQuery2",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "U4l7Fp6PXpz4iCRN",
+            "name": "Databricks credential"
+          },
+          "httpBearerAuth": {
+            "id": "OadHk8Vf8pdAuY9b",
+            "name": "Bearer Auth Databricks"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "8eb993d4-2ac0-4246-9687-9c40939428fe",
+                "leftValue": "={{ $json.state.life_cycle_state }}",
+                "rightValue": "TERMINATED",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              },
+              {
+                "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+                "leftValue": "={{ $json.state.result_state }}",
+                "rightValue": "=SUCCESS",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1232,
+          -96
+        ],
+        "id": "19ed7b90-efc8-4d8f-891f-fe4f06ec5498",
+        "name": "If2"
+      },
+      {
+        "parameters": {
+          "errorMessage": "databricks notebook run wait too long"
+        },
+        "id": "3b821581-5913-458f-afa2-fa7ad7a6e19b",
+        "name": "databricks notebook run wait too long",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          2016,
+          0
+        ],
+        "typeVersion": 1
+      }
+    ],
+    "connections": {
+      "DataBricksQuery": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "count": {
+        "main": [
+          [
+            {
+              "node": "If count > wait_time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If count > wait_time": {
+        "main": [
+          [
+            {
+              "node": "databricks notebook run wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "DataBricksQuery2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "DataBricksQuery",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DataBricksQuery2": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 60672ccb",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "60672ccb-939b-4ec9-b60c-929c4b71c743",
+  "connections": {
+    "DataBricksQuery": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "count": {
+      "main": [
+        [
+          {
+            "node": "If count > wait_time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If count > wait_time": {
+      "main": [
+        [
+          {
+            "node": "databricks notebook run wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "DataBricksQuery2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "DataBricksQuery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DataBricksQuery2": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-28T09:23:08.738Z",
+  "id": "pkzrp7tMgbhguG0z",
+  "isArchived": false,
+  "meta": null,
+  "name": "Run Databricks Notebook",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://adb-8355844096453102.2.azuredatabricks.net/api/2.2/jobs/runs/submit",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"run_name\": \"{{ $json.run_name }}\",\n  \"existing_cluster_id\": \"{{ $json.cluster_id }}\",\n  \"notebook_task\": {\n    \"notebook_path\": \"{{ $json.notebook_path }}\",\n    \"base_parameters\":{{ $json.base_parameters }}\n  }\n}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        512,
+        -64
+      ],
+      "id": "12293052-9171-4b77-9aa6-d0813a023562",
+      "name": "DataBricksQuery",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "U4l7Fp6PXpz4iCRN",
+          "name": "Databricks credential"
+        },
+        "httpBearerAuth": {
+          "id": "OadHk8Vf8pdAuY9b",
+          "name": "Bearer Auth Databricks"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "\nreturn _items[0][\"json\"]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        256
+      ],
+      "id": "d874b1d8-be97-472d-9082-11fc852e6c68",
+      "name": "Code in Python (Native)"
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+      },
+      "id": "28801a4e-ba55-485e-8408-4823229cd4a7",
+      "name": "count",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1552,
+        -64
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.count }}",
+              "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0c1acbd4-ad31-4ec2-a148-c521d52f62ff",
+      "name": "If count > wait_time",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1728,
+        -64
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "executeOnce": false,
+        "command": "=ping -c {{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 10 }} 127.0.0.1 > /dev/null 2>&1"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "55b912b9-a7c6-4728-b27d-905000e66179",
+      "name": "Wait"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "run_name"
+            },
+            {
+              "name": "cluster_id"
+            },
+            {
+              "name": "notebook_path"
+            },
+            {
+              "name": "base_parameters"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        -64
+      ],
+      "id": "d3ab0577-a18c-4c46-82e0-dc5e28b492dd",
+      "name": "in data"
+    },
+    {
+      "parameters": {
+        "url": "=https://adb-8355844096453102.2.azuredatabricks.net/api/2.2/jobs/runs/get?run_id={{ $('DataBricksQuery').item.json.run_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1056,
+        -96
+      ],
+      "id": "44b3356d-4cc3-4108-ac06-3ce4aaac484e",
+      "name": "DataBricksQuery2",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "U4l7Fp6PXpz4iCRN",
+          "name": "Databricks credential"
+        },
+        "httpBearerAuth": {
+          "id": "OadHk8Vf8pdAuY9b",
+          "name": "Bearer Auth Databricks"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8eb993d4-2ac0-4246-9687-9c40939428fe",
+              "leftValue": "={{ $json.state.life_cycle_state }}",
+              "rightValue": "TERMINATED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+              "leftValue": "={{ $json.state.result_state }}",
+              "rightValue": "=SUCCESS",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1232,
+        -96
+      ],
+      "id": "19ed7b90-efc8-4d8f-891f-fe4f06ec5498",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "errorMessage": "databricks notebook run wait too long"
+      },
+      "id": "3b821581-5913-458f-afa2-fa7ad7a6e19b",
+      "name": "databricks notebook run wait too long",
+      "type": "n8n-nodes-base.stopAndError",
+      "position": [
+        2016,
+        0
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {
+    "in data": [
+      {
+        "json": {
+          "run_name": "Oracle_RDS_Replication_API_Run",
+          "cluster_id": "1121-082127-c9ls3qfz",
+          "notebook_path": "/BUY/modules/Oracle_RDS_Replication",
+          "base_parameters": "{\"replication_id\": \"SHIPMENT_INCREMENTAL\"}",
+          "wait": 10,
+          "wait_time": 60
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T09:23:08.738Z",
+      "createdAt": "2026-01-28T09:23:08.738Z",
+      "role": "workflow:owner",
+      "workflowId": "pkzrp7tMgbhguG0z",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:47.106Z",
+      "createdAt": "2026-01-28T08:40:47.106Z",
+      "id": "NN19Km37JJKZjXr6",
+      "name": "Common"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T10:02:40.005Z",
+  "versionId": "60672ccb-939b-4ec9-b60c-929c4b71c743"
+}
