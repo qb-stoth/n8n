@@ -1,0 +1,1034 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-23T12:36:44.868Z",
+    "createdAt": "2026-01-23T12:36:41.688Z",
+    "versionId": "3ee9337b-b17e-4bc8-ac92-5ad838356d57",
+    "workflowId": "puq5n4bzX7gsRBT9",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              },
+              {
+                "name": "data",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -624,
+          -16
+        ],
+        "id": "46337af5-b92b-48a0-bed2-99cc826d79de",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -112,
+          -16
+        ],
+        "id": "4c4842e4-5b17-4d60-b54b-1774745a1832",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "d9ozshsHd2v1Itkl",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/d9ozshsHd2v1Itkl",
+            "cachedResultName": "Upload to Kafka topic"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $json.toJsonString() }}",
+              "topicName": "sell_sim_mao_relay_alloc_receipt_nrt_multipart"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "topicName",
+                "displayName": "topicName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          112,
+          32
+        ],
+        "id": "4ad9fe52-c229-45b5-97ea-e444ad9ddc3e",
+        "name": "Call 'Upload to Kafka topic'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload Allocation Receipt to KAFKA topic!\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          320,
+          32
+        ],
+        "id": "beb7e6e5-dccf-4dac-86e0-bc6625ca099f",
+        "name": "Stop and Error"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\n\nreturn {\"Message\" : \"All payload was uploaded successfully to KAFKA.\"}\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          96,
+          -112
+        ],
+        "id": "9b78466d-8a62-4d94-8a78-1e97b8e9f4a0",
+        "name": "Return"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          -16
+        ],
+        "id": "d5f9116e-f603-4deb-8b72-2221ec3fecb4",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "\nreturn _items[0][\"json\"][\"data\"]"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -416,
+          -16
+        ],
+        "id": "fe29fe35-db9e-4feb-ab5c-2736ca455c1b",
+        "name": "Code in Python (Native)"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "Return",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call 'Upload to Kafka topic'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Upload to Kafka topic'": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in Python (Native)": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 3ee9337b",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "3ee9337b-b17e-4bc8-ac92-5ad838356d57",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'Upload to Kafka topic'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Upload to Kafka topic'": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Native)": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T11:24:53.402Z",
+  "id": "puq5n4bzX7gsRBT9",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - Allocation - Upload Receipt Payloads to Kafka",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "data",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -624,
+        -16
+      ],
+      "id": "46337af5-b92b-48a0-bed2-99cc826d79de",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "4c4842e4-5b17-4d60-b54b-1774745a1832",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "d9ozshsHd2v1Itkl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/d9ozshsHd2v1Itkl",
+          "cachedResultName": "Upload to Kafka topic"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.toJsonString() }}",
+            "topicName": "sell_sim_mao_relay_alloc_receipt_nrt_multipart"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topicName",
+              "displayName": "topicName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        32
+      ],
+      "id": "4ad9fe52-c229-45b5-97ea-e444ad9ddc3e",
+      "name": "Call 'Upload to Kafka topic'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload Allocation Receipt to KAFKA topic!\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        320,
+        32
+      ],
+      "id": "beb7e6e5-dccf-4dac-86e0-bc6625ca099f",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\n\nreturn {\"Message\" : \"All payload was uploaded successfully to KAFKA.\"}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        -112
+      ],
+      "id": "9b78466d-8a62-4d94-8a78-1e97b8e9f4a0",
+      "name": "Return"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -16
+      ],
+      "id": "d5f9116e-f603-4deb-8b72-2221ec3fecb4",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "\nreturn _items[0][\"json\"][\"data\"]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        -16
+      ],
+      "id": "fe29fe35-db9e-4feb-ab5c-2736ca455c1b",
+      "name": "Code in Python (Native)"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "user_id": "62a17d6f-9dec-4fb8-8784-268462326ad5",
+          "data": {
+            "data": [
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "2026-01-23T12:07:15.937",
+                      "InventoryTransactionType": "Receipt",
+                      "InventoryTransactionId": "01232026042653522:01232026042653522",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "1017904",
+                        "LocationId": "826",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": "1",
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 0
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "2026-01-23T12:07:15.937",
+                      "InventoryTransactionType": "Receipt",
+                      "InventoryTransactionId": "01232026042653522:01232026042653522",
+                      "SupplyDefinition": {
+                        "hashId": "55b1cbde507fe6c82bbc1442871d34cb",
+                        "ItemId": "1017904",
+                        "LocationId": "826",
+                        "OriginLocationId": "4",
+                        "ReferenceTypeId": "ASN",
+                        "ParentReferenceTypeId": "PO",
+                        "ReferenceId": "01232026042653522",
+                        "ParentReferenceId": "1024332",
+                        "ReferenceDetailId": "1017904",
+                        "ParentReferenceDetailId": "1017904",
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "In Transit"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 0,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 2
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": "fivebelow",
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": null,
+                      "LocationId": "826",
+                      "ReferenceTypeId": "ASN",
+                      "ReferenceDetailId": "1017904",
+                      "RelaySupplyHash": null,
+                      "ItemId": "1017904",
+                      "SupplyAttributes": {
+                        "InvAttribute5": null,
+                        "InvAttribute4": null,
+                        "CountryofOrigin": null,
+                        "InvAttribute3": null,
+                        "BatchNumber": null,
+                        "InventoryType": null,
+                        "ProductStatus": null,
+                        "InvAttribute2": null,
+                        "InvAttribute1": null
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 2,
+                        "Quantity": 2,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": null
+                      },
+                      "ParentReferenceId": "01232026042653522",
+                      "OriginLocationId": "4",
+                      "ReferenceId": "01232026042653522",
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": null,
+                        "SupplyTypeId": null,
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": null,
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": "PO",
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "PackageId",
+                          "AttributeValue": "01232026042653522"
+                        },
+                        {
+                          "AttributeName": "OrderId",
+                          "AttributeValue": null
+                        },
+                        {
+                          "AttributeName": "OrderLineId",
+                          "AttributeValue": "1024332"
+                        },
+                        {
+                          "AttributeName": "FulfillmentId",
+                          "AttributeValue": "01232026042653522"
+                        },
+                        {
+                          "AttributeName": "FulfillmentLineId",
+                          "AttributeValue": "01232026042653522-174935470-5"
+                        },
+                        {
+                          "AttributeName": "ReleaseId",
+                          "AttributeValue": "01232026042653522"
+                        },
+                        {
+                          "AttributeName": "ReleaseLineId",
+                          "AttributeValue": null
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": "Receipt",
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Receipt",
+                    "InventoryTransactionId": "01232026042653522:01232026042653522",
+                    "LastTransDate": "2026-01-23T12:07:15.937",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "2026-01-23T12:07:19.555",
+                      "InventoryTransactionType": "Receipt",
+                      "InventoryTransactionId": "01232026042649835:01232026042649835",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "1017904",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": "1",
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 0
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "2026-01-23T12:07:19.555",
+                      "InventoryTransactionType": "Receipt",
+                      "InventoryTransactionId": "01232026042649835:01232026042649835",
+                      "SupplyDefinition": {
+                        "hashId": "55b1cbde507fe6c82bbc1442871d34cb",
+                        "ItemId": "1017904",
+                        "LocationId": "597",
+                        "OriginLocationId": "4",
+                        "ReferenceTypeId": "ASN",
+                        "ParentReferenceTypeId": "PO",
+                        "ReferenceId": "01232026042649835",
+                        "ParentReferenceId": "1024332",
+                        "ReferenceDetailId": "1017904",
+                        "ParentReferenceDetailId": "1017904",
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "In Transit"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 0,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 2
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": "fivebelow",
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": null,
+                      "LocationId": "597",
+                      "ReferenceTypeId": "ASN",
+                      "ReferenceDetailId": "1017904",
+                      "RelaySupplyHash": null,
+                      "ItemId": "1017904",
+                      "SupplyAttributes": {
+                        "InvAttribute5": null,
+                        "InvAttribute4": null,
+                        "CountryofOrigin": null,
+                        "InvAttribute3": null,
+                        "BatchNumber": null,
+                        "InventoryType": null,
+                        "ProductStatus": null,
+                        "InvAttribute2": null,
+                        "InvAttribute1": null
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 2,
+                        "Quantity": 2,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": null
+                      },
+                      "ParentReferenceId": "01232026042649835",
+                      "OriginLocationId": "4",
+                      "ReferenceId": "01232026042649835",
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": null,
+                        "SupplyTypeId": null,
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": null,
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": "PO",
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "PackageId",
+                          "AttributeValue": "01232026042649835"
+                        },
+                        {
+                          "AttributeName": "OrderId",
+                          "AttributeValue": null
+                        },
+                        {
+                          "AttributeName": "OrderLineId",
+                          "AttributeValue": "1024332"
+                        },
+                        {
+                          "AttributeName": "FulfillmentId",
+                          "AttributeValue": "01232026042649835"
+                        },
+                        {
+                          "AttributeName": "FulfillmentLineId",
+                          "AttributeValue": "01232026042649835-174935470-5"
+                        },
+                        {
+                          "AttributeName": "ReleaseId",
+                          "AttributeValue": "01232026042649835"
+                        },
+                        {
+                          "AttributeName": "ReleaseLineId",
+                          "AttributeValue": null
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": "Receipt",
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Receipt",
+                    "InventoryTransactionId": "01232026042649835:01232026042649835",
+                    "LastTransDate": "2026-01-23T12:07:19.555",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "2026-01-23T12:07:20.269",
+                      "InventoryTransactionType": "Receipt",
+                      "InventoryTransactionId": "01232026042654253:01232026042654253",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "1017904",
+                        "LocationId": "897",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": "1",
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 0
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "2026-01-23T12:07:20.269",
+                      "InventoryTransactionType": "Receipt",
+                      "InventoryTransactionId": "01232026042654253:01232026042654253",
+                      "SupplyDefinition": {
+                        "hashId": "55b1cbde507fe6c82bbc1442871d34cb",
+                        "ItemId": "1017904",
+                        "LocationId": "897",
+                        "OriginLocationId": "4",
+                        "ReferenceTypeId": "ASN",
+                        "ParentReferenceTypeId": "PO",
+                        "ReferenceId": "01232026042654253",
+                        "ParentReferenceId": "1024332",
+                        "ReferenceDetailId": "1017904",
+                        "ParentReferenceDetailId": "1017904",
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "In Transit"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 0,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 2
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": "fivebelow",
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": null,
+                      "LocationId": "897",
+                      "ReferenceTypeId": "ASN",
+                      "ReferenceDetailId": "1017904",
+                      "RelaySupplyHash": null,
+                      "ItemId": "1017904",
+                      "SupplyAttributes": {
+                        "InvAttribute5": null,
+                        "InvAttribute4": null,
+                        "CountryofOrigin": null,
+                        "InvAttribute3": null,
+                        "BatchNumber": null,
+                        "InventoryType": null,
+                        "ProductStatus": null,
+                        "InvAttribute2": null,
+                        "InvAttribute1": null
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 2,
+                        "Quantity": 2,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": null
+                      },
+                      "ParentReferenceId": "01232026042654253",
+                      "OriginLocationId": "4",
+                      "ReferenceId": "01232026042654253",
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": null,
+                        "SupplyTypeId": null,
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": null,
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": "PO",
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "PackageId",
+                          "AttributeValue": "01232026042654253"
+                        },
+                        {
+                          "AttributeName": "OrderId",
+                          "AttributeValue": null
+                        },
+                        {
+                          "AttributeName": "OrderLineId",
+                          "AttributeValue": "1024332"
+                        },
+                        {
+                          "AttributeName": "FulfillmentId",
+                          "AttributeValue": "01232026042654253"
+                        },
+                        {
+                          "AttributeName": "FulfillmentLineId",
+                          "AttributeValue": "01232026042654253-174935470-5"
+                        },
+                        {
+                          "AttributeName": "ReleaseId",
+                          "AttributeValue": "01232026042654253"
+                        },
+                        {
+                          "AttributeName": "ReleaseLineId",
+                          "AttributeValue": null
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": "Receipt",
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Receipt",
+                    "InventoryTransactionId": "01232026042654253:01232026042654253",
+                    "LastTransDate": "2026-01-23T12:07:20.269",
+                    "ResetError": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-23T11:24:53.402Z",
+      "createdAt": "2026-01-23T11:24:53.402Z",
+      "role": "workflow:owner",
+      "workflowId": "puq5n4bzX7gsRBT9",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:43:52.100Z",
+  "versionId": "3ee9337b-b17e-4bc8-ac92-5ad838356d57"
+}
