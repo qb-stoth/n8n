@@ -1,0 +1,2518 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T08:17:40.933Z",
+    "createdAt": "2026-01-28T08:17:38.698Z",
+    "versionId": "b1291726-9403-42f6-8b0c-aa4a1b847dc6",
+    "workflowId": "oMR3po0crNMbyJXN",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**** ",
+          "height": 624,
+          "width": 256,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -96,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "ec111359-3a86-4ba2-8db8-ffd6c94b9898",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -16,
+          272
+        ],
+        "id": "ee496d25-be63-4bb4-8cfc-e905a25f2e4d",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "content": "## Payload generation \n**Create JSON file for allocation shipment**",
+          "height": 624,
+          "width": 592
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          192,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "0f1584d9-2336-4790-973a-50a401ec0a77",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "vDqo3Lwl8I7cG0P1vFbIW",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/vDqo3Lwl8I7cG0P1vFbIW",
+            "cachedResultName": "SBFL - Allocation - Upload Payloads to Kafka"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "data": "={{ $json }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          848,
+          192
+        ],
+        "id": "47794d49-b807-4c79-9c2f-a3c3ebb1754a",
+        "name": "Call 'SBFL - Allocation - Upload Payloads to Kafka'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "w1tHRoLY57jNiy3V",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+            "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wait": 60,
+              "wait_time": 285,
+              "dag_run_id": "rms_wmos_shipments_optimized_every4hours"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dag_run_id",
+                "displayName": "dag_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1072,
+          192
+        ],
+        "id": "9b758c10-2182-4473-8477-580808f01589",
+        "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1072,
+          432
+        ],
+        "id": "f82845e2-f17c-4fa8-a4cc-a61201c19b2a",
+        "name": "DAG Run failed or wait too long",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## Run DAG in Airflow\n**rms_wmos_shipments_optimized_every4hours** ",
+          "height": 624,
+          "width": 224,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1008,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "c61475ca-1362-49ca-886e-9abf37810de3",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload tXML Shipment payloads to KAFKA topic.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          848,
+          432
+        ],
+        "id": "af4a711c-187f-4146-b261-740330ac0e15",
+        "name": "Failed to upload payloads to KAFKA topic",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## Check Shipment in Databricks\n**REST API\nshipconfirm_out_json_007_raw_v3** ",
+          "height": 624,
+          "width": 224,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1232,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "3df1bdfc-3bc9-4542-8e0a-fc0f12bfe990",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "content": "## Upload Payloads to KAFKA topic \n**shipconfirm_out_json_007**",
+          "height": 624,
+          "width": 224,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          784,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "ed78a60e-0881-451e-bec8-471fd6cb5e0c",
+        "name": "Sticky Note4"
+      },
+      {
+        "parameters": {
+          "content": "## Check Shipment in MFCS \n**REST API** ",
+          "height": 624,
+          "width": 224
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1456,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "9eb2a19d-84bc-4096-8567-3f1d3ae26e1c",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+          "options": {
+            "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. "
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1760,
+          176
+        ],
+        "id": "6c8e9f80-04c0-4c75-8f1b-08225e2299d0",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          1760,
+          320
+        ],
+        "id": "a04af7dd-c18e-4866-81c7-5aea16c1988b",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "FIpUb1C3cbh8qN71",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## Result evaluation with AI \n",
+          "height": 624,
+          "width": 1136,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1680,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "a53abdf8-d056-4149-9502-fae4a546da6d",
+        "name": "Sticky Note5"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Failed to generate JSON for Allocation cancellation').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Cancel Allocation\\\" node: \\n \"+$('Failed to generate JSON for Allocation cancellation').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancel message in Databricks').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Can not find Allocation Cancel message in Databricks').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancellation in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Can not find Allocation Cancellation in MFCS').item.json.error.toJsonString(),\"\") }}",
+          "options": {
+            "systemMessage": "Use the incoming errors to create a summary from all nodes."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1760,
+          432
+        ],
+        "id": "7aa21247-3976-48aa-b831-7ef1e3490133",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "output_message": "={{ $('AI Agent').item.json.output }}",
+              "status": "success",
+              "workflow_id": "={{ $workflow.id }}",
+              "data_1": "={{ $('Merge').item.json.data.toJsonString() }}",
+              "data_2": "={{ $('AI Agent2').item.json.output }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2576,
+          176
+        ],
+        "id": "e1ead844-35ac-4c55-9b9a-8ec8cc3f1059",
+        "name": "Insert row"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "workflow_id": "={{ $workflow.id }}",
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "status": "error",
+              "output_message": "={{ $('AI Agent1').item.json.output }}",
+              "data_1": "={{ $('Merge').item.json.data.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2176,
+          432
+        ],
+        "id": "76e5e376-3c70-4e3e-8d4f-9337bbd0b21a",
+        "name": "Insert row1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
+                "leftValue": "={{ $('Merge').isExecuted }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          2016,
+          432
+        ],
+        "id": "7fd7e869-665f-458f-b7d8-4602c8dc1952",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2032,
+          176
+        ],
+        "id": "ed9dd8ee-f089-4aed-8414-594609a006fa",
+        "name": "Get row(s)"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+          "options": {
+            "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"ExtPurchaseOrder\" and \"alloc_no\" fields to compare the 2 results. If found matched results than compare \"OrderLineItem.UserCanceledQty\" to \"qty_cancelled\". Put the following additional columns in the table: wh, item, to_loc "
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          2288,
+          176
+        ],
+        "id": "11f68937-dc77-439a-a2fb-c7217b011859",
+        "name": "AI Agent2"
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "message_data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          2160,
+          176
+        ],
+        "id": "ff67dcaa-a51e-4364-9a2e-d89989c94f61",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "jsCode": "  try {\n     if(!!$input.first().json.binary.data_0.data && $input.first().json.binary.data_0.data !== undefined && $input.first().json.binary.data_0.data !== null ){ \n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data_0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data_0.mimeType,\n                    fileExtension: $input.first().json.binary.data_0.fileExtension,\n                    fileName: $input.first().json.binary.data_0.fileName,\n                    fileSize: $input.first().json.binary.data_0.fileSize,\n                    id: $input.first().json.binary.data_0.id,\n                  },\n                },\n              },\n            ];\n    }\n    } catch (e) {\n     try {\n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data0.mimeType,\n                    fileExtension: $input.first().json.binary.data0.fileExtension,\n                    fileName: $input.first().json.binary.data0.fileName,\n                    fileSize: $input.first().json.binary.data0.fileSize,\n                    id: $input.first().json.binary.data0.id,\n                  },\n                },\n              },\n            ];\n       } catch (e) {\n       return $input.all();\n       }\n    }\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          192
+        ],
+        "id": "e3ed64ac-deb8-4257-a58e-3fdfda3ce3fa",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "a27b7f25-818b-420b-a41e-cec969382aa1",
+                "leftValue": "={{ $binary.data }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          256,
+          448
+        ],
+        "id": "f3ff01b3-a337-4b72-baa5-c58460cfc393",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "operation": "fromJson",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          432,
+          112
+        ],
+        "id": "70051cf8-779f-4ee8-8f48-f8cd7325c8e0",
+        "name": "Extract from File"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          624,
+          192
+        ],
+        "id": "19b52133-01a0-4982-b0a5-65270280b2cb",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "yZXnWrSk7COGePGc",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/yZXnWrSk7COGePGc",
+            "cachedResultName": "SBFL - Allocation - Generate Cancel Allocation"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $json.userid }}"
+            },
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          432,
+          272
+        ],
+        "id": "b522ae39-3b4a-4bc4-ac28-da29142ad882",
+        "name": "Call 'SBFL - Allocation - Generate Cancel Allocation'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "lInz5M5lx4b0uNNB",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/lInz5M5lx4b0uNNB",
+            "cachedResultName": "SBFL - Allocation - Check Allocation Cancellation in Databricks"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $('Merge').item.json }}",
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object"
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1296,
+          192
+        ],
+        "id": "5d787221-adae-437c-bca3-e339d580512e",
+        "name": "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "W0VCmg7lJ6ZFSaNY",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/W0VCmg7lJ6ZFSaNY",
+            "cachedResultName": "SBFL - Allocation - Check Allocation Cancellation in MFCS"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $('Merge').item.json }}",
+              "wait": 60,
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "wait_time": 10
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1520,
+          192
+        ],
+        "id": "ee949b8a-9edc-465a-bcd5-0c0f4f51599b",
+        "name": "Call 'SBFL - Allocation - Check Allocation Cancellation in MFCS'",
+        "alwaysOutputData": false,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to generate JSON for Allocation cancellation.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          624,
+          432
+        ],
+        "id": "64f4013c-e262-4342-808f-24b835e7e1c5",
+        "name": "Failed to generate JSON for Allocation cancellation",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find Allocation Cancel message in Databricks.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1296,
+          432
+        ],
+        "id": "be75ff8b-e035-4f8f-b77e-65cf7f426cf1",
+        "name": "Can not find Allocation Cancel message in Databricks",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find Allocation Cancellation in MFCS.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1520,
+          432
+        ],
+        "id": "c8d04e9d-49c3-4025-90cf-c8763b39b285",
+        "name": "Can not find Allocation Cancellation in MFCS",
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Upload Payloads to Kafka'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to upload payloads to KAFKA topic",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "DAG Run failed or wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DAG Run failed or wait too long": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Failed to upload payloads to KAFKA topic": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent2",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Insert row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent2": {
+        "main": [
+          [
+            {
+              "node": "Insert row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "AI Agent2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Generate Cancel Allocation'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Upload Payloads to Kafka'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Generate Cancel Allocation'": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ],
+          [
+            {
+              "node": "Failed to generate JSON for Allocation cancellation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Check Allocation Cancellation in MFCS'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Can not find Allocation Cancel message in Databricks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Check Allocation Cancellation in MFCS'": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Can not find Allocation Cancellation in MFCS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Failed to generate JSON for Allocation cancellation": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Can not find Allocation Cancel message in Databricks": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Can not find Allocation Cancellation in MFCS": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version b1291726",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "b1291726-9403-42f6-8b0c-aa4a1b847dc6",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Upload Payloads to Kafka'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to upload payloads to KAFKA topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DAG Run failed or wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DAG Run failed or wait too long": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed to upload payloads to KAFKA topic": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Generate Cancel Allocation'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Upload Payloads to Kafka'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Generate Cancel Allocation'": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Failed to generate JSON for Allocation cancellation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Check Allocation Cancellation in MFCS'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Can not find Allocation Cancel message in Databricks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Check Allocation Cancellation in MFCS'": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Can not find Allocation Cancellation in MFCS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed to generate JSON for Allocation cancellation": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can not find Allocation Cancel message in Databricks": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can not find Allocation Cancellation in MFCS": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-27T07:47:46.405Z",
+  "id": "oMR3po0crNMbyJXN",
+  "isArchived": false,
+  "meta": null,
+  "name": "5B - Test case - Allocation - Cancel Allocation",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**** ",
+        "height": 624,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "ec111359-3a86-4ba2-8db8-ffd6c94b9898",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        272
+      ],
+      "id": "ee496d25-be63-4bb4-8cfc-e905a25f2e4d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "## Payload generation \n**Create JSON file for allocation shipment**",
+        "height": 624,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "0f1584d9-2336-4790-973a-50a401ec0a77",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "vDqo3Lwl8I7cG0P1vFbIW",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/vDqo3Lwl8I7cG0P1vFbIW",
+          "cachedResultName": "SBFL - Allocation - Upload Payloads to Kafka"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "data": "={{ $json }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        192
+      ],
+      "id": "47794d49-b807-4c79-9c2f-a3c3ebb1754a",
+      "name": "Call 'SBFL - Allocation - Upload Payloads to Kafka'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "w1tHRoLY57jNiy3V",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "wait": 60,
+            "wait_time": 285,
+            "dag_run_id": "rms_wmos_shipments_optimized_every4hours"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dag_run_id",
+              "displayName": "dag_run_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        192
+      ],
+      "id": "9b758c10-2182-4473-8477-580808f01589",
+      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        432
+      ],
+      "id": "f82845e2-f17c-4fa8-a4cc-a61201c19b2a",
+      "name": "DAG Run failed or wait too long",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Run DAG in Airflow\n**rms_wmos_shipments_optimized_every4hours** ",
+        "height": 624,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "c61475ca-1362-49ca-886e-9abf37810de3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload tXML Shipment payloads to KAFKA topic.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        848,
+        432
+      ],
+      "id": "af4a711c-187f-4146-b261-740330ac0e15",
+      "name": "Failed to upload payloads to KAFKA topic",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Check Shipment in Databricks\n**REST API\nshipconfirm_out_json_007_raw_v3** ",
+        "height": 624,
+        "width": 224,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1232,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "3df1bdfc-3bc9-4542-8e0a-fc0f12bfe990",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Payloads to KAFKA topic \n**shipconfirm_out_json_007**",
+        "height": 624,
+        "width": 224,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "ed78a60e-0881-451e-bec8-471fd6cb5e0c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Check Shipment in MFCS \n**REST API** ",
+        "height": 624,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1456,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "9eb2a19d-84bc-4096-8567-3f1d3ae26e1c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+        "options": {
+          "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1760,
+        176
+      ],
+      "id": "6c8e9f80-04c0-4c75-8f1b-08225e2299d0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        320
+      ],
+      "id": "a04af7dd-c18e-4866-81c7-5aea16c1988b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FIpUb1C3cbh8qN71",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Result evaluation with AI \n",
+        "height": 624,
+        "width": 1136,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "a53abdf8-d056-4149-9502-fae4a546da6d",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Failed to generate JSON for Allocation cancellation').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Cancel Allocation\\\" node: \\n \"+$('Failed to generate JSON for Allocation cancellation').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancel message in Databricks').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Can not find Allocation Cancel message in Databricks').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancellation in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Can not find Allocation Cancellation in MFCS').item.json.error.toJsonString(),\"\") }}",
+        "options": {
+          "systemMessage": "Use the incoming errors to create a summary from all nodes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1760,
+        432
+      ],
+      "id": "7aa21247-3976-48aa-b831-7ef1e3490133",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "output_message": "={{ $('AI Agent').item.json.output }}",
+            "status": "success",
+            "workflow_id": "={{ $workflow.id }}",
+            "data_1": "={{ $('Merge').item.json.data.toJsonString() }}",
+            "data_2": "={{ $('AI Agent2').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2576,
+        176
+      ],
+      "id": "e1ead844-35ac-4c55-9b9a-8ec8cc3f1059",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "status": "error",
+            "output_message": "={{ $('AI Agent1').item.json.output }}",
+            "data_1": "={{ $('Merge').item.json.data.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2176,
+        432
+      ],
+      "id": "76e5e376-3c70-4e3e-8d4f-9337bbd0b21a",
+      "name": "Insert row1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
+              "leftValue": "={{ $('Merge').isExecuted }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        2016,
+        432
+      ],
+      "id": "7fd7e869-665f-458f-b7d8-4602c8dc1952",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2032,
+        176
+      ],
+      "id": "ed9dd8ee-f089-4aed-8414-594609a006fa",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+        "options": {
+          "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"ExtPurchaseOrder\" and \"alloc_no\" fields to compare the 2 results. If found matched results than compare \"OrderLineItem.UserCanceledQty\" to \"qty_cancelled\". Put the following additional columns in the table: wh, item, to_loc "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2288,
+        176
+      ],
+      "id": "11f68937-dc77-439a-a2fb-c7217b011859",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message_data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        176
+      ],
+      "id": "ff67dcaa-a51e-4364-9a2e-d89989c94f61",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "  try {\n     if(!!$input.first().json.binary.data_0.data && $input.first().json.binary.data_0.data !== undefined && $input.first().json.binary.data_0.data !== null ){ \n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data_0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data_0.mimeType,\n                    fileExtension: $input.first().json.binary.data_0.fileExtension,\n                    fileName: $input.first().json.binary.data_0.fileName,\n                    fileSize: $input.first().json.binary.data_0.fileSize,\n                    id: $input.first().json.binary.data_0.id,\n                  },\n                },\n              },\n            ];\n    }\n    } catch (e) {\n     try {\n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data0.mimeType,\n                    fileExtension: $input.first().json.binary.data0.fileExtension,\n                    fileName: $input.first().json.binary.data0.fileName,\n                    fileSize: $input.first().json.binary.data0.fileSize,\n                    id: $input.first().json.binary.data0.id,\n                  },\n                },\n              },\n            ];\n       } catch (e) {\n       return $input.all();\n       }\n    }\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        192
+      ],
+      "id": "e3ed64ac-deb8-4257-a58e-3fdfda3ce3fa",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a27b7f25-818b-420b-a41e-cec969382aa1",
+              "leftValue": "={{ $binary.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        448
+      ],
+      "id": "f3ff01b3-a337-4b72-baa5-c58460cfc393",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        432,
+        112
+      ],
+      "id": "70051cf8-779f-4ee8-8f48-f8cd7325c8e0",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        192
+      ],
+      "id": "19b52133-01a0-4982-b0a5-65270280b2cb",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "yZXnWrSk7COGePGc",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/yZXnWrSk7COGePGc",
+          "cachedResultName": "SBFL - Allocation - Generate Cancel Allocation"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.userid }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        272
+      ],
+      "id": "b522ae39-3b4a-4bc4-ac28-da29142ad882",
+      "name": "Call 'SBFL - Allocation - Generate Cancel Allocation'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "lInz5M5lx4b0uNNB",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/lInz5M5lx4b0uNNB",
+          "cachedResultName": "SBFL - Allocation - Check Allocation Cancellation in Databricks"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $('Merge').item.json }}",
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object"
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1296,
+        192
+      ],
+      "id": "5d787221-adae-437c-bca3-e339d580512e",
+      "name": "Call 'SBFL - Allocation - Check Allocation Cancellation in Databricks'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "W0VCmg7lJ6ZFSaNY",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/W0VCmg7lJ6ZFSaNY",
+          "cachedResultName": "SBFL - Allocation - Check Allocation Cancellation in MFCS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $('Merge').item.json }}",
+            "wait": 60,
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "wait_time": 10
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1520,
+        192
+      ],
+      "id": "ee949b8a-9edc-465a-bcd5-0c0f4f51599b",
+      "name": "Call 'SBFL - Allocation - Check Allocation Cancellation in MFCS'",
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to generate JSON for Allocation cancellation.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        624,
+        432
+      ],
+      "id": "64f4013c-e262-4342-808f-24b835e7e1c5",
+      "name": "Failed to generate JSON for Allocation cancellation",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find Allocation Cancel message in Databricks.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        432
+      ],
+      "id": "be75ff8b-e035-4f8f-b77e-65cf7f426cf1",
+      "name": "Can not find Allocation Cancel message in Databricks",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find Allocation Cancellation in MFCS.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        432
+      ],
+      "id": "c8d04e9d-49c3-4025-90cf-c8763b39b285",
+      "name": "Can not find Allocation Cancellation in MFCS",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "Cancel-Allocation",
+            "flowName": "oMR3po0crNMbyJXN",
+            "item": ""
+          },
+          "userid": "62a17d6f-9dec-4fb8-8784-268462326ad5"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 28800
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-27T07:47:46.405Z",
+      "createdAt": "2026-01-27T07:47:46.405Z",
+      "role": "workflow:owner",
+      "workflowId": "oMR3po0crNMbyJXN",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:17:38.697Z",
+  "versionId": "b1291726-9403-42f6-8b0c-aa4a1b847dc6"
+}
