@@ -1,0 +1,104 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T08:51:39.840Z",
+    "createdAt": "2026-01-28T08:51:21.482Z",
+    "versionId": "2380ca7b-f22b-4df5-ade1-2df9f6e9fca0",
+    "workflowId": "FogwvyGRrFz96P9b",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "53b1c282-80c5-4a76-9027-07e17badabb9",
+        "name": "When Executed by Another Workflow"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 2380ca7b",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "2380ca7b-f22b-4df5-ade1-2df9f6e9fca0",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2026-01-28T08:51:21.482Z",
+  "id": "FogwvyGRrFz96P9b",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - SIM DTS PO - Check Shipment Receipt in MFCS",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "53b1c282-80c5-4a76-9027-07e17badabb9",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-28T08:51:21.482Z",
+      "createdAt": "2026-01-28T08:51:21.482Z",
+      "role": "workflow:owner",
+      "workflowId": "FogwvyGRrFz96P9b",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:39:37.467Z",
+      "createdAt": "2026-01-28T08:38:52.110Z",
+      "id": "JkY12UxMieTvHe5N",
+      "name": "Sim_DTS_Po"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:51:21.482Z",
+  "versionId": "2380ca7b-f22b-4df5-ade1-2df9f6e9fca0"
+}
