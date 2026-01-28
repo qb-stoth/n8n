@@ -1,0 +1,961 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-22T11:31:31.141Z",
+    "createdAt": "2026-01-22T11:31:28.174Z",
+    "versionId": "c0731ec3-914b-439f-a2f1-703d613b6eaf",
+    "workflowId": "YKyhbJ0rt4Qxuf3yuuneC",
+    "nodes": [
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://adb-8355844096453102.2.azuredatabricks.net/api/2.0/sql/statements",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"warehouse_id\": \"{{ $json.warehouse_id }}\",\n  \"catalog\": \"{{ $json.catalog }}\",\n  \"schema\": \"{{ $json.schema }}\",\n  \"statement\": \"{{ $json.statement }}\",\n  \"parameters\": [],\n  \"wait_timeout\":\"15s\" ,\n  \"on_wait_timeout\":\"CANCEL\",\n  \"disposition\":\"INLINE\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -48,
+          0
+        ],
+        "id": "828de5a6-f790-48fc-a36a-79afdbcbe46d",
+        "name": "DataBricksQuery",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "OadHk8Vf8pdAuY9b",
+            "name": "Bearer Auth Databricks"
+          },
+          "oAuth2Api": {
+            "id": "U4l7Fp6PXpz4iCRN",
+            "name": "Databricks credential"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+                "leftValue": "={{ $json.status.state }}",
+                "rightValue": "=CANCELED",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          112,
+          0
+        ],
+        "id": "b465519e-571e-4b5c-8cd4-91b9e1995fb0",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://adb-8355844096453102.2.azuredatabricks.net/api/2.0/sql/statements",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"warehouse_id\": \"{{ $('in data').item.json.warehouse_id }}\",\n  \"catalog\": \"{{ $('in data').item.json.catalog }}\",\n  \"schema\": \"{{ $('in data').item.json.schema }}\",\n  \"statement\": \"{{ $('in data').item.json.statement }}\",\n  \"parameters\": [],\n  \"disposition\":\"INLINE\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          352,
+          -64
+        ],
+        "id": "39a08bd0-1e8d-4ceb-803f-241ca4e68961",
+        "name": "DataBricksQuery1",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "OadHk8Vf8pdAuY9b",
+            "name": "Bearer Auth Databricks"
+          },
+          "oAuth2Api": {
+            "id": "U4l7Fp6PXpz4iCRN",
+            "name": "Databricks credential"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "\nreturn _items[0][\"json\"]"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1472,
+          256
+        ],
+        "id": "e44583c7-b70d-4843-aee9-0a0bee0ff15d",
+        "name": "Code in Python (Native)"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+                "leftValue": "={{ $json.status.state }}",
+                "rightValue": "=PENDING",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          528,
+          -64
+        ],
+        "id": "d0fd6073-3bfa-49dd-bacf-8fba1d474cc0",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+        },
+        "id": "126cf9ef-6237-4712-8af5-27585186da15",
+        "name": "count",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          1552,
+          -64
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "version": 2,
+              "leftValue": "",
+              "caseSensitive": true,
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                },
+                "leftValue": "={{ $json.count }}",
+                "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "187173f3-5dbc-45bd-bd49-8ea83ccfd8f5",
+        "name": "If count > wait_time",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          1728,
+          -64
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "executeOnce": false,
+          "command": "=ping -c {{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 10 }} 127.0.0.1 > /dev/null 2>&1"
+        },
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          896,
+          -96
+        ],
+        "id": "0e9b66e3-e1d0-4be2-8bb4-bcbea43333d4",
+        "name": "Wait"
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "warehouse_id"
+              },
+              {
+                "name": "catalog"
+              },
+              {
+                "name": "schema"
+              },
+              {
+                "name": "statement"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -208,
+          0
+        ],
+        "id": "9a728496-969a-4edf-8fd4-d0dca0862b64",
+        "name": "in data"
+      },
+      {
+        "parameters": {
+          "errorMessage": "databricks sql run wait too long"
+        },
+        "id": "57175746-338f-4634-b19b-86b7331cff16",
+        "name": "databricks sql run wait too long",
+        "type": "n8n-nodes-base.stopAndError",
+        "position": [
+          2016,
+          0
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "url": "=https://adb-8355844096453102.2.azuredatabricks.net/api/2.0/sql/statements/{{ $('DataBricksQuery1').item.json.statement_id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBearerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          1056,
+          -96
+        ],
+        "id": "b1bfe471-ec22-4902-9648-61a93b5e620f",
+        "name": "DataBricksQuery2",
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "OadHk8Vf8pdAuY9b",
+            "name": "Bearer Auth Databricks"
+          },
+          "oAuth2Api": {
+            "id": "U4l7Fp6PXpz4iCRN",
+            "name": "Databricks credential"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+                "leftValue": "={{ $json.status.state }}",
+                "rightValue": "=SUCCEEDED",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1232,
+          -96
+        ],
+        "id": "04c6d2e5-9834-43c9-8114-638d50ae1b29",
+        "name": "If2"
+      }
+    ],
+    "connections": {
+      "DataBricksQuery": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "DataBricksQuery1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DataBricksQuery1": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "count": {
+        "main": [
+          [
+            {
+              "node": "If count > wait_time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If count > wait_time": {
+        "main": [
+          [
+            {
+              "node": "databricks sql run wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "DataBricksQuery2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "DataBricksQuery",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DataBricksQuery2": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version c0731ec3",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "c0731ec3-914b-439f-a2f1-703d613b6eaf",
+  "connections": {
+    "DataBricksQuery": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "DataBricksQuery1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DataBricksQuery1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "count": {
+      "main": [
+        [
+          {
+            "node": "If count > wait_time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If count > wait_time": {
+      "main": [
+        [
+          {
+            "node": "databricks sql run wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "DataBricksQuery2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "DataBricksQuery",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DataBricksQuery2": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-22T08:46:51.009Z",
+  "id": "YKyhbJ0rt4Qxuf3yuuneC",
+  "isArchived": false,
+  "meta": null,
+  "name": "Run Databricks SQL",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://adb-8355844096453102.2.azuredatabricks.net/api/2.0/sql/statements",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"warehouse_id\": \"{{ $json.warehouse_id }}\",\n  \"catalog\": \"{{ $json.catalog }}\",\n  \"schema\": \"{{ $json.schema }}\",\n  \"statement\": \"{{ $json.statement }}\",\n  \"parameters\": [],\n  \"wait_timeout\":\"15s\" ,\n  \"on_wait_timeout\":\"CANCEL\",\n  \"disposition\":\"INLINE\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "828de5a6-f790-48fc-a36a-79afdbcbe46d",
+      "name": "DataBricksQuery",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "OadHk8Vf8pdAuY9b",
+          "name": "Bearer Auth Databricks"
+        },
+        "oAuth2Api": {
+          "id": "U4l7Fp6PXpz4iCRN",
+          "name": "Databricks credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+              "leftValue": "={{ $json.status.state }}",
+              "rightValue": "=CANCELED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        112,
+        0
+      ],
+      "id": "b465519e-571e-4b5c-8cd4-91b9e1995fb0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://adb-8355844096453102.2.azuredatabricks.net/api/2.0/sql/statements",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"warehouse_id\": \"{{ $('in data').item.json.warehouse_id }}\",\n  \"catalog\": \"{{ $('in data').item.json.catalog }}\",\n  \"schema\": \"{{ $('in data').item.json.schema }}\",\n  \"statement\": \"{{ $('in data').item.json.statement }}\",\n  \"parameters\": [],\n  \"disposition\":\"INLINE\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        352,
+        -64
+      ],
+      "id": "39a08bd0-1e8d-4ceb-803f-241ca4e68961",
+      "name": "DataBricksQuery1",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "OadHk8Vf8pdAuY9b",
+          "name": "Bearer Auth Databricks"
+        },
+        "oAuth2Api": {
+          "id": "U4l7Fp6PXpz4iCRN",
+          "name": "Databricks credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "\nreturn _items[0][\"json\"]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        256
+      ],
+      "id": "e44583c7-b70d-4843-aee9-0a0bee0ff15d",
+      "name": "Code in Python (Native)"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+              "leftValue": "={{ $json.status.state }}",
+              "rightValue": "=PENDING",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        528,
+        -64
+      ],
+      "id": "d0fd6073-3bfa-49dd-bacf-8fba1d474cc0",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+      },
+      "id": "126cf9ef-6237-4712-8af5-27585186da15",
+      "name": "count",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1552,
+        -64
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.count }}",
+              "rightValue": "={{ $('in data').item.json.wait_time != null ? $('in data').item.json.wait_time : 12 }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "187173f3-5dbc-45bd-bd49-8ea83ccfd8f5",
+      "name": "If count > wait_time",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1728,
+        -64
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "executeOnce": false,
+        "command": "=ping -c {{ $('in data').item.json.wait != null ? $('in data').item.json.wait : 10 }} 127.0.0.1 > /dev/null 2>&1"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "0e9b66e3-e1d0-4be2-8bb4-bcbea43333d4",
+      "name": "Wait"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "warehouse_id"
+            },
+            {
+              "name": "catalog"
+            },
+            {
+              "name": "schema"
+            },
+            {
+              "name": "statement"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        0
+      ],
+      "id": "9a728496-969a-4edf-8fd4-d0dca0862b64",
+      "name": "in data"
+    },
+    {
+      "parameters": {
+        "errorMessage": "databricks sql run wait too long"
+      },
+      "id": "57175746-338f-4634-b19b-86b7331cff16",
+      "name": "databricks sql run wait too long",
+      "type": "n8n-nodes-base.stopAndError",
+      "position": [
+        2016,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://adb-8355844096453102.2.azuredatabricks.net/api/2.0/sql/statements/{{ $('DataBricksQuery1').item.json.statement_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1056,
+        -96
+      ],
+      "id": "b1bfe471-ec22-4902-9648-61a93b5e620f",
+      "name": "DataBricksQuery2",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "OadHk8Vf8pdAuY9b",
+          "name": "Bearer Auth Databricks"
+        },
+        "oAuth2Api": {
+          "id": "U4l7Fp6PXpz4iCRN",
+          "name": "Databricks credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1fcf6247-a257-49b0-96da-6dc5f9b39daa",
+              "leftValue": "={{ $json.status.state }}",
+              "rightValue": "=SUCCEEDED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1232,
+        -96
+      ],
+      "id": "04c6d2e5-9834-43c9-8114-638d50ae1b29",
+      "name": "If2"
+    }
+  ],
+  "pinData": {
+    "in data": [
+      {
+        "json": {
+          "warehouse_id": "da7f1770b4ccf374",
+          "catalog": "corp_technology_test",
+          "schema": "db_das_rms",
+          "statement": "SELECT * from corp_technology_test.db_das_rms.das_wv_shipsku where shipment in (57323543)",
+          "wait": 10,
+          "wait_time": 60
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-22T08:46:51.009Z",
+      "createdAt": "2026-01-22T08:46:51.009Z",
+      "role": "workflow:owner",
+      "workflowId": "YKyhbJ0rt4Qxuf3yuuneC",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:47.106Z",
+      "createdAt": "2026-01-28T08:40:47.106Z",
+      "id": "NN19Km37JJKZjXr6",
+      "name": "Common"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:43:27.033Z",
+  "versionId": "c0731ec3-914b-439f-a2f1-703d613b6eaf"
+}
