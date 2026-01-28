@@ -1,0 +1,2254 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T10:22:39.859Z",
+    "createdAt": "2026-01-28T10:22:36.964Z",
+    "versionId": "dea7fc7e-375d-4ff7-8262-2a9ae0e32e29",
+    "workflowId": "A6SpAT7Kw-yyDNLmMHSaY",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**** ",
+          "height": 624,
+          "width": 256,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -96,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "e88cb217-dcaf-4a36-94ff-f47947c658e4",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -16,
+          272
+        ],
+        "id": "27f5238d-db32-4618-af33-80393c1f60c7",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "content": "## Payload generation \n**Create receipt file for allocation shipment**",
+          "height": 624,
+          "width": 224
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          224,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "951abd86-dbe5-4eef-acb4-d0ac1cc00837",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload Receipt payloads to KAFKA topic.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          512,
+          432
+        ],
+        "id": "990e0640-2f18-411d-ad8a-6110183d501b",
+        "name": "Failed to upload payloads to KAFKA topic",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## Upload Payloads to KAFKA topic \n**sell_sim_mao_relay_alloc_receipt_nrt_multipart**",
+          "height": 624,
+          "width": 224,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          448,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "7a2cd2bc-ae58-45aa-8469-f6de484f58f0",
+        "name": "Sticky Note4"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "EMINaZnnBuiMHYel",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/EMINaZnnBuiMHYel",
+            "cachedResultName": "SBFL - Allocation - Generate Allocation Receipts"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $json.userid }}"
+            },
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          288,
+          192
+        ],
+        "id": "4e6078f0-22eb-4db2-8951-3f002f77b64c",
+        "name": "Call 'SBFL - Allocation - Generate Allocation Receipts'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to generate receipt messages.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          288,
+          432
+        ],
+        "id": "e8c5ab66-0ef6-4b64-97ff-e4fe0a22e7c6",
+        "name": "Failed to generate receipt messages",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "puq5n4bzX7gsRBT9",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/puq5n4bzX7gsRBT9",
+            "cachedResultName": "SBFL - Allocation - Upload Receipt Payloads to Kafka"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "data": "={{ $json }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          512,
+          192
+        ],
+        "id": "56d2d937-a8b8-4d4b-b7a0-ba20af82bab9",
+        "name": "Call 'SBFL - Allocation - Upload Receipt Payloads to Kafka'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "w1tHRoLY57jNiy3V",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+            "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wait": 60,
+              "wait_time": 285,
+              "dag_run_id": "rms_simallocreceipts_hourly_adhoc"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dag_run_id",
+                "displayName": "dag_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          960,
+          192
+        ],
+        "id": "16f7aec6-3268-401b-a3f3-6b7a77fca411",
+        "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          960,
+          432
+        ],
+        "id": "c686ef76-c814-4379-9a3d-863ed8ad9ce6",
+        "name": "DAG Run failed or wait too long",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## Synchronize DAS tables\n**shipment,shipsku** \n",
+          "height": 624,
+          "width": 224,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          672,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "a636ff61-b8be-4859-837c-0a7956a7f82e",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "content": "## Check Shipment in MFCS \n**REST API** ",
+          "height": 624,
+          "width": 224
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1120,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "2c397428-77b8-4a61-b3cf-4551a870853a",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "PPJLs6tY6jRf6RBt",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/PPJLs6tY6jRf6RBt",
+            "cachedResultName": "SBFL - Allocation - Check Allocation Receipt in MFCS"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json }}",
+              "wait": 60,
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "wait_time": 10
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1184,
+          192
+        ],
+        "id": "d00b7c7b-fe13-4e6c-8526-8c4a012cb40d",
+        "name": "Call 'SBFL - Allocation - Check Allocation Receipt in MFCS'",
+        "alwaysOutputData": false,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find Shipment receipt for allocation in MFCS\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1184,
+          432
+        ],
+        "id": "1841c00e-dae5-40d2-8427-0c24600f4a82",
+        "name": "Can not find Shipment receipt in MFCS",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Call \\'SBFL - Allocation - Upload Receipt Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Receipt Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Receipt Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Synchronize DAS tables\\'').isExecuted,\"Input from \\\"SBFL - Allocation - Synchronize DAS tables\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Synchronize DAS tables\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Receipt in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Receipt in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Receipt in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+          "options": {
+            "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. "
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1424,
+          176
+        ],
+        "id": "5da2b339-ddbe-4ebe-a2db-00d2eb65cbdc",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          1424,
+          320
+        ],
+        "id": "408685b1-c8f4-444c-a052-841096f6e59b",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "FIpUb1C3cbh8qN71",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## Result evaluation with AI \n",
+          "height": 624,
+          "width": 1136,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1344,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "7327c17c-56c6-49aa-98aa-bc815baeb0d5",
+        "name": "Sticky Note5"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Failed to generate receipt messages').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Allocation Receipts\\\" node: \\n \"+$('Failed to generate receipt messages').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Receipt Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAS tables synchronization failed').isExecuted,\"Error from \\\"SBFL - Allocation - Synchronize DAS tables\\\" node: \\n \"+$('DAS tables synchronization failed').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Shipment receipt in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Receipt in MFCS\\\" node: \\n \"+$('Can not find Shipment receipt in MFCS').item.json.error.toJsonString(),\"\") }}",
+          "options": {
+            "systemMessage": "Use the incoming errors to create a summary from all nodes."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1424,
+          432
+        ],
+        "id": "450ec432-f763-4632-a2ac-118bfc225e09",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "output_message": "={{ $('AI Agent').item.json.output }}",
+              "status": "success",
+              "workflow_id": "={{ $workflow.id }}",
+              "data_1": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json.data.toJsonString() }}",
+              "data_2": "={{ $('AI Agent2').item.json.output }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2240,
+          176
+        ],
+        "id": "c4bb90f5-1e54-4f04-a888-be558cbccd9a",
+        "name": "Insert row"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "workflow_id": "={{ $workflow.id }}",
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "status": "error",
+              "output_message": "={{ $('AI Agent1').item.json.output }}",
+              "data_1": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json.data.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1840,
+          432
+        ],
+        "id": "d2e4610d-7002-402e-ab29-f0abaf6d6645",
+        "name": "Insert row1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
+                "leftValue": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').isExecuted }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1680,
+          432
+        ],
+        "id": "07ec1498-1566-430b-967f-284d2016fc83",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocReceipt"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1696,
+          176
+        ],
+        "id": "97bac9e1-eb1b-4642-9e83-1f662468b8e2",
+        "name": "Get row(s)"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+          "options": {
+            "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"relayMessage.RelaySupply[1].SupplyDefinition.ReferenceId\" and \"bol_no\" fields to compare the 2 results. If found matched results than compare \"SupplyDefinition.SupplyData.Quantity\" to \"qty_received\"."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1952,
+          176
+        ],
+        "id": "22e8e9f2-8960-4abc-97d2-8a799e85d8d5",
+        "name": "AI Agent2"
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "message_data"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1824,
+          176
+        ],
+        "id": "b711e570-6ccd-42e1-8ea9-2d47566fad95",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "content": "## Run DAG in Airflow\n**rms_simallocreceipts_hourly_adhoc** ",
+          "height": 624,
+          "width": 224,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          896,
+          16
+        ],
+        "typeVersion": 1,
+        "id": "e2c78e99-ba0b-4806-9027-38ce8bfaaf0f",
+        "name": "Sticky Note6"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "RSABQqKK40b7GqU1",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/RSABQqKK40b7GqU1",
+            "cachedResultName": "SBFL - Allocation - Synchronize DAS tables"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          736,
+          192
+        ],
+        "id": "339db790-06fb-47db-b9b1-a09999c83f5c",
+        "name": "Call 'SBFL - Allocation - Synchronize DAS tables'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          736,
+          432
+        ],
+        "id": "e45b1e3d-3206-4efb-9a00-7d67118fbe70",
+        "name": "DAS tables synchronization failed",
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Generate Allocation Receipts'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Generate Allocation Receipts'": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Upload Receipt Payloads to Kafka'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to generate receipt messages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Upload Receipt Payloads to Kafka'": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Synchronize DAS tables'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to upload payloads to KAFKA topic",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Check Allocation Receipt in MFCS'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "DAG Run failed or wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Check Allocation Receipt in MFCS'": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Can not find Shipment receipt in MFCS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent2",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Insert row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent2": {
+        "main": [
+          [
+            {
+              "node": "Insert row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "AI Agent2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Can not find Shipment receipt in MFCS": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DAG Run failed or wait too long": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Failed to upload payloads to KAFKA topic": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Failed to generate receipt messages": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Synchronize DAS tables'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "DAS tables synchronization failed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DAS tables synchronization failed": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version dea7fc7e",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "dea7fc7e-375d-4ff7-8262-2a9ae0e32e29",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Generate Allocation Receipts'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Generate Allocation Receipts'": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Upload Receipt Payloads to Kafka'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to generate receipt messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Upload Receipt Payloads to Kafka'": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Synchronize DAS tables'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to upload payloads to KAFKA topic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Check Allocation Receipt in MFCS'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DAG Run failed or wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Check Allocation Receipt in MFCS'": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Can not find Shipment receipt in MFCS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Insert row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can not find Shipment receipt in MFCS": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DAG Run failed or wait too long": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed to upload payloads to KAFKA topic": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed to generate receipt messages": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Synchronize DAS tables'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DAS tables synchronization failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DAS tables synchronization failed": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-21T12:03:40.738Z",
+  "id": "A6SpAT7Kw-yyDNLmMHSaY",
+  "isArchived": false,
+  "meta": null,
+  "name": "5B - Test case - Allocation - Receipt",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**** ",
+        "height": 624,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "e88cb217-dcaf-4a36-94ff-f47947c658e4",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        272
+      ],
+      "id": "27f5238d-db32-4618-af33-80393c1f60c7",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "## Payload generation \n**Create receipt file for allocation shipment**",
+        "height": 624,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        224,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "951abd86-dbe5-4eef-acb4-d0ac1cc00837",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload Receipt payloads to KAFKA topic.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        512,
+        432
+      ],
+      "id": "990e0640-2f18-411d-ad8a-6110183d501b",
+      "name": "Failed to upload payloads to KAFKA topic",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Payloads to KAFKA topic \n**sell_sim_mao_relay_alloc_receipt_nrt_multipart**",
+        "height": 624,
+        "width": 224,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        448,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "7a2cd2bc-ae58-45aa-8469-f6de484f58f0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "EMINaZnnBuiMHYel",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/EMINaZnnBuiMHYel",
+          "cachedResultName": "SBFL - Allocation - Generate Allocation Receipts"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.userid }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        192
+      ],
+      "id": "4e6078f0-22eb-4db2-8951-3f002f77b64c",
+      "name": "Call 'SBFL - Allocation - Generate Allocation Receipts'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to generate receipt messages.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        288,
+        432
+      ],
+      "id": "e8c5ab66-0ef6-4b64-97ff-e4fe0a22e7c6",
+      "name": "Failed to generate receipt messages",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "puq5n4bzX7gsRBT9",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/puq5n4bzX7gsRBT9",
+          "cachedResultName": "SBFL - Allocation - Upload Receipt Payloads to Kafka"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "data": "={{ $json }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        192
+      ],
+      "id": "56d2d937-a8b8-4d4b-b7a0-ba20af82bab9",
+      "name": "Call 'SBFL - Allocation - Upload Receipt Payloads to Kafka'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "w1tHRoLY57jNiy3V",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "wait": 60,
+            "wait_time": 285,
+            "dag_run_id": "rms_simallocreceipts_hourly_adhoc"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dag_run_id",
+              "displayName": "dag_run_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        960,
+        192
+      ],
+      "id": "16f7aec6-3268-401b-a3f3-6b7a77fca411",
+      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        960,
+        432
+      ],
+      "id": "c686ef76-c814-4379-9a3d-863ed8ad9ce6",
+      "name": "DAG Run failed or wait too long",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Synchronize DAS tables\n**shipment,shipsku** \n",
+        "height": 624,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        672,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "a636ff61-b8be-4859-837c-0a7956a7f82e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Check Shipment in MFCS \n**REST API** ",
+        "height": 624,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "2c397428-77b8-4a61-b3cf-4551a870853a",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "PPJLs6tY6jRf6RBt",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/PPJLs6tY6jRf6RBt",
+          "cachedResultName": "SBFL - Allocation - Check Allocation Receipt in MFCS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json }}",
+            "wait": 60,
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "wait_time": 10
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1184,
+        192
+      ],
+      "id": "d00b7c7b-fe13-4e6c-8526-8c4a012cb40d",
+      "name": "Call 'SBFL - Allocation - Check Allocation Receipt in MFCS'",
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find Shipment receipt for allocation in MFCS\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        432
+      ],
+      "id": "1841c00e-dae5-40d2-8427-0c24600f4a82",
+      "name": "Can not find Shipment receipt in MFCS",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Call \\'SBFL - Allocation - Upload Receipt Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Receipt Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Receipt Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Synchronize DAS tables\\'').isExecuted,\"Input from \\\"SBFL - Allocation - Synchronize DAS tables\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Synchronize DAS tables\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Receipt in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Receipt in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Receipt in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+        "options": {
+          "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1424,
+        176
+      ],
+      "id": "5da2b339-ddbe-4ebe-a2db-00d2eb65cbdc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        320
+      ],
+      "id": "408685b1-c8f4-444c-a052-841096f6e59b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FIpUb1C3cbh8qN71",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Result evaluation with AI \n",
+        "height": 624,
+        "width": 1136,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1344,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "7327c17c-56c6-49aa-98aa-bc815baeb0d5",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Failed to generate receipt messages').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Allocation Receipts\\\" node: \\n \"+$('Failed to generate receipt messages').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Receipt Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAS tables synchronization failed').isExecuted,\"Error from \\\"SBFL - Allocation - Synchronize DAS tables\\\" node: \\n \"+$('DAS tables synchronization failed').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Shipment receipt in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Receipt in MFCS\\\" node: \\n \"+$('Can not find Shipment receipt in MFCS').item.json.error.toJsonString(),\"\") }}",
+        "options": {
+          "systemMessage": "Use the incoming errors to create a summary from all nodes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1424,
+        432
+      ],
+      "id": "450ec432-f763-4632-a2ac-118bfc225e09",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "output_message": "={{ $('AI Agent').item.json.output }}",
+            "status": "success",
+            "workflow_id": "={{ $workflow.id }}",
+            "data_1": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json.data.toJsonString() }}",
+            "data_2": "={{ $('AI Agent2').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2240,
+        176
+      ],
+      "id": "c4bb90f5-1e54-4f04-a888-be558cbccd9a",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "status": "error",
+            "output_message": "={{ $('AI Agent1').item.json.output }}",
+            "data_1": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json.data.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1840,
+        432
+      ],
+      "id": "d2e4610d-7002-402e-ab29-f0abaf6d6645",
+      "name": "Insert row1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
+              "leftValue": "={{ $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').isExecuted }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1680,
+        432
+      ],
+      "id": "07ec1498-1566-430b-967f-284d2016fc83",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocReceipt"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1696,
+        176
+      ],
+      "id": "97bac9e1-eb1b-4642-9e83-1f662468b8e2",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Allocation Receipts\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+        "options": {
+          "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"relayMessage.RelaySupply[1].SupplyDefinition.ReferenceId\" and \"bol_no\" fields to compare the 2 results. If found matched results than compare \"SupplyDefinition.SupplyData.Quantity\" to \"qty_received\"."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1952,
+        176
+      ],
+      "id": "22e8e9f2-8960-4abc-97d2-8a799e85d8d5",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message_data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        176
+      ],
+      "id": "b711e570-6ccd-42e1-8ea9-2d47566fad95",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "content": "## Run DAG in Airflow\n**rms_simallocreceipts_hourly_adhoc** ",
+        "height": 624,
+        "width": 224,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        896,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "e2c78e99-ba0b-4806-9027-38ce8bfaaf0f",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "RSABQqKK40b7GqU1",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/RSABQqKK40b7GqU1",
+          "cachedResultName": "SBFL - Allocation - Synchronize DAS tables"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        736,
+        192
+      ],
+      "id": "339db790-06fb-47db-b9b1-a09999c83f5c",
+      "name": "Call 'SBFL - Allocation - Synchronize DAS tables'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        736,
+        432
+      ],
+      "id": "e45b1e3d-3206-4efb-9a00-7d67118fbe70",
+      "name": "DAS tables synchronization failed",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "Allocation-Receipt",
+            "flowName": "A6SpAT7Kw-yyDNLmMHSaY",
+            "item": ""
+          },
+          "userid": "62a17d6f-9dec-4fb8-8784-268462326ad5"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 28800
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-21T12:03:40.738Z",
+      "createdAt": "2026-01-21T12:03:40.738Z",
+      "role": "workflow:owner",
+      "workflowId": "A6SpAT7Kw-yyDNLmMHSaY",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T10:22:36.961Z",
+  "versionId": "dea7fc7e-375d-4ff7-8262-2a9ae0e32e29"
+}
