@@ -1,0 +1,1126 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-23T10:51:42.912Z",
+    "createdAt": "2026-01-23T10:51:03.520Z",
+    "versionId": "e1653f5c-43d8-4cfc-987d-56c4b341db9e",
+    "workflowId": "1XGShOEybzHHhuYT9ecKV",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -464,
+          0
+        ],
+        "id": "1d783311-38d8-440d-a4ba-33d2abb640c3",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "afa09f8b-b15e-4548-8a18-9f7a0b83f0f0",
+                "name": "time",
+                "value": "={{$now.format('MM/dd/yy HH:mm')}}",
+                "type": "string"
+              },
+              {
+                "id": "fbd45547-7104-4eb6-b603-d5fb68c9978d",
+                "name": "dc_id",
+                "value": "={{ $json.items[0].physicalWarehouse }}",
+                "type": "string"
+              },
+              {
+                "id": "93a098c1-e8a2-4561-b9dd-4a725ddf76a4",
+                "name": "bol_id",
+                "value": "={{$now.format('MMddyyyyHHmmssSSS')}}",
+                "type": "string"
+              },
+              {
+                "id": "5dbb04ef-40f1-485e-853a-d666b025d81c",
+                "name": "allocation_id",
+                "value": "={{ $('Get Allocations').item.json.data.parseJson().allocations[0].allocNo }}",
+                "type": "string"
+              },
+              {
+                "id": "8850c8b9-6620-48b4-9999-0bca39e055e7",
+                "name": "to_location_id",
+                "value": "={{ $('Get Allocations').item.json.data.parseJson().allocations[0].toLoc }}",
+                "type": "string"
+              },
+              {
+                "id": "3b20f5e7-512e-425a-9fbf-eb04036a28e6",
+                "name": "item_name",
+                "value": "={{ $('Get Allocations').item.json.data.parseJson().allocations[0].item }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          640,
+          16
+        ],
+        "id": "fe19fd95-2689-46b6-b713-2140b17342d7",
+        "name": "Set parameters"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "import json\nfrom datetime import datetime\n\n\ndef generate_ship_confirm(\n    dc_id: str,\n    date_created: str,\n    bol_id: str,\n    allocation_id: str,\n    to_location_id: str,\n    item_name: str\n):\n    \"\"\"\n    Generate ShipConfirm JSON payload.\n\n    Args:\n        dc_id (str): Facility/DC ID (FacilityName)\n        date_created (str): DateCreated / ShippedDttm / ProcDttm (MM/DD/YY HH:MM)\n        bol_id (str): Bill of Lading ID\n        allocation_id (str): Allocation ID (ExtPurchaseOrder, MinorPoNbr)\n        to_location_id (str): Destination Facility Alias ID\n        item_name (str): Item SKU / ItemName\n\n    Returns:\n        dict: ShipConfirm payload\n    \"\"\"\n\n    payload = {\n        \"tXML\": {\n            \"Header\": {\n                \"Source\": \"MANH_wmsprodrf\",\n                \"Batch_ID\": None\n            },\n            \"Message\": {\n                \"ShipConfirm\": {\n                    \"ShipConfirmSummary\": {\n                        \"CompanyName\": None,\n                        \"FacilityName\": dc_id,\n                        \"ShipConfirmHeaderInfo\": {\n                            \"DestinationFacilityName\": f\"{to_location_id} ECOM SHIP CENTER INDY\",\n                            \"InvcBatchNbr\": \"2078178\",\n                            \"LastInvcDttm\": date_created,\n                            \"ShippedDttm\": date_created,\n                            \"DateCreated\": date_created,\n                            \"PartialShipConfirmStatus\": \"1\",\n                            \"BillOfLading\": bol_id,\n                            \"NbrOfLpns\": \"1\",\n                            \"TotalWt\": \"0.0\",\n                            \"UserID\": \"WMADMIN\"\n                        }\n                    },\n                    \"ShipConfirmDetails\": {\n                        \"Orders\": {\n                            \"ExtPurchaseOrder\": allocation_id,\n                            \"InvcBatchNbr\": \"2078178\",\n                            \"OrderDateDttm\": \"7/24/25 00:00\",\n                            \"OrderType\": \"R\",\n                            \"ShipDate\": date_created,\n                            \"DoStatus\": \"Shipped\",\n                            \"PartialShipConfirmStatus\": \"1\",\n                            \"OrderDestInfo\": {\n                                \"DestAddress1\": \"12050 EAST MCGREGOR ROAD\",\n                                \"DestAddress2\": None,\n                                \"DestCity\": \"INDIANAPOLIS\",\n                                \"DestCountryCode\": \"US\",\n                                \"DestFacilityAliasId\": to_location_id,\n                                \"DestFacilityId\": to_location_id.lstrip(\"0\")\n                            },\n                            \"OrderOriginInfo\": {\n                                \"OriginAddress1\": \"12050 E McGregor Rd\",\n                                \"OriginCity\": \"Indianapolis\",\n                                \"OriginFacilityAliasId\": dc_id,\n                                \"OriginFacilityName\": \"SCIN\",\n                                \"OriginPostalCode\": \"46259\",\n                                \"OriginStateProv\": \"IN\"\n                            },\n                            \"OrderLineItem\": {\n                                \"ExtPurchaseOrder\": None,\n                                \"InvcBatchNbr\": \"2078178\",\n                                \"ItemName\": item_name,\n                                \"TcOrderLineId\": item_name,\n                                \"UserCanceledQty\": \"0\"\n                            },\n                            \"Shipment\": {\n                                \"DestCity\": \"INDIANAPOLIS\",\n                                \"DestCountryCode\": \"US\",\n                                \"DestFacilityId\": to_location_id,\n                                \"DestinationFacilityName\": to_location_id,\n                                \"OriginCity\": \"Indianapolis\",\n                                \"OriginPostalCode\": \"46259\",\n                                \"OriginStateProv\": \"IN\",\n                                \"TcShipmentId\": \"000006261\",\n                                \"TrailerNumber\": None,\n                                \"Stop\": {\n                                    \"FacilityAliasId\": to_location_id,\n                                    \"StopSeq\": \"2\"\n                                }\n                            },\n                            \"Lpn\": {\n                                \"ActualVolume\": \"780.312\",\n                                \"EstimatedWeight\": \"5.1\",\n                                \"InvcBatchNbr\": \"2078178\",\n                                \"ProcDttm\": date_created,\n                                \"QtyUom\": \"EA\",\n                                \"ShippedDttm\": date_created,\n                                \"TcLpnId\": bol_id,\n                                \"TcParentLpnId\": None,\n                                \"TcShipmentId\": \"000006261\",\n                                \"Weight\": \"0\",\n                                \"RefField1\": None,\n                                \"RefField2\": None,\n                                \"RefField3\": None,\n                                \"RefField4\": None,\n                                \"LpnDetail\": {\n                                    \"InvcBatchNbr\": \"2078178\",\n                                    \"ItemName\": item_name,\n                                    \"LpnDetailId\": \"67780750\",\n                                    \"QtyUom\": \"EA\",\n                                    \"SizeValue\": \"1\",\n                                    \"TcLpnId\": bol_id,\n                                    \"TcOrderLineId\": item_name,\n                                    \"MinorOrderNbr\": f\"{allocation_id}2022\",\n                                    \"MinorPoNbr\": allocation_id\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n\n    return payload\n\n\n# Example usage\n#datetime.now().strftime(\"%m/%d%y %H:%M\")\nship_confirm = generate_ship_confirm(\n    dc_id=_items[0][\"json\"][\"dc_id\"],\n    date_created=_items[0][\"json\"][\"time\"],\n    bol_id=_items[0][\"json\"][\"bol_id\"],\n    allocation_id=_items[0][\"json\"][\"allocation_id\"],\n    to_location_id=_items[0][\"json\"][\"to_location_id\"],\n    item_name=_items[0][\"json\"][\"item_name\"]\n)\n\nreturn ship_confirm"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          240
+        ],
+        "id": "0d5600f8-7a8b-40a3-80fd-33eb720bb086",
+        "name": "Generate tXML"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $json.user_id }}"
+              },
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          -304,
+          0
+        ],
+        "id": "ea269aca-dd30-420d-a81c-7e493ff38f9d",
+        "name": "Get row(s)",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          192,
+          0
+        ],
+        "id": "cbc461a2-cf49-406d-9da7-b8ea2ac87a46",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b3ec4e3a-c2c1-4f5f-a6fb-901b89c46aa0",
+                "name": "data",
+                "value": "={{ $json.message_data }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          16,
+          0
+        ],
+        "id": "ed9332bb-9fa5-4f9d-8c85-c86df3c49ef5",
+        "name": "Get Allocations"
+      },
+      {
+        "parameters": {
+          "url": "=https://rex.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-five-stg1-mfcs/MerchIntegrations/services/foundation/warehouse/{{ $json.data.parseJson().allocations[0].wh }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          384,
+          96
+        ],
+        "id": "7b00c55b-2457-46be-bec5-68c4883e48ed",
+        "name": "Get WH",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Error occured during tXML file generation. Not able to get WH id from MFCS.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          640,
+          192
+        ],
+        "id": "2ab886bf-f3ba-4119-8f94-7f99aa768eb9",
+        "name": "Stop and Error"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $('Generate tXML').all()) {\n  item.json.myNewField += item;\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          400,
+          -80
+        ],
+        "id": "fe4af387-b072-47ac-a51b-922ee5e4b3b0",
+        "name": "Return results"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "89d75559-a274-45d0-a5bc-bd1bdbe64199",
+                "leftValue": "={{ $('Get row(s)').item.json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -144,
+          0
+        ],
+        "id": "c03fcdba-33f9-4fa4-a767-296e67281d04",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "errorMessage": "No data to process. Please run the \"Allocation\" flow first."
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          16,
+          160
+        ],
+        "id": "f93a0204-0dda-47ff-80de-fc1add17ed42",
+        "name": "Stop and Error1"
+      },
+      {
+        "parameters": {
+          "jsCode": "\n\nreturn $('Generate tXML').all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1280,
+          240
+        ],
+        "id": "b284c0f3-04bb-4a15-9b06-d636f64592aa",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          544,
+          -80
+        ],
+        "id": "c9449f26-f3a1-4bd9-84f0-c008d6582ffa",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.data.parseJson().allocations[0].description+'_'+ $('Loop Over Items').item.json.data.parseJson().allocations[0].item+'_'+$('Loop Over Items').item.json.data.parseJson().allocations[0].wh+'_'+$('Loop Over Items').item.json.data.parseJson().allocations[0].toLoc}}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('When Executed by Another Workflow').item.json.user_id }}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "ext_id": "={{ $json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "message_data",
+                "displayName": "message_data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ext_id",
+                "displayName": "ext_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {
+            "dryRun": false
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1072,
+          240
+        ],
+        "id": "9d18c9c9-28df-4a19-9953-b7d7263d6a51",
+        "name": "Upsert row(s)"
+      }
+    ],
+    "connections": {
+      "Set parameters": {
+        "main": [
+          [
+            {
+              "node": "Generate tXML",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "Return results",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get WH",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate tXML": {
+        "main": [
+          [
+            {
+              "node": "Upsert row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Allocations": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get WH": {
+        "main": [
+          [
+            {
+              "node": "Set parameters",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Get Allocations",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Return results": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version e1653f5c",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "e1653f5c-43d8-4cfc-987d-56c4b341db9e",
+  "connections": {
+    "Set parameters": {
+      "main": [
+        [
+          {
+            "node": "Generate tXML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Return results",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get WH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate tXML": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Allocations": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get WH": {
+      "main": [
+        [
+          {
+            "node": "Set parameters",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Allocations",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return results": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-19T09:37:59.986Z",
+  "id": "1XGShOEybzHHhuYT9ecKV",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - Allocation - Generate Allocation Shipments",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -464,
+        0
+      ],
+      "id": "1d783311-38d8-440d-a4ba-33d2abb640c3",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "afa09f8b-b15e-4548-8a18-9f7a0b83f0f0",
+              "name": "time",
+              "value": "={{$now.format('MM/dd/yy HH:mm')}}",
+              "type": "string"
+            },
+            {
+              "id": "fbd45547-7104-4eb6-b603-d5fb68c9978d",
+              "name": "dc_id",
+              "value": "={{ $json.items[0].physicalWarehouse }}",
+              "type": "string"
+            },
+            {
+              "id": "93a098c1-e8a2-4561-b9dd-4a725ddf76a4",
+              "name": "bol_id",
+              "value": "={{$now.format('MMddyyyyHHmmssSSS')}}",
+              "type": "string"
+            },
+            {
+              "id": "5dbb04ef-40f1-485e-853a-d666b025d81c",
+              "name": "allocation_id",
+              "value": "={{ $('Get Allocations').item.json.data.parseJson().allocations[0].allocNo }}",
+              "type": "string"
+            },
+            {
+              "id": "8850c8b9-6620-48b4-9999-0bca39e055e7",
+              "name": "to_location_id",
+              "value": "={{ $('Get Allocations').item.json.data.parseJson().allocations[0].toLoc }}",
+              "type": "string"
+            },
+            {
+              "id": "3b20f5e7-512e-425a-9fbf-eb04036a28e6",
+              "name": "item_name",
+              "value": "={{ $('Get Allocations').item.json.data.parseJson().allocations[0].item }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        16
+      ],
+      "id": "fe19fd95-2689-46b6-b713-2140b17342d7",
+      "name": "Set parameters"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "import json\nfrom datetime import datetime\n\n\ndef generate_ship_confirm(\n    dc_id: str,\n    date_created: str,\n    bol_id: str,\n    allocation_id: str,\n    to_location_id: str,\n    item_name: str\n):\n    \"\"\"\n    Generate ShipConfirm JSON payload.\n\n    Args:\n        dc_id (str): Facility/DC ID (FacilityName)\n        date_created (str): DateCreated / ShippedDttm / ProcDttm (MM/DD/YY HH:MM)\n        bol_id (str): Bill of Lading ID\n        allocation_id (str): Allocation ID (ExtPurchaseOrder, MinorPoNbr)\n        to_location_id (str): Destination Facility Alias ID\n        item_name (str): Item SKU / ItemName\n\n    Returns:\n        dict: ShipConfirm payload\n    \"\"\"\n\n    payload = {\n        \"tXML\": {\n            \"Header\": {\n                \"Source\": \"MANH_wmsprodrf\",\n                \"Batch_ID\": None\n            },\n            \"Message\": {\n                \"ShipConfirm\": {\n                    \"ShipConfirmSummary\": {\n                        \"CompanyName\": None,\n                        \"FacilityName\": dc_id,\n                        \"ShipConfirmHeaderInfo\": {\n                            \"DestinationFacilityName\": f\"{to_location_id} ECOM SHIP CENTER INDY\",\n                            \"InvcBatchNbr\": \"2078178\",\n                            \"LastInvcDttm\": date_created,\n                            \"ShippedDttm\": date_created,\n                            \"DateCreated\": date_created,\n                            \"PartialShipConfirmStatus\": \"1\",\n                            \"BillOfLading\": bol_id,\n                            \"NbrOfLpns\": \"1\",\n                            \"TotalWt\": \"0.0\",\n                            \"UserID\": \"WMADMIN\"\n                        }\n                    },\n                    \"ShipConfirmDetails\": {\n                        \"Orders\": {\n                            \"ExtPurchaseOrder\": allocation_id,\n                            \"InvcBatchNbr\": \"2078178\",\n                            \"OrderDateDttm\": \"7/24/25 00:00\",\n                            \"OrderType\": \"R\",\n                            \"ShipDate\": date_created,\n                            \"DoStatus\": \"Shipped\",\n                            \"PartialShipConfirmStatus\": \"1\",\n                            \"OrderDestInfo\": {\n                                \"DestAddress1\": \"12050 EAST MCGREGOR ROAD\",\n                                \"DestAddress2\": None,\n                                \"DestCity\": \"INDIANAPOLIS\",\n                                \"DestCountryCode\": \"US\",\n                                \"DestFacilityAliasId\": to_location_id,\n                                \"DestFacilityId\": to_location_id.lstrip(\"0\")\n                            },\n                            \"OrderOriginInfo\": {\n                                \"OriginAddress1\": \"12050 E McGregor Rd\",\n                                \"OriginCity\": \"Indianapolis\",\n                                \"OriginFacilityAliasId\": dc_id,\n                                \"OriginFacilityName\": \"SCIN\",\n                                \"OriginPostalCode\": \"46259\",\n                                \"OriginStateProv\": \"IN\"\n                            },\n                            \"OrderLineItem\": {\n                                \"ExtPurchaseOrder\": None,\n                                \"InvcBatchNbr\": \"2078178\",\n                                \"ItemName\": item_name,\n                                \"TcOrderLineId\": item_name,\n                                \"UserCanceledQty\": \"0\"\n                            },\n                            \"Shipment\": {\n                                \"DestCity\": \"INDIANAPOLIS\",\n                                \"DestCountryCode\": \"US\",\n                                \"DestFacilityId\": to_location_id,\n                                \"DestinationFacilityName\": to_location_id,\n                                \"OriginCity\": \"Indianapolis\",\n                                \"OriginPostalCode\": \"46259\",\n                                \"OriginStateProv\": \"IN\",\n                                \"TcShipmentId\": \"000006261\",\n                                \"TrailerNumber\": None,\n                                \"Stop\": {\n                                    \"FacilityAliasId\": to_location_id,\n                                    \"StopSeq\": \"2\"\n                                }\n                            },\n                            \"Lpn\": {\n                                \"ActualVolume\": \"780.312\",\n                                \"EstimatedWeight\": \"5.1\",\n                                \"InvcBatchNbr\": \"2078178\",\n                                \"ProcDttm\": date_created,\n                                \"QtyUom\": \"EA\",\n                                \"ShippedDttm\": date_created,\n                                \"TcLpnId\": bol_id,\n                                \"TcParentLpnId\": None,\n                                \"TcShipmentId\": \"000006261\",\n                                \"Weight\": \"0\",\n                                \"RefField1\": None,\n                                \"RefField2\": None,\n                                \"RefField3\": None,\n                                \"RefField4\": None,\n                                \"LpnDetail\": {\n                                    \"InvcBatchNbr\": \"2078178\",\n                                    \"ItemName\": item_name,\n                                    \"LpnDetailId\": \"67780750\",\n                                    \"QtyUom\": \"EA\",\n                                    \"SizeValue\": \"1\",\n                                    \"TcLpnId\": bol_id,\n                                    \"TcOrderLineId\": item_name,\n                                    \"MinorOrderNbr\": f\"{allocation_id}2022\",\n                                    \"MinorPoNbr\": allocation_id\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n\n    return payload\n\n\n# Example usage\n#datetime.now().strftime(\"%m/%d%y %H:%M\")\nship_confirm = generate_ship_confirm(\n    dc_id=_items[0][\"json\"][\"dc_id\"],\n    date_created=_items[0][\"json\"][\"time\"],\n    bol_id=_items[0][\"json\"][\"bol_id\"],\n    allocation_id=_items[0][\"json\"][\"allocation_id\"],\n    to_location_id=_items[0][\"json\"][\"to_location_id\"],\n    item_name=_items[0][\"json\"][\"item_name\"]\n)\n\nreturn ship_confirm"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        240
+      ],
+      "id": "0d5600f8-7a8b-40a3-80fd-33eb720bb086",
+      "name": "Generate tXML"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $json.user_id }}"
+            },
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "ea269aca-dd30-420d-a81c-7e493ff38f9d",
+      "name": "Get row(s)",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        192,
+        0
+      ],
+      "id": "cbc461a2-cf49-406d-9da7-b8ea2ac87a46",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b3ec4e3a-c2c1-4f5f-a6fb-901b89c46aa0",
+              "name": "data",
+              "value": "={{ $json.message_data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        0
+      ],
+      "id": "ed9332bb-9fa5-4f9d-8c85-c86df3c49ef5",
+      "name": "Get Allocations"
+    },
+    {
+      "parameters": {
+        "url": "=https://rex.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-five-stg1-mfcs/MerchIntegrations/services/foundation/warehouse/{{ $json.data.parseJson().allocations[0].wh }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        384,
+        96
+      ],
+      "id": "7b00c55b-2457-46be-bec5-68c4883e48ed",
+      "name": "Get WH",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Error occured during tXML file generation. Not able to get WH id from MFCS.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        640,
+        192
+      ],
+      "id": "2ab886bf-f3ba-4119-8f94-7f99aa768eb9",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $('Generate tXML').all()) {\n  item.json.myNewField += item;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -80
+      ],
+      "id": "fe4af387-b072-47ac-a51b-922ee5e4b3b0",
+      "name": "Return results"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "89d75559-a274-45d0-a5bc-bd1bdbe64199",
+              "leftValue": "={{ $('Get row(s)').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -144,
+        0
+      ],
+      "id": "c03fcdba-33f9-4fa4-a767-296e67281d04",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "No data to process. Please run the \"Allocation\" flow first."
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        16,
+        160
+      ],
+      "id": "f93a0204-0dda-47ff-80de-fc1add17ed42",
+      "name": "Stop and Error1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $('Generate tXML').all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        240
+      ],
+      "id": "b284c0f3-04bb-4a15-9b06-d636f64592aa",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -80
+      ],
+      "id": "c9449f26-f3a1-4bd9-84f0-c008d6582ffa",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.data.parseJson().allocations[0].description+'_'+ $('Loop Over Items').item.json.data.parseJson().allocations[0].item+'_'+$('Loop Over Items').item.json.data.parseJson().allocations[0].wh+'_'+$('Loop Over Items').item.json.data.parseJson().allocations[0].toLoc}}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('When Executed by Another Workflow').item.json.user_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ext_id": "={{ $json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.BillOfLading }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "message_data",
+              "displayName": "message_data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ext_id",
+              "displayName": "ext_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "dryRun": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1072,
+        240
+      ],
+      "id": "9d18c9c9-28df-4a19-9953-b7d7263d6a51",
+      "name": "Upsert row(s)"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "user_id": "62a17d6f-9dec-4fb8-8784-268462326ad5"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-19T09:37:59.986Z",
+      "createdAt": "2026-01-19T09:37:59.986Z",
+      "role": "workflow:owner",
+      "workflowId": "1XGShOEybzHHhuYT9ecKV",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:44:29.350Z",
+  "versionId": "e1653f5c-43d8-4cfc-987d-56c4b341db9e"
+}
