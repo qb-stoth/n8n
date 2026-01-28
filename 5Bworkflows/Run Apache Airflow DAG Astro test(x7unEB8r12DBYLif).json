@@ -1,0 +1,309 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2025-12-05T08:53:50.898Z",
+    "createdAt": "2025-12-05T08:53:50.898Z",
+    "versionId": "2dc22a22-c625-41ed-8fda-cb19fdd93f04",
+    "workflowId": "x7unEB8r12DBYLif",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "dag_run_id"
+              },
+              {
+                "name": "data"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              }
+            ]
+          }
+        },
+        "id": "74cb9a2d-4d5e-41ee-b11d-2592135fe790",
+        "name": "in data",
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "position": [
+          -1904,
+          176
+        ],
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "40a5ab5b-dee1-44c4-910a-d6b85af75aed",
+                "name": "prefix",
+                "type": "string",
+                "value": "https://cm3t505g80qd701npsdp26d79.astronomer.run/dzkj7sag"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "41f8be84-203f-48cd-9818-853657700ee0",
+        "name": "airflow-api",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -1376,
+          176
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  if (item.json.dag_run_id == null || item.json.dag_run_id === \"\") {\n    item.json.dag_run_id ='example_display_name'\n    //item.json.wait=10\n    //item.json.wait_time=12\n  }\n  item.json.data ='{\\\"dag_run_id\\\": null,\\\"logical_date\\\": null}'\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -1648,
+          176
+        ],
+        "id": "d645469a-d583-4794-be11-8c44755dff00",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/rms_jdaallocationtransform_30min",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "httpBearerAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {}
+            ]
+          },
+          "options": {}
+        },
+        "id": "7e94075b-d878-4c54-80ae-ea82fdbfbb1a",
+        "name": "Airflow: dag_run - state1",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -992,
+          176
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "sb5iHdFXYIMMfdhI",
+            "name": "Bearer Auth Airfow"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "airflow-api": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run - state1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "airflow-api",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "activeVersionId": "2dc22a22-c625-41ed-8fda-cb19fdd93f04",
+  "connections": {
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "airflow-api": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run - state1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "airflow-api",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-04T07:52:31.038Z",
+  "id": "x7unEB8r12DBYLif",
+  "isArchived": true,
+  "meta": null,
+  "name": "Run Apache Airflow DAG Astro test",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "dag_run_id"
+            },
+            {
+              "name": "data"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "id": "74cb9a2d-4d5e-41ee-b11d-2592135fe790",
+      "name": "in data",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -1904,
+        176
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "40a5ab5b-dee1-44c4-910a-d6b85af75aed",
+              "name": "prefix",
+              "type": "string",
+              "value": "https://cm3t505g80qd701npsdp26d79.astronomer.run/dzkj7sag"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "41f8be84-203f-48cd-9818-853657700ee0",
+      "name": "airflow-api",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -1376,
+        176
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  if (item.json.dag_run_id == null || item.json.dag_run_id === \"\") {\n    item.json.dag_run_id ='example_display_name'\n    //item.json.wait=10\n    //item.json.wait_time=12\n  }\n  item.json.data ='{\\\"dag_run_id\\\": null,\\\"logical_date\\\": null}'\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1648,
+        176
+      ],
+      "id": "d645469a-d583-4794-be11-8c44755dff00",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('airflow-api').item.json.prefix }}/api/v2/dags/rms_jdaallocationtransform_30min",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "7e94075b-d878-4c54-80ae-ea82fdbfbb1a",
+      "name": "Airflow: dag_run - state1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -992,
+        176
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "sb5iHdFXYIMMfdhI",
+          "name": "Bearer Auth Airfow"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-04T07:52:31.048Z",
+      "createdAt": "2025-12-04T07:52:31.048Z",
+      "role": "workflow:owner",
+      "workflowId": "x7unEB8r12DBYLif",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2025-12-05T08:53:50.000Z",
+  "versionId": "2dc22a22-c625-41ed-8fda-cb19fdd93f04"
+}
