@@ -1,0 +1,3610 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T08:14:32.001Z",
+    "createdAt": "2026-01-28T08:14:18.937Z",
+    "versionId": "6e81fbfb-aab9-4c11-98a6-91be0f7328f0",
+    "workflowId": "W0VCmg7lJ6ZFSaNY",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data",
+                "type": "object"
+              },
+              {
+                "name": "wait",
+                "type": "number"
+              },
+              {
+                "name": "wait_time",
+                "type": "number"
+              },
+              {
+                "name": "user_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -1776,
+          576
+        ],
+        "id": "e19aedd0-1a1a-4915-a222-7eb90759b614",
+        "name": "in data"
+      },
+      {
+        "parameters": {
+          "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+        },
+        "id": "f2d6ca66-d72b-46cb-92c3-c2de2eadb73d",
+        "name": "count",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          -32,
+          256
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                },
+                "leftValue": "={{ $('count').item.json.count }}",
+                "rightValue": "={{ $('in data').all().first().json.wait_time != null ? $('in data').all().first().json.wait_time : 12 }} \n\n"
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "id": "dd8a0e99-23c6-4253-9d9d-b899d0f33018",
+        "name": "If count > wait_time",
+        "type": "n8n-nodes-base.if",
+        "position": [
+          176,
+          208
+        ],
+        "typeVersion": 2.2
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -256,
+          384
+        ],
+        "id": "3c72141c-3ebc-4403-91b0-85d6c4461142",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -1376,
+          320
+        ],
+        "id": "844f3f43-3bab-44c9-b8a4-2141fac93d87",
+        "name": "Delete row(s)"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          464,
+          384
+        ],
+        "id": "4438009a-73d0-42e2-bbcc-2405d387b20d",
+        "name": "Delete row(s)1",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "823e6f6e-dfd8-4c46-800c-182783fe6d91",
+                "leftValue": "={{ $('Get row(s)1').item.json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          848,
+          864
+        ],
+        "id": "e4ef9cc4-cd02-4060-918d-6cfe76320d56",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "limit": 1001
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          1008,
+          0
+        ],
+        "id": "741c2f12-1877-4218-b0b9-53ea41cacd73",
+        "name": "Get row(s)"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.data = '{\"Message\" : \"All allocation were cancelled successfully.\"}';\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1840,
+          896
+        ],
+        "id": "46d116d6-624f-4b1d-beb0-2501d4f7eacd",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "command": "=ping -c {{ $('in data').first().json.wait != null ? $('in data').first().json.wait : 60 }} 127.0.0.1 > /dev/null 2>&1"
+        },
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          -1376,
+          688
+        ],
+        "id": "ff64dd70-07af-4a28-b4e0-d9a0921d4117",
+        "name": "Wait"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet msg='';\nfor (const item of $input.all()) {\n  msg +='Message ID: '+ item.json.message_id+' Error message: '+ item.json.error_message+ '\\n '\n\n}\n\nreturn {\n  json:{\n    error_message : msg\n  }\n}"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1184,
+          0
+        ],
+        "id": "bee259bf-7505-493e-9af2-7480c649c7e2",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "823e6f6e-dfd8-4c46-800c-182783fe6d91",
+                "leftValue": "={{ $('Get row(s)2').item.json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1424,
+          880
+        ],
+        "id": "ce331cf1-46e0-4358-a4a7-6d94523864d4",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "hospital",
+                "keyValue": "N"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          624,
+          224
+        ],
+        "id": "4aeaea7a-2499-4033-bdb6-905b832fd317",
+        "name": "Get row(s)1",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "command": "ping -c 1 127.0.0.1 > /dev/null 2>&1"
+        },
+        "type": "n8n-nodes-base.executeCommand",
+        "typeVersion": 1,
+        "position": [
+          400,
+          224
+        ],
+        "id": "2fbecabb-a78e-4f11-99db-a6830b021c81",
+        "name": "Wait1"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "hospital",
+                "keyValue": "Y"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          1136,
+          880
+        ],
+        "id": "55c04ad8-99db-41f2-9efb-822c28d43394",
+        "name": "Get row(s)2",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "jsCode": "return {\n  json:{\n    \n  }\n};"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          832,
+          112
+        ],
+        "id": "ce8db5fc-19ea-47d0-b84c-81693d71590e",
+        "name": "clear input"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAllocCancel",
+              "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+              "error_message": "=Found in hospital: {{$input.first().json.allocations[0].failure.description}}",
+              "hospital": "Y",
+              "user_id": "={{ $('in data').first().json.user_id}}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "hospital",
+                "displayName": "hospital",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          608,
+          688
+        ],
+        "id": "88d380bb-4528-4478-8cd0-d9f3171a1c6c",
+        "name": "Upsert row(s)"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAllocCancel",
+              "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+              "error_message": "={{ $json.error.message }}",
+              "hospital": "N",
+              "user_id": "={{ $('in data').first().json.user_id}}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "hospital",
+                "displayName": "hospital",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          432,
+          768
+        ],
+        "id": "ffa55fe3-2045-4d76-98f2-82b8253124ee",
+        "name": "Upsert row(s)1"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAllocCancel",
+              "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+              "message_data": "={{ $('Get Allocation').item.json.toJsonString() }}",
+              "user_id": "={{ $('in data').first().json.user_id}}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_data",
+                "displayName": "message_data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ext_id",
+                "displayName": "ext_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          640,
+          384
+        ],
+        "id": "e266e6fe-69c5-45c9-9805-5a9a42c52d86",
+        "name": "Upsert row(s)3"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              },
+              {
+                "keyName": "ext_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          816,
+          384
+        ],
+        "id": "e04b7269-0994-4008-b816-f12a9f062405",
+        "name": "Delete row(s)3",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "jsCode": "\nreturn $('in data').first().json.data.data;"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -672,
+          592
+        ],
+        "id": "cc146c5e-a492-4811-9a0d-d28f546cbe15",
+        "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error_message }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1392,
+          0
+        ],
+        "id": "19facaf0-05f9-4447-932a-a4a3ff8f65df",
+        "name": "Can not find allocation cancel",
+        "alwaysOutputData": false,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getAlloc/{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.ExtPurchaseOrder }}/{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderLineItem.ItemName }}/{{ $json.items[0].primaryVirtualWarehouse }}/{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          240,
+          400
+        ],
+        "id": "654564a7-fe20-4281-838f-8c277758a86b",
+        "name": "Get Allocation",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://g0ca417ea5d2391-fusionoicdevdb.adb.us-ashburn-1.oraclecloudapps.com/ords/fb_merch_apex_dev/5below/n8n/services/getAllocCancel",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\"distroNo\":\"{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.ExtPurchaseOrder }}\",\"item\":\"{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderLineItem.ItemName }}\",\"wh\":{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderOriginInfo.OriginFacilityAliasId }},\"toLoc\":{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          256,
+          608
+        ],
+        "id": "f0cd0898-94b2-4cfd-807d-9d570af4803a",
+        "name": "Get Alloc Cancel in Hospital",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "sgX6v2Zm0XIk7fH8",
+            "name": "OIC"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAllocCancel",
+              "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+              "error_message": "=Allocation is not cancelled. alloc_no : {{ $('Get row(s)3').item.json.message_data.parseJson().allocations[0].allocNo +', item:' +$('Get row(s)3').item.json.message_data.parseJson().allocations[0].item+', wh:' +$('Get row(s)3').item.json.message_data.parseJson().allocations[0].wh+', to_loc:'+$('Get row(s)3').item.json.message_data.parseJson().allocations[0].toLoc}}",
+              "hospital": "N",
+              "user_id": "={{ $('in data').first().json.user_id}}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "hospital",
+                "displayName": "hospital",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          656,
+          1200
+        ],
+        "id": "2a433e91-cdb2-42cf-bf67-f53d5a1eeebd",
+        "name": "Upsert row(s)2"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -1376,
+          480
+        ],
+        "id": "b7baebc9-5c96-4bb1-a32e-77a8ec235f59",
+        "name": "Delete row(s)2"
+      },
+      {
+        "parameters": {
+          "url": "=https://rex.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-five-stg1-mfcs/MerchIntegrations/services/foundation/warehouse/{{ $json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderOriginInfo.OriginFacilityAliasId }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -64,
+          416
+        ],
+        "id": "8f5cbc5f-97b6-441e-b92a-55a00bb26dc1",
+        "name": "Get WH",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "JKf1X0V0NGbJ2coX",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_STATUS",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocCancel"
+              },
+              {
+                "keyName": "message_id",
+                "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "message_type": "XAllocCancel",
+              "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+              "error_message": "={{ $json.error.message }}",
+              "hospital": "N",
+              "user_id": "={{ $('in data').first().json.user_id}}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "message_type",
+                "displayName": "message_type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "message_id",
+                "displayName": "message_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "error_message",
+                "displayName": "error_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "hospital",
+                "displayName": "hospital",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          16,
+          672
+        ],
+        "id": "925e2c4c-fb2c-4457-ae06-eb9f572e49d2",
+        "name": "Upsert row(s)4"
+      }
+    ],
+    "connections": {
+      "in data": {
+        "main": [
+          [
+            {
+              "node": "Delete row(s)",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Delete row(s)2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "count": {
+        "main": [
+          [
+            {
+              "node": "If count > wait_time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If count > wait_time": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Wait1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "count",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get WH",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get row(s)2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete row(s)1": {
+        "main": [
+          [
+            {
+              "node": "Upsert row(s)3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Can not find allocation cancel",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "clear input",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)1": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait1": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)2": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "clear input": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)3": {
+        "main": [
+          [
+            {
+              "node": "Delete row(s)3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete row(s)3": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Allocation": {
+        "main": [
+          [
+            {
+              "node": "Delete row(s)1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get Alloc Cancel in Hospital",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Alloc Cancel in Hospital": {
+        "main": [
+          [
+            {
+              "node": "Upsert row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Upsert row(s)1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)2": {
+        "main": [
+          []
+        ]
+      },
+      "Get WH": {
+        "main": [
+          [
+            {
+              "node": "Get Allocation",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Upsert row(s)4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upsert row(s)4": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 6e81fbfb",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "6e81fbfb-aab9-4c11-98a6-91be0f7328f0",
+  "connections": {
+    "in data": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete row(s)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "count": {
+      "main": [
+        [
+          {
+            "node": "If count > wait_time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If count > wait_time": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "count",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get WH",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Can not find allocation cancel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "clear input",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "clear input": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)3": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete row(s)3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Allocation": {
+      "main": [
+        [
+          {
+            "node": "Delete row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Alloc Cancel in Hospital",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Alloc Cancel in Hospital": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)2": {
+      "main": [
+        []
+      ]
+    },
+    "Get WH": {
+      "main": [
+        [
+          {
+            "node": "Get Allocation",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upsert row(s)4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upsert row(s)4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-27T10:06:37.791Z",
+  "id": "W0VCmg7lJ6ZFSaNY",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - Allocation - Check Allocation Cancellation in MFCS",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data",
+              "type": "object"
+            },
+            {
+              "name": "wait",
+              "type": "number"
+            },
+            {
+              "name": "wait_time",
+              "type": "number"
+            },
+            {
+              "name": "user_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1776,
+        576
+      ],
+      "id": "e19aedd0-1a1a-4915-a222-7eb90759b614",
+      "name": "in data"
+    },
+    {
+      "parameters": {
+        "jsCode": "try {\n  $('count').first().json.count += 1\n  return {count:$('count').first().json.count};\n}\ncatch (error) {\n  return {count:1};\n}"
+      },
+      "id": "f2d6ca66-d72b-46cb-92c3-c2de2eadb73d",
+      "name": "count",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -32,
+        256
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1829d538-5633-4f5c-ad1b-285b084b35ee",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $('count').item.json.count }}",
+              "rightValue": "={{ $('in data').all().first().json.wait_time != null ? $('in data').all().first().json.wait_time : 12 }} \n\n"
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "dd8a0e99-23c6-4253-9d9d-b899d0f33018",
+      "name": "If count > wait_time",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        176,
+        208
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -256,
+        384
+      ],
+      "id": "3c72141c-3ebc-4403-91b0-85d6c4461142",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        320
+      ],
+      "id": "844f3f43-3bab-44c9-b8a4-2141fac93d87",
+      "name": "Delete row(s)"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        464,
+        384
+      ],
+      "id": "4438009a-73d0-42e2-bbcc-2405d387b20d",
+      "name": "Delete row(s)1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "823e6f6e-dfd8-4c46-800c-182783fe6d91",
+              "leftValue": "={{ $('Get row(s)1').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        864
+      ],
+      "id": "e4ef9cc4-cd02-4060-918d-6cfe76320d56",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "limit": 1001
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "741c2f12-1877-4218-b0b9-53ea41cacd73",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.data = '{\"Message\" : \"All allocation were cancelled successfully.\"}';\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1840,
+        896
+      ],
+      "id": "46d116d6-624f-4b1d-beb0-2501d4f7eacd",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "command": "=ping -c {{ $('in data').first().json.wait != null ? $('in data').first().json.wait : 60 }} 127.0.0.1 > /dev/null 2>&1"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        688
+      ],
+      "id": "ff64dd70-07af-4a28-b4e0-d9a0921d4117",
+      "name": "Wait"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet msg='';\nfor (const item of $input.all()) {\n  msg +='Message ID: '+ item.json.message_id+' Error message: '+ item.json.error_message+ '\\n '\n\n}\n\nreturn {\n  json:{\n    error_message : msg\n  }\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "bee259bf-7505-493e-9af2-7480c649c7e2",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "823e6f6e-dfd8-4c46-800c-182783fe6d91",
+              "leftValue": "={{ $('Get row(s)2').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1424,
+        880
+      ],
+      "id": "ce331cf1-46e0-4358-a4a7-6d94523864d4",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "hospital",
+              "keyValue": "N"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        624,
+        224
+      ],
+      "id": "4aeaea7a-2499-4033-bdb6-905b832fd317",
+      "name": "Get row(s)1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "command": "ping -c 1 127.0.0.1 > /dev/null 2>&1"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        400,
+        224
+      ],
+      "id": "2fbecabb-a78e-4f11-99db-a6830b021c81",
+      "name": "Wait1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "hospital",
+              "keyValue": "Y"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        880
+      ],
+      "id": "55c04ad8-99db-41f2-9efb-822c28d43394",
+      "name": "Get row(s)2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "return {\n  json:{\n    \n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        112
+      ],
+      "id": "ce8db5fc-19ea-47d0-b84c-81693d71590e",
+      "name": "clear input"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAllocCancel",
+            "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+            "error_message": "=Found in hospital: {{$input.first().json.allocations[0].failure.description}}",
+            "hospital": "Y",
+            "user_id": "={{ $('in data').first().json.user_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hospital",
+              "displayName": "hospital",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        608,
+        688
+      ],
+      "id": "88d380bb-4528-4478-8cd0-d9f3171a1c6c",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAllocCancel",
+            "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+            "error_message": "={{ $json.error.message }}",
+            "hospital": "N",
+            "user_id": "={{ $('in data').first().json.user_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hospital",
+              "displayName": "hospital",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        432,
+        768
+      ],
+      "id": "ffa55fe3-2045-4d76-98f2-82b8253124ee",
+      "name": "Upsert row(s)1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAllocCancel",
+            "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+            "message_data": "={{ $('Get Allocation').item.json.toJsonString() }}",
+            "user_id": "={{ $('in data').first().json.user_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_data",
+              "displayName": "message_data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ext_id",
+              "displayName": "ext_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        640,
+        384
+      ],
+      "id": "e266e6fe-69c5-45c9-9805-5a9a42c52d86",
+      "name": "Upsert row(s)3"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            },
+            {
+              "keyName": "ext_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        816,
+        384
+      ],
+      "id": "e04b7269-0994-4008-b816-f12a9f062405",
+      "name": "Delete row(s)3",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn $('in data').first().json.data.data;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        592
+      ],
+      "id": "cc146c5e-a492-4811-9a0d-d28f546cbe15",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error_message }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        0
+      ],
+      "id": "19facaf0-05f9-4447-932a-a4a3ff8f65df",
+      "name": "Can not find allocation cancel",
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getAlloc/{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.ExtPurchaseOrder }}/{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderLineItem.ItemName }}/{{ $json.items[0].primaryVirtualWarehouse }}/{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        240,
+        400
+      ],
+      "id": "654564a7-fe20-4281-838f-8c277758a86b",
+      "name": "Get Allocation",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://g0ca417ea5d2391-fusionoicdevdb.adb.us-ashburn-1.oraclecloudapps.com/ords/fb_merch_apex_dev/5below/n8n/services/getAllocCancel",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"distroNo\":\"{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.ExtPurchaseOrder }}\",\"item\":\"{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderLineItem.ItemName }}\",\"wh\":{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderOriginInfo.OriginFacilityAliasId }},\"toLoc\":{{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderDestInfo.DestFacilityAliasId }}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        256,
+        608
+      ],
+      "id": "f0cd0898-94b2-4cfd-807d-9d570af4803a",
+      "name": "Get Alloc Cancel in Hospital",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "sgX6v2Zm0XIk7fH8",
+          "name": "OIC"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAllocCancel",
+            "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+            "error_message": "=Allocation is not cancelled. alloc_no : {{ $('Get row(s)3').item.json.message_data.parseJson().allocations[0].allocNo +', item:' +$('Get row(s)3').item.json.message_data.parseJson().allocations[0].item+', wh:' +$('Get row(s)3').item.json.message_data.parseJson().allocations[0].wh+', to_loc:'+$('Get row(s)3').item.json.message_data.parseJson().allocations[0].toLoc}}",
+            "hospital": "N",
+            "user_id": "={{ $('in data').first().json.user_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hospital",
+              "displayName": "hospital",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        656,
+        1200
+      ],
+      "id": "2a433e91-cdb2-42cf-bf67-f53d5a1eeebd",
+      "name": "Upsert row(s)2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        480
+      ],
+      "id": "b7baebc9-5c96-4bb1-a32e-77a8ec235f59",
+      "name": "Delete row(s)2"
+    },
+    {
+      "parameters": {
+        "url": "=https://rex.retail.us-ashburn-1.ocs.oraclecloud.com/rgbu-rex-five-stg1-mfcs/MerchIntegrations/services/foundation/warehouse/{{ $json.tXML.Message.ShipConfirm.ShipConfirmDetails.Orders.OrderOriginInfo.OriginFacilityAliasId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -64,
+        416
+      ],
+      "id": "8f5cbc5f-97b6-441e-b92a-55a00bb26dc1",
+      "name": "Get WH",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "JKf1X0V0NGbJ2coX",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_STATUS",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/JKf1X0V0NGbJ2coX"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocCancel"
+            },
+            {
+              "keyName": "message_id",
+              "keyValue": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "message_type": "XAllocCancel",
+            "message_id": "={{ $('Loop Over Items').item.json.tXML.Message.ShipConfirm.ShipConfirmSummary.ShipConfirmHeaderInfo.DestinationFacilityName }}",
+            "error_message": "={{ $json.error.message }}",
+            "hospital": "N",
+            "user_id": "={{ $('in data').first().json.user_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message_type",
+              "displayName": "message_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "message_id",
+              "displayName": "message_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "error_message",
+              "displayName": "error_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hospital",
+              "displayName": "hospital",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        16,
+        672
+      ],
+      "id": "925e2c4c-fb2c-4457-ae06-eb9f572e49d2",
+      "name": "Upsert row(s)4"
+    }
+  ],
+  "pinData": {
+    "in data": [
+      {
+        "json": {
+          "data": {
+            "data": [
+              {
+                "tXML": {
+                  "Header": {
+                    "Source": "MANH_wmsprod",
+                    "Action_Type": null,
+                    "Sequence_Number": null,
+                    "Batch_ID": null,
+                    "Reference_ID": null,
+                    "User_ID": "dunlapk",
+                    "Password": null,
+                    "Message_Type": "ShipConfirm",
+                    "Company_ID": "1",
+                    "Msg_Locale": "English (United States)",
+                    "Msg_Time_Zone": null,
+                    "Version": "2018"
+                  },
+                  "Message": {
+                    "ShipConfirm": {
+                      "ShipConfirmSummary": {
+                        "CompanyName": null,
+                        "FacilityName": "4",
+                        "ShipConfirmHeaderInfo": {
+                          "DestinationFacilityName": "01272026050921927",
+                          "BillToFacilityName": null,
+                          "InvcBatchNbr": "1296252",
+                          "LastInvcDttm": "01/27/26 05:09",
+                          "ShippedDttm": null,
+                          "DateCreated": "01/27/26 05:09",
+                          "StoreNbr": null,
+                          "ShipVia": null,
+                          "SchedDeliveryDate": null,
+                          "ProNbr": null,
+                          "AppointmentNbr": null,
+                          "ManifestNbr": null,
+                          "SealNbr": null,
+                          "AppointmentDate": null,
+                          "PartialShipConfirmStatus": "3",
+                          "PreBillStatus": "0",
+                          "BaseCharge": null,
+                          "CarrierCharge": null,
+                          "InsuranceCharge": "0",
+                          "AccessorialCharge": null,
+                          "Route": null,
+                          "ApptMadeByID": null,
+                          "BillOfLading": null,
+                          "CancelQuantity": "1",
+                          "NbrOfLpns": "0",
+                          "NbrOfPlts": "0",
+                          "NbrOfOrders": "1",
+                          "TotalWt": "0.0",
+                          "UserID": "dunlapk",
+                          "ItemDefinition": {
+                            "CompanyID": "1",
+                            "Season": null,
+                            "SeasonYear": null,
+                            "Style": null,
+                            "StyleSuffix": null,
+                            "Color": null,
+                            "ColorSuffix": null,
+                            "SecDimension": null,
+                            "Quality": null,
+                            "SizeDesc": null,
+                            "ItemName": "1017896",
+                            "ItemWmosDefinition": {
+                              "SizeRangeCode": null,
+                              "SizeRelPosninTable": null
+                            }
+                          },
+                          "ItemAttributes": {
+                            "InventoryType": null,
+                            "ProductStatus": null,
+                            "BatchNumber": null,
+                            "ItemAttribute1": null,
+                            "ItemAttribute2": null,
+                            "ItemAttribute3": null,
+                            "ItemAttribute4": null,
+                            "ItemAttribute5": null,
+                            "CountryOfOrigin": null
+                          }
+                        }
+                      },
+                      "ShipConfirmDetails": {
+                        "Orders": {
+                          "AcctRcvblAcctNbr": null,
+                          "AcctRcvblCode": null,
+                          "AddrCode": null,
+                          "BackorderedQuantity": null,
+                          "BatchCtrlNbr": "1296252",
+                          "BillingMethod": null,
+                          "BillAcctNbr": null,
+                          "BillFacilityAliasId": null,
+                          "BillFacilityId": null,
+                          "BillOfLadingNumber": null,
+                          "BolBreakAttr": null,
+                          "BolType": null,
+                          "BusinessPartner": null,
+                          "Currency": null,
+                          "DcCtrNbr": null,
+                          "DeliveryStartDttm": "01/27/26 05:09",
+                          "DistributionShipVia": null,
+                          "DoType": "Store Distributions",
+                          "DsgShipVia": null,
+                          "OriginalShipVia": null,
+                          "ExtPurchaseOrder": "9691821050",
+                          "FreightClass": null,
+                          "FreightForwarderAcctNbr": null,
+                          "GlobalLocnNbr": null,
+                          "HandlingCharges": "0",
+                          "IncotermFacilityAliasId": null,
+                          "IncotermFacilityId": null,
+                          "IncotermId": "0",
+                          "IncotermLocAvaDttm": null,
+                          "IncotermLocAvaTimeZoneId": "America/New_York",
+                          "IncotermName": null,
+                          "InsurChrg": "0",
+                          "InvcBatchNbr": "1296252",
+                          "IsBackOrdered": "C",
+                          "MajorMinorOrder": null,
+                          "MajorOrderCtrlNbr": "19030437",
+                          "MajorOrderGrpAttr": null,
+                          "ManifestId": null,
+                          "MarkFor": null,
+                          "MerchandizingDepartment": null,
+                          "MiscCharges": "0.0",
+                          "MonetaryValue": "0.0",
+                          "MovementOption": "Unrestricted",
+                          "MvCurrency": null,
+                          "NonMachineable": "0",
+                          "OrderDateDttm": "01/27/26 05:09",
+                          "OrderWeight": "0",
+                          "OriginalShipFacilityAliasId": null,
+                          "OriginalAssignedShipVia": null,
+                          "OrderType": "R",
+                          "PickupEndDttm": "01/27/26 05:09",
+                          "PickupStartDttm": "01/27/26 05:09",
+                          "PlannedShipDate": null,
+                          "PrePackFlag": "0",
+                          "Priority": "0",
+                          "ProNumber": null,
+                          "PurchaseOrder": "223",
+                          "RecXpansField": null,
+                          "RteId": null,
+                          "RteShipmentSeq": "0",
+                          "SchedDeliveryDttm": null,
+                          "ShipmentId": "0",
+                          "ShipDate": null,
+                          "ShipGroupId": null,
+                          "ShipGroupSequence": "0",
+                          "ShpngChrg": "0",
+                          "OrderStatus": "Unplanned",
+                          "DoStatus": "Cancelled",
+                          "StoreNbr": null,
+                          "StoreType": null,
+                          "TaxCharges": "0.0",
+                          "TcCompanyId": "1",
+                          "TcOrderId": "10003775090681",
+                          "DistroNumber": null,
+                          "TotalNbrOfLpn": "0",
+                          "TotalNbrOfPlt": "0",
+                          "TotalNbrOfUnits": "0",
+                          "LineHaulShipVia": null,
+                          "PartialShipConfirmStatus": "3",
+                          "PreBillStatus": "0",
+                          "TaxID": null,
+                          "OrderDestInfo": {
+                            "DestAddress1": "1451 DR EDWARD HILLARD DR",
+                            "DestAddress2": "SUITE 140",
+                            "DestAddress3": null,
+                            "DestCity": "TUSCALOOSA",
+                            "DestContact": null,
+                            "DestCountryCode": "US",
+                            "DestCounty": null,
+                            "DestDockDoorId": "0",
+                            "DestDockId": null,
+                            "DestEmail": null,
+                            "DestFacilityAliasId": "826",
+                            "DestFacilityId": "826",
+                            "DestFacilityName": "826",
+                            "DestFaxNumber": null,
+                            "DestName": null,
+                            "DestPhoneNumber": null,
+                            "DestPostalCode": "35401",
+                            "DestStateProv": "AL"
+                          },
+                          "OrderOriginInfo": {
+                            "OriginAddress1": "270 Logistics Center Parkway",
+                            "OriginAddress2": null,
+                            "OriginAddress3": null,
+                            "OriginCity": "Forsyth",
+                            "OriginContact": null,
+                            "OriginCountryCode": "US",
+                            "OriginCounty": null,
+                            "OriginDockDoorId": null,
+                            "OriginDockId": null,
+                            "OriginEmail": null,
+                            "OriginFacilityAliasId": "4",
+                            "OriginFacilityId": "1",
+                            "OriginFacilityName": "SCGA",
+                            "OriginFaxNumber": null,
+                            "OriginPhoneNumber": null,
+                            "OriginPostalCode": "31029",
+                            "OriginStateProv": "GA",
+                            "OriginShipThruFacilityId": null,
+                            "OriginShipThruFacAliasId": null
+                          },
+                          "OrderLineItem": {
+                            "ItemName": "10178962",
+                            "OrigItemName": "10178962",
+                            "UserCanceledQty": "1",
+                            "RetailPrice": "12",
+                            "ShippedQty": "0",
+                            "ReasonCode": "45",
+                            "Uom": "EA"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "tXML": {
+                  "Header": {
+                    "Source": "MANH_wmsprod",
+                    "Action_Type": null,
+                    "Sequence_Number": null,
+                    "Batch_ID": null,
+                    "Reference_ID": null,
+                    "User_ID": "dunlapk",
+                    "Password": null,
+                    "Message_Type": "ShipConfirm",
+                    "Company_ID": "1",
+                    "Msg_Locale": "English (United States)",
+                    "Msg_Time_Zone": null,
+                    "Version": "2018"
+                  },
+                  "Message": {
+                    "ShipConfirm": {
+                      "ShipConfirmSummary": {
+                        "CompanyName": null,
+                        "FacilityName": "4",
+                        "ShipConfirmHeaderInfo": {
+                          "DestinationFacilityName": "01272026050924028",
+                          "BillToFacilityName": null,
+                          "InvcBatchNbr": "1296252",
+                          "LastInvcDttm": "01/27/26 05:09",
+                          "ShippedDttm": null,
+                          "DateCreated": "01/27/26 05:09",
+                          "StoreNbr": null,
+                          "ShipVia": null,
+                          "SchedDeliveryDate": null,
+                          "ProNbr": null,
+                          "AppointmentNbr": null,
+                          "ManifestNbr": null,
+                          "SealNbr": null,
+                          "AppointmentDate": null,
+                          "PartialShipConfirmStatus": "3",
+                          "PreBillStatus": "0",
+                          "BaseCharge": null,
+                          "CarrierCharge": null,
+                          "InsuranceCharge": "0",
+                          "AccessorialCharge": null,
+                          "Route": null,
+                          "ApptMadeByID": null,
+                          "BillOfLading": null,
+                          "CancelQuantity": "1",
+                          "NbrOfLpns": "0",
+                          "NbrOfPlts": "0",
+                          "NbrOfOrders": "1",
+                          "TotalWt": "0.0",
+                          "UserID": "dunlapk",
+                          "ItemDefinition": {
+                            "CompanyID": "1",
+                            "Season": null,
+                            "SeasonYear": null,
+                            "Style": null,
+                            "StyleSuffix": null,
+                            "Color": null,
+                            "ColorSuffix": null,
+                            "SecDimension": null,
+                            "Quality": null,
+                            "SizeDesc": null,
+                            "ItemName": "1017896",
+                            "ItemWmosDefinition": {
+                              "SizeRangeCode": null,
+                              "SizeRelPosninTable": null
+                            }
+                          },
+                          "ItemAttributes": {
+                            "InventoryType": null,
+                            "ProductStatus": null,
+                            "BatchNumber": null,
+                            "ItemAttribute1": null,
+                            "ItemAttribute2": null,
+                            "ItemAttribute3": null,
+                            "ItemAttribute4": null,
+                            "ItemAttribute5": null,
+                            "CountryOfOrigin": null
+                          }
+                        }
+                      },
+                      "ShipConfirmDetails": {
+                        "Orders": {
+                          "AcctRcvblAcctNbr": null,
+                          "AcctRcvblCode": null,
+                          "AddrCode": null,
+                          "BackorderedQuantity": null,
+                          "BatchCtrlNbr": "1296252",
+                          "BillingMethod": null,
+                          "BillAcctNbr": null,
+                          "BillFacilityAliasId": null,
+                          "BillFacilityId": null,
+                          "BillOfLadingNumber": null,
+                          "BolBreakAttr": null,
+                          "BolType": null,
+                          "BusinessPartner": null,
+                          "Currency": null,
+                          "DcCtrNbr": null,
+                          "DeliveryStartDttm": "01/27/26 05:09",
+                          "DistributionShipVia": null,
+                          "DoType": "Store Distributions",
+                          "DsgShipVia": null,
+                          "OriginalShipVia": null,
+                          "ExtPurchaseOrder": "9691821050",
+                          "FreightClass": null,
+                          "FreightForwarderAcctNbr": null,
+                          "GlobalLocnNbr": null,
+                          "HandlingCharges": "0",
+                          "IncotermFacilityAliasId": null,
+                          "IncotermFacilityId": null,
+                          "IncotermId": "0",
+                          "IncotermLocAvaDttm": null,
+                          "IncotermLocAvaTimeZoneId": "America/New_York",
+                          "IncotermName": null,
+                          "InsurChrg": "0",
+                          "InvcBatchNbr": "1296252",
+                          "IsBackOrdered": "C",
+                          "MajorMinorOrder": null,
+                          "MajorOrderCtrlNbr": "19030437",
+                          "MajorOrderGrpAttr": null,
+                          "ManifestId": null,
+                          "MarkFor": null,
+                          "MerchandizingDepartment": null,
+                          "MiscCharges": "0.0",
+                          "MonetaryValue": "0.0",
+                          "MovementOption": "Unrestricted",
+                          "MvCurrency": null,
+                          "NonMachineable": "0",
+                          "OrderDateDttm": "01/27/26 05:09",
+                          "OrderWeight": "0",
+                          "OriginalShipFacilityAliasId": null,
+                          "OriginalAssignedShipVia": null,
+                          "OrderType": "R",
+                          "PickupEndDttm": "01/27/26 05:09",
+                          "PickupStartDttm": "01/27/26 05:09",
+                          "PlannedShipDate": null,
+                          "PrePackFlag": "0",
+                          "Priority": "0",
+                          "ProNumber": null,
+                          "PurchaseOrder": "223",
+                          "RecXpansField": null,
+                          "RteId": null,
+                          "RteShipmentSeq": "0",
+                          "SchedDeliveryDttm": null,
+                          "ShipmentId": "0",
+                          "ShipDate": null,
+                          "ShipGroupId": null,
+                          "ShipGroupSequence": "0",
+                          "ShpngChrg": "0",
+                          "OrderStatus": "Unplanned",
+                          "DoStatus": "Cancelled",
+                          "StoreNbr": null,
+                          "StoreType": null,
+                          "TaxCharges": "0.0",
+                          "TcCompanyId": "1",
+                          "TcOrderId": "10003775090681",
+                          "DistroNumber": null,
+                          "TotalNbrOfLpn": "0",
+                          "TotalNbrOfPlt": "0",
+                          "TotalNbrOfUnits": "0",
+                          "LineHaulShipVia": null,
+                          "PartialShipConfirmStatus": "3",
+                          "PreBillStatus": "0",
+                          "TaxID": null,
+                          "OrderDestInfo": {
+                            "DestAddress1": "1451 DR EDWARD HILLARD DR",
+                            "DestAddress2": "SUITE 140",
+                            "DestAddress3": null,
+                            "DestCity": "TUSCALOOSA",
+                            "DestContact": null,
+                            "DestCountryCode": "US",
+                            "DestCounty": null,
+                            "DestDockDoorId": "0",
+                            "DestDockId": null,
+                            "DestEmail": null,
+                            "DestFacilityAliasId": "597",
+                            "DestFacilityId": "597",
+                            "DestFacilityName": "597",
+                            "DestFaxNumber": null,
+                            "DestName": null,
+                            "DestPhoneNumber": null,
+                            "DestPostalCode": "35401",
+                            "DestStateProv": "AL"
+                          },
+                          "OrderOriginInfo": {
+                            "OriginAddress1": "270 Logistics Center Parkway",
+                            "OriginAddress2": null,
+                            "OriginAddress3": null,
+                            "OriginCity": "Forsyth",
+                            "OriginContact": null,
+                            "OriginCountryCode": "US",
+                            "OriginCounty": null,
+                            "OriginDockDoorId": null,
+                            "OriginDockId": null,
+                            "OriginEmail": null,
+                            "OriginFacilityAliasId": "4",
+                            "OriginFacilityId": "1",
+                            "OriginFacilityName": "SCGA",
+                            "OriginFaxNumber": null,
+                            "OriginPhoneNumber": null,
+                            "OriginPostalCode": "31029",
+                            "OriginStateProv": "GA",
+                            "OriginShipThruFacilityId": null,
+                            "OriginShipThruFacAliasId": null
+                          },
+                          "OrderLineItem": {
+                            "ItemName": "10178962",
+                            "OrigItemName": "10178962",
+                            "UserCanceledQty": "1",
+                            "RetailPrice": "12",
+                            "ShippedQty": "0",
+                            "ReasonCode": "45",
+                            "Uom": "EA"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "tXML": {
+                  "Header": {
+                    "Source": "MANH_wmsprod",
+                    "Action_Type": null,
+                    "Sequence_Number": null,
+                    "Batch_ID": null,
+                    "Reference_ID": null,
+                    "User_ID": "dunlapk",
+                    "Password": null,
+                    "Message_Type": "ShipConfirm",
+                    "Company_ID": "1",
+                    "Msg_Locale": "English (United States)",
+                    "Msg_Time_Zone": null,
+                    "Version": "2018"
+                  },
+                  "Message": {
+                    "ShipConfirm": {
+                      "ShipConfirmSummary": {
+                        "CompanyName": null,
+                        "FacilityName": "4",
+                        "ShipConfirmHeaderInfo": {
+                          "DestinationFacilityName": "01272026050924766",
+                          "BillToFacilityName": null,
+                          "InvcBatchNbr": "1296252",
+                          "LastInvcDttm": "01/27/26 05:09",
+                          "ShippedDttm": null,
+                          "DateCreated": "01/27/26 05:09",
+                          "StoreNbr": null,
+                          "ShipVia": null,
+                          "SchedDeliveryDate": null,
+                          "ProNbr": null,
+                          "AppointmentNbr": null,
+                          "ManifestNbr": null,
+                          "SealNbr": null,
+                          "AppointmentDate": null,
+                          "PartialShipConfirmStatus": "3",
+                          "PreBillStatus": "0",
+                          "BaseCharge": null,
+                          "CarrierCharge": null,
+                          "InsuranceCharge": "0",
+                          "AccessorialCharge": null,
+                          "Route": null,
+                          "ApptMadeByID": null,
+                          "BillOfLading": null,
+                          "CancelQuantity": "1",
+                          "NbrOfLpns": "0",
+                          "NbrOfPlts": "0",
+                          "NbrOfOrders": "1",
+                          "TotalWt": "0.0",
+                          "UserID": "dunlapk",
+                          "ItemDefinition": {
+                            "CompanyID": "1",
+                            "Season": null,
+                            "SeasonYear": null,
+                            "Style": null,
+                            "StyleSuffix": null,
+                            "Color": null,
+                            "ColorSuffix": null,
+                            "SecDimension": null,
+                            "Quality": null,
+                            "SizeDesc": null,
+                            "ItemName": "1017896",
+                            "ItemWmosDefinition": {
+                              "SizeRangeCode": null,
+                              "SizeRelPosninTable": null
+                            }
+                          },
+                          "ItemAttributes": {
+                            "InventoryType": null,
+                            "ProductStatus": null,
+                            "BatchNumber": null,
+                            "ItemAttribute1": null,
+                            "ItemAttribute2": null,
+                            "ItemAttribute3": null,
+                            "ItemAttribute4": null,
+                            "ItemAttribute5": null,
+                            "CountryOfOrigin": null
+                          }
+                        }
+                      },
+                      "ShipConfirmDetails": {
+                        "Orders": {
+                          "AcctRcvblAcctNbr": null,
+                          "AcctRcvblCode": null,
+                          "AddrCode": null,
+                          "BackorderedQuantity": null,
+                          "BatchCtrlNbr": "1296252",
+                          "BillingMethod": null,
+                          "BillAcctNbr": null,
+                          "BillFacilityAliasId": null,
+                          "BillFacilityId": null,
+                          "BillOfLadingNumber": null,
+                          "BolBreakAttr": null,
+                          "BolType": null,
+                          "BusinessPartner": null,
+                          "Currency": null,
+                          "DcCtrNbr": null,
+                          "DeliveryStartDttm": "01/27/26 05:09",
+                          "DistributionShipVia": null,
+                          "DoType": "Store Distributions",
+                          "DsgShipVia": null,
+                          "OriginalShipVia": null,
+                          "ExtPurchaseOrder": "9691821050",
+                          "FreightClass": null,
+                          "FreightForwarderAcctNbr": null,
+                          "GlobalLocnNbr": null,
+                          "HandlingCharges": "0",
+                          "IncotermFacilityAliasId": null,
+                          "IncotermFacilityId": null,
+                          "IncotermId": "0",
+                          "IncotermLocAvaDttm": null,
+                          "IncotermLocAvaTimeZoneId": "America/New_York",
+                          "IncotermName": null,
+                          "InsurChrg": "0",
+                          "InvcBatchNbr": "1296252",
+                          "IsBackOrdered": "C",
+                          "MajorMinorOrder": null,
+                          "MajorOrderCtrlNbr": "19030437",
+                          "MajorOrderGrpAttr": null,
+                          "ManifestId": null,
+                          "MarkFor": null,
+                          "MerchandizingDepartment": null,
+                          "MiscCharges": "0.0",
+                          "MonetaryValue": "0.0",
+                          "MovementOption": "Unrestricted",
+                          "MvCurrency": null,
+                          "NonMachineable": "0",
+                          "OrderDateDttm": "01/27/26 05:09",
+                          "OrderWeight": "0",
+                          "OriginalShipFacilityAliasId": null,
+                          "OriginalAssignedShipVia": null,
+                          "OrderType": "R",
+                          "PickupEndDttm": "01/27/26 05:09",
+                          "PickupStartDttm": "01/27/26 05:09",
+                          "PlannedShipDate": null,
+                          "PrePackFlag": "0",
+                          "Priority": "0",
+                          "ProNumber": null,
+                          "PurchaseOrder": "223",
+                          "RecXpansField": null,
+                          "RteId": null,
+                          "RteShipmentSeq": "0",
+                          "SchedDeliveryDttm": null,
+                          "ShipmentId": "0",
+                          "ShipDate": null,
+                          "ShipGroupId": null,
+                          "ShipGroupSequence": "0",
+                          "ShpngChrg": "0",
+                          "OrderStatus": "Unplanned",
+                          "DoStatus": "Cancelled",
+                          "StoreNbr": null,
+                          "StoreType": null,
+                          "TaxCharges": "0.0",
+                          "TcCompanyId": "1",
+                          "TcOrderId": "10003775090681",
+                          "DistroNumber": null,
+                          "TotalNbrOfLpn": "0",
+                          "TotalNbrOfPlt": "0",
+                          "TotalNbrOfUnits": "0",
+                          "LineHaulShipVia": null,
+                          "PartialShipConfirmStatus": "3",
+                          "PreBillStatus": "0",
+                          "TaxID": null,
+                          "OrderDestInfo": {
+                            "DestAddress1": "1451 DR EDWARD HILLARD DR",
+                            "DestAddress2": "SUITE 140",
+                            "DestAddress3": null,
+                            "DestCity": "TUSCALOOSA",
+                            "DestContact": null,
+                            "DestCountryCode": "US",
+                            "DestCounty": null,
+                            "DestDockDoorId": "0",
+                            "DestDockId": null,
+                            "DestEmail": null,
+                            "DestFacilityAliasId": "596",
+                            "DestFacilityId": "596",
+                            "DestFacilityName": "596",
+                            "DestFaxNumber": null,
+                            "DestName": null,
+                            "DestPhoneNumber": null,
+                            "DestPostalCode": "35401",
+                            "DestStateProv": "AL"
+                          },
+                          "OrderOriginInfo": {
+                            "OriginAddress1": "270 Logistics Center Parkway",
+                            "OriginAddress2": null,
+                            "OriginAddress3": null,
+                            "OriginCity": "Forsyth",
+                            "OriginContact": null,
+                            "OriginCountryCode": "US",
+                            "OriginCounty": null,
+                            "OriginDockDoorId": null,
+                            "OriginDockId": null,
+                            "OriginEmail": null,
+                            "OriginFacilityAliasId": "4",
+                            "OriginFacilityId": "1",
+                            "OriginFacilityName": "SCGA",
+                            "OriginFaxNumber": null,
+                            "OriginPhoneNumber": null,
+                            "OriginPostalCode": "31029",
+                            "OriginStateProv": "GA",
+                            "OriginShipThruFacilityId": null,
+                            "OriginShipThruFacAliasId": null
+                          },
+                          "OrderLineItem": {
+                            "ItemName": "10178962",
+                            "OrigItemName": "10178962",
+                            "UserCanceledQty": "1",
+                            "RetailPrice": "12",
+                            "ShippedQty": "0",
+                            "ReasonCode": "45",
+                            "Uom": "EA"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "wait": 5,
+          "wait_time": 10,
+          "user_id": "62a17d6f-9dec-4fb8-8784-268462326ad5"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 10800,
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-27T10:06:37.791Z",
+      "createdAt": "2026-01-27T10:06:37.791Z",
+      "role": "workflow:owner",
+      "workflowId": "W0VCmg7lJ6ZFSaNY",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:40:16.589Z",
+  "versionId": "6e81fbfb-aab9-4c11-98a6-91be0f7328f0"
+}
