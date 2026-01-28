@@ -1,0 +1,2203 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-26T11:25:50.313Z",
+    "createdAt": "2026-01-26T11:25:45.036Z",
+    "versionId": "f6d9cdf9-cc74-4ec3-a3bf-59b6bdc8b008",
+    "workflowId": "ZxO7nED7dMeNJ76n",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "w1tHRoLY57jNiy3V",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+            "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "dag_run_id": "rms_jdaallocationtransform_30min",
+              "wait": 60,
+              "wait_time": 285
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dag_run_id",
+                "displayName": "dag_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          992,
+          176
+        ],
+        "id": "189c6028-916b-4aa1-8f27-2e01c0d49526",
+        "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find Allocation in MFCS\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1216,
+          416
+        ],
+        "id": "ae2696df-b1dd-46eb-8f52-aa6d34642c6a",
+        "name": "Can not find Allocation in MFCS",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Check Allocation in MFCS v2\\'').isExecuted,\"Input from \\\"Call Check Allocation in MFCS\\\" node: \\n \"+$('Call \\'Check Allocation in MFCS v2\\'').item.json.toJsonString(),\"\" )}}\n\n",
+          "options": {
+            "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1456,
+          160
+        ],
+        "id": "56f69204-ef31-463c-8afb-0e983b3c22ac",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          1456,
+          304
+        ],
+        "id": "85855e88-4e87-4f1a-9a72-3c7a83ac03c4",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "FIpUb1C3cbh8qN71",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Unable to get allocation JSON template from MFCS.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          560,
+          416
+        ],
+        "id": "2d27236d-2272-4a8c-aaa9-2176991a89d9",
+        "name": "Unable to get allocation JSON template from MFCS.",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          992,
+          416
+        ],
+        "id": "a95f8dc6-c842-4024-b63b-e698ca290d05",
+        "name": "DAG Run failed or wait too long",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## CSV File generation \n**Create CSV file for allocation using Custom REST Api developed in RDS**",
+          "height": 624,
+          "width": 640
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          64,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "e49df895-45bb-4f24-a16f-b2467d487f35",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## Upload CSV to Azure \n****",
+          "height": 624,
+          "width": 224,
+          "color": 2
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          704,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "391bfa0c-1763-4cfc-b936-d24a7968eb75",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "content": "## Run DAG in Airflow\n**Get JSON from Kafka topic and call MFCS Rest API to create Allocation** ",
+          "height": 624,
+          "width": 224,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          928,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "e7bd8af7-330d-48bb-96ea-2f8af447c706",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "content": "## Check Allocation in MFCS \n**REST API** ",
+          "height": 624,
+          "width": 224,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1152,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "5cd97180-b324-4d2b-a620-b4272a4ea375",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "content": "## Result evaluation with AI \n",
+          "height": 624,
+          "width": 960,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1376,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "1270c49f-2df8-4345-a6a6-218a3dbf45a6",
+        "name": "Sticky Note5"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get allocation JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Azure').isExecuted,\"Error from \\\"Upload File To Azure\\\" node: \\n \"+$('Failed to upload file to Azure').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check Allocation in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n",
+          "options": {
+            "systemMessage": "Use the incoming errors to create a summary from all nodes."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1456,
+          416
+        ],
+        "id": "b2b8304b-0c97-465d-948b-029f7b6d969d",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**Automatically generates \n CSV using REST API** ",
+          "height": 624,
+          "width": 256,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -368,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "79cf73c5-f936-4f9f-9680-50aa48b7e831",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "BX1w6dv2PaJ0OO21",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/BX1w6dv2PaJ0OO21",
+            "cachedResultName": "Check Allocation in MFCS v2"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $('Merge').item.binary }}",
+              "wait": 60,
+              "wait_time": 10,
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1216,
+          176
+        ],
+        "id": "349b5d76-b219-4691-b058-73130f0d74d8",
+        "name": "Call 'Check Allocation in MFCS v2'",
+        "alwaysOutputData": false,
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -288,
+          256
+        ],
+        "id": "d10591c4-ed99-496a-af0a-ecdbf3d0c00d",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload file to Azure.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          768,
+          416
+        ],
+        "id": "7ac1ed6d-bc92-46ec-ae12-3d9cae5bc5a5",
+        "name": "Failed to upload file to Azure",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getAllocCSV",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "file"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          160,
+          112
+        ],
+        "id": "ee933866-333e-4205-b91e-188616a27ab8",
+        "name": "Get Alloc CSV",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "jsCode": "  try {\n     if(!!$input.first().json.binary.data_0.data && $input.first().json.binary.data_0.data !== undefined && $input.first().json.binary.data_0.data !== null ){ \n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data_0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data_0.mimeType,\n                    fileExtension: $input.first().json.binary.data_0.fileExtension,\n                    fileName: $input.first().json.binary.data_0.fileName,\n                    fileSize: $input.first().json.binary.data_0.fileSize,\n                    id: $input.first().json.binary.data_0.id,\n                  },\n                },\n              },\n            ];\n    }\n    } catch (e) {\n     try {\n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data0.mimeType,\n                    fileExtension: $input.first().json.binary.data0.fileExtension,\n                    fileName: $input.first().json.binary.data0.fileName,\n                    fileSize: $input.first().json.binary.data0.fileSize,\n                    id: $input.first().json.binary.data0.id,\n                  },\n                },\n              },\n            ];\n       } catch (e) {\n       return $input.all();\n       }\n    }\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          160,
+          256
+        ],
+        "id": "e27f62ca-2da5-42ff-bfed-ac65ea6c32ae",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "a27b7f25-818b-420b-a41e-cec969382aa1",
+                "leftValue": "={{ $binary.data }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "exists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          352,
+          416
+        ],
+        "id": "2c94ba2c-92c7-47e9-8a7d-69e0bfe46d89",
+        "name": "If"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          560,
+          176
+        ],
+        "id": "1230eff9-7ff7-4efe-a001-c855e9274578",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Get binary data from the previous node\nconst binaryData = items[0].binary.data; // replace 'data' with your binary property name\n\n// Convert binary to string\nconst textData = Buffer.from(binaryData.data, 'base64').toString('utf-8');\nconst modData = 'LOCATION_ID,ALLOC_NBR,MERCH_STATUS_CODE,PO_NBR,BO_NBR,RECEIVING_ID,SOURCE_WHSE,DESTINATION_WHSE,DEPT_NBR,Z_OPEN_09,VENDOR_NBR,USER_ID, STYLE_MASTER_SKU,COLOR_NBR, SIZE_NBR, PACK_ID,QTY_PER_PACK, LINE_SEQUENCE,VALUE \\n'+textData;\nconst base64Data = Buffer.from(modData, 'utf-8').toString('base64');\n// Return\nreturn [\n              {\n                binary: {\n                  data: {\n                    data: base64Data, // your Base64 string\n                    mimeType: items[0].binary.data.mimeType,\n                    fileExtension: items[0].binary.data.fileExtension,\n                    fileName: items[0].binary.data.fileName,\n                    fileSize: items[0].binary.data.fileSize,\n                  },\n                },\n              },\n            ];\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          352,
+          256
+        ],
+        "id": "664c1b25-f944-476b-87b9-75530fa69bf3",
+        "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "output_message": "={{ $('AI Agent').item.json.output }}",
+              "status": "success",
+              "workflow_id": "={{ $workflow.id }}",
+              "data_1": "={{ $json.data.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2096,
+          160
+        ],
+        "id": "62f705ee-4571-4189-a880-5f643ef52828",
+        "name": "Insert row"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "workflow_id": "={{ $workflow.id }}",
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "status": "error",
+              "output_message": "={{ $('AI Agent1').item.json.output }}",
+              "data_1": "={{ $json.data.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          2096,
+          416
+        ],
+        "id": "d040e229-b0f0-4b98-85ab-aba2ad849411",
+        "name": "Insert row1"
+      },
+      {
+        "parameters": {
+          "binaryPropertyName": "={{ $('Merge').item.binary.data }}",
+          "options": {
+            "encoding": "utf-8",
+            "headerRow": true,
+            "includeEmptyCells": true
+          }
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          1744,
+          160
+        ],
+        "id": "010d7a30-7d14-4b52-93b5-61d7b93bd914",
+        "name": "Extract from File"
+      },
+      {
+        "parameters": {
+          "binaryPropertyName": "={{ $('Merge').item.binary }}",
+          "options": {
+            "encoding": "utf-8",
+            "headerRow": true,
+            "includeEmptyCells": true
+          }
+        },
+        "type": "n8n-nodes-base.extractFromFile",
+        "typeVersion": 1.1,
+        "position": [
+          1744,
+          416
+        ],
+        "id": "b534314b-4364-4b3c-a04a-d922c83da4b4",
+        "name": "Extract from File1"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1920,
+          160
+        ],
+        "id": "4f9c4a9f-877e-43cd-bc8c-bba93e4bba85",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1920,
+          416
+        ],
+        "id": "44a8d950-d82f-44d2-b69a-545432fa894a",
+        "name": "Aggregate1"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "ih4l6zXS7JwZLDIH",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/ih4l6zXS7JwZLDIH",
+            "cachedResultName": "SBFL - Allocation - Upload Allocation CSV to Azure"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $binary }}",
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "filename": "=allocation_test_{{ $now.format(\"yyyy-MM-dd_HH:mm:ss\")}}.csv"
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "filename",
+                "displayName": "filename",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          768,
+          176
+        ],
+        "id": "7588c308-45eb-4f94-b3ee-e023c8066b07",
+        "name": "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'",
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Check Allocation in MFCS v2'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "DAG Run failed or wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Extract from File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Unable to get allocation JSON template from MFCS.": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DAG Run failed or wait too long": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Can not find Allocation in MFCS": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Extract from File1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Check Allocation in MFCS v2'": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Can not find Allocation in MFCS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Failed to upload file to Azure": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Alloc CSV": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Unable to get allocation JSON template from MFCS.",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get Alloc CSV",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript1": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Extract from File1": {
+        "main": [
+          [
+            {
+              "node": "Aggregate1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract from File": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Insert row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate1": {
+        "main": [
+          [
+            {
+              "node": "Insert row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to upload file to Azure",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version f6d9cdf9",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "f6d9cdf9-cc74-4ec3-a3bf-59b6bdc8b008",
+  "connections": {
+    "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Check Allocation in MFCS v2'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "DAG Run failed or wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unable to get allocation JSON template from MFCS.": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DAG Run failed or wait too long": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Can not find Allocation in MFCS": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Check Allocation in MFCS v2'": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Can not find Allocation in MFCS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed to upload file to Azure": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Alloc CSV": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Unable to get allocation JSON template from MFCS.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Alloc CSV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Insert row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to upload file to Azure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-03T08:30:56.669Z",
+  "id": "ZxO7nED7dMeNJ76n",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "5B - Test case - Allocation - AI",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "w1tHRoLY57jNiy3V",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "dag_run_id": "rms_jdaallocationtransform_30min",
+            "wait": 60,
+            "wait_time": 285
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dag_run_id",
+              "displayName": "dag_run_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        992,
+        176
+      ],
+      "id": "189c6028-916b-4aa1-8f27-2e01c0d49526",
+      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find Allocation in MFCS\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        416
+      ],
+      "id": "ae2696df-b1dd-46eb-8f52-aa6d34642c6a",
+      "name": "Can not find Allocation in MFCS",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Check Allocation in MFCS v2\\'').isExecuted,\"Input from \\\"Call Check Allocation in MFCS\\\" node: \\n \"+$('Call \\'Check Allocation in MFCS v2\\'').item.json.toJsonString(),\"\" )}}\n\n",
+        "options": {
+          "systemMessage": "Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1456,
+        160
+      ],
+      "id": "56f69204-ef31-463c-8afb-0e983b3c22ac",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        304
+      ],
+      "id": "85855e88-4e87-4f1a-9a72-3c7a83ac03c4",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FIpUb1C3cbh8qN71",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Unable to get allocation JSON template from MFCS.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        560,
+        416
+      ],
+      "id": "2d27236d-2272-4a8c-aaa9-2176991a89d9",
+      "name": "Unable to get allocation JSON template from MFCS.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        992,
+        416
+      ],
+      "id": "a95f8dc6-c842-4024-b63b-e698ca290d05",
+      "name": "DAG Run failed or wait too long",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## CSV File generation \n**Create CSV file for allocation using Custom REST Api developed in RDS**",
+        "height": 624,
+        "width": 640
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        64,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "e49df895-45bb-4f24-a16f-b2467d487f35",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Upload CSV to Azure \n****",
+        "height": 624,
+        "width": 224,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        704,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "391bfa0c-1763-4cfc-b936-d24a7968eb75",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Run DAG in Airflow\n**Get JSON from Kafka topic and call MFCS Rest API to create Allocation** ",
+        "height": 624,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "e7bd8af7-330d-48bb-96ea-2f8af447c706",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Check Allocation in MFCS \n**REST API** ",
+        "height": 624,
+        "width": 224,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1152,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "5cd97180-b324-4d2b-a620-b4272a4ea375",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Result evaluation with AI \n",
+        "height": 624,
+        "width": 960,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1376,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "1270c49f-2df8-4345-a6a6-218a3dbf45a6",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get allocation JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Azure').isExecuted,\"Error from \\\"Upload File To Azure\\\" node: \\n \"+$('Failed to upload file to Azure').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check Allocation in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n",
+        "options": {
+          "systemMessage": "Use the incoming errors to create a summary from all nodes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1456,
+        416
+      ],
+      "id": "b2b8304b-0c97-465d-948b-029f7b6d969d",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**Automatically generates \n CSV using REST API** ",
+        "height": 624,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -368,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "79cf73c5-f936-4f9f-9680-50aa48b7e831",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "BX1w6dv2PaJ0OO21",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/BX1w6dv2PaJ0OO21",
+          "cachedResultName": "Check Allocation in MFCS v2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $('Merge').item.binary }}",
+            "wait": 60,
+            "wait_time": 10,
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1216,
+        176
+      ],
+      "id": "349b5d76-b219-4691-b058-73130f0d74d8",
+      "name": "Call 'Check Allocation in MFCS v2'",
+      "alwaysOutputData": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        256
+      ],
+      "id": "d10591c4-ed99-496a-af0a-ecdbf3d0c00d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload file to Azure.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        768,
+        416
+      ],
+      "id": "7ac1ed6d-bc92-46ec-ae12-3d9cae5bc5a5",
+      "name": "Failed to upload file to Azure",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getAllocCSV",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        160,
+        112
+      ],
+      "id": "ee933866-333e-4205-b91e-188616a27ab8",
+      "name": "Get Alloc CSV",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "  try {\n     if(!!$input.first().json.binary.data_0.data && $input.first().json.binary.data_0.data !== undefined && $input.first().json.binary.data_0.data !== null ){ \n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data_0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data_0.mimeType,\n                    fileExtension: $input.first().json.binary.data_0.fileExtension,\n                    fileName: $input.first().json.binary.data_0.fileName,\n                    fileSize: $input.first().json.binary.data_0.fileSize,\n                    id: $input.first().json.binary.data_0.id,\n                  },\n                },\n              },\n            ];\n    }\n    } catch (e) {\n     try {\n      return [\n              {\n                binary: {\n                  data: {\n                    data: $input.first().json.binary.data0.data, // your Base64 string\n                    mimeType: $input.first().json.binary.data0.mimeType,\n                    fileExtension: $input.first().json.binary.data0.fileExtension,\n                    fileName: $input.first().json.binary.data0.fileName,\n                    fileSize: $input.first().json.binary.data0.fileSize,\n                    id: $input.first().json.binary.data0.id,\n                  },\n                },\n              },\n            ];\n       } catch (e) {\n       return $input.all();\n       }\n    }\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        256
+      ],
+      "id": "e27f62ca-2da5-42ff-bfed-ac65ea6c32ae",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a27b7f25-818b-420b-a41e-cec969382aa1",
+              "leftValue": "={{ $binary.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        352,
+        416
+      ],
+      "id": "2c94ba2c-92c7-47e9-8a7d-69e0bfe46d89",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        560,
+        176
+      ],
+      "id": "1230eff9-7ff7-4efe-a001-c855e9274578",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get binary data from the previous node\nconst binaryData = items[0].binary.data; // replace 'data' with your binary property name\n\n// Convert binary to string\nconst textData = Buffer.from(binaryData.data, 'base64').toString('utf-8');\nconst modData = 'LOCATION_ID,ALLOC_NBR,MERCH_STATUS_CODE,PO_NBR,BO_NBR,RECEIVING_ID,SOURCE_WHSE,DESTINATION_WHSE,DEPT_NBR,Z_OPEN_09,VENDOR_NBR,USER_ID, STYLE_MASTER_SKU,COLOR_NBR, SIZE_NBR, PACK_ID,QTY_PER_PACK, LINE_SEQUENCE,VALUE \\n'+textData;\nconst base64Data = Buffer.from(modData, 'utf-8').toString('base64');\n// Return\nreturn [\n              {\n                binary: {\n                  data: {\n                    data: base64Data, // your Base64 string\n                    mimeType: items[0].binary.data.mimeType,\n                    fileExtension: items[0].binary.data.fileExtension,\n                    fileName: items[0].binary.data.fileName,\n                    fileSize: items[0].binary.data.fileSize,\n                  },\n                },\n              },\n            ];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        256
+      ],
+      "id": "664c1b25-f944-476b-87b9-75530fa69bf3",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "output_message": "={{ $('AI Agent').item.json.output }}",
+            "status": "success",
+            "workflow_id": "={{ $workflow.id }}",
+            "data_1": "={{ $json.data.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2096,
+        160
+      ],
+      "id": "62f705ee-4571-4189-a880-5f643ef52828",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "status": "error",
+            "output_message": "={{ $('AI Agent1').item.json.output }}",
+            "data_1": "={{ $json.data.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2096,
+        416
+      ],
+      "id": "d040e229-b0f0-4b98-85ab-aba2ad849411",
+      "name": "Insert row1"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "={{ $('Merge').item.binary.data }}",
+        "options": {
+          "encoding": "utf-8",
+          "headerRow": true,
+          "includeEmptyCells": true
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1744,
+        160
+      ],
+      "id": "010d7a30-7d14-4b52-93b5-61d7b93bd914",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "binaryPropertyName": "={{ $('Merge').item.binary }}",
+        "options": {
+          "encoding": "utf-8",
+          "headerRow": true,
+          "includeEmptyCells": true
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1744,
+        416
+      ],
+      "id": "b534314b-4364-4b3c-a04a-d922c83da4b4",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        160
+      ],
+      "id": "4f9c4a9f-877e-43cd-bc8c-bba93e4bba85",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        416
+      ],
+      "id": "44a8d950-d82f-44d2-b69a-545432fa894a",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "ih4l6zXS7JwZLDIH",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ih4l6zXS7JwZLDIH",
+          "cachedResultName": "SBFL - Allocation - Upload Allocation CSV to Azure"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $binary }}",
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "filename": "=allocation_test_{{ $now.format(\"yyyy-MM-dd_HH:mm:ss\")}}.csv"
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "filename",
+              "displayName": "filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        768,
+        176
+      ],
+      "id": "7588c308-45eb-4f94-b3ee-e023c8066b07",
+      "name": "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "Allocation",
+            "flowName": "ZxO7nED7dMeNJ76n",
+            "item": ""
+          },
+          "userid": "62a17d6f-9dec-4fb8-8784-268462326ad5"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": 28800,
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-03T08:30:56.674Z",
+      "createdAt": "2025-12-03T08:30:56.674Z",
+      "role": "workflow:owner",
+      "workflowId": "ZxO7nED7dMeNJ76n",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-26T11:25:45.035Z",
+  "versionId": "f6d9cdf9-cc74-4ec3-a3bf-59b6bdc8b008"
+}
