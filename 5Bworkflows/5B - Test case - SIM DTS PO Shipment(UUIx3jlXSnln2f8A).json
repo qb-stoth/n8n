@@ -1,0 +1,1999 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-28T08:26:32.468Z",
+    "createdAt": "2026-01-28T08:26:29.578Z",
+    "versionId": "eefdf497-8cf4-4488-889c-1312d98e2176",
+    "workflowId": "UUIx3jlXSnln2f8A",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**** ",
+          "height": 640,
+          "width": 256,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "0d88b380-3f67-42e2-9064-68f290493586",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          80,
+          256
+        ],
+        "id": "668da0ba-aa80-41c8-85e4-0659d7273634",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.data }}",
+          "options": {
+            "systemMessage": "Use the incoming inputs to create a short summary from all input nodes."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1680,
+          128
+        ],
+        "id": "8ecb58ee-c54a-48a2-8d14-093b6b8783cd",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          1680,
+          256
+        ],
+        "id": "6ddc7ed0-3c66-4dba-a97a-d2b8399766d2",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "FIpUb1C3cbh8qN71",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $if ($('Unable to get PO shipment details from MFCS.').isExecuted,\"Unable to get PO details from MFCS.: \\n \"+$('Unable to get PO shipment details from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('PO Creation unsuccesful').isExecuted,\"Error creating PO in MFCS: \\n \"+$('PO Creation unsuccesful').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Cannot find PO Shipment in MFCS').isExecuted,\"Cannot find PO in MFCS: \\n \"+$('Cannot find PO Shipment in MFCS').item.json.error.toJsonString(),\"\") }}",
+          "options": {
+            "systemMessage": "Use the incoming errors to create a summary from all nodes."
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          1680,
+          384
+        ],
+        "id": "31114514-d55b-4943-ba54-0b18739e86f3",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "output_message": "={{ $json.output }}",
+              "status": "success",
+              "workflow_id": "={{ $workflow.id }}",
+              "data_1": "={{ $('Get PO Details').item.json.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1952,
+          128
+        ],
+        "id": "d2c8dd24-0a82-44fa-b6ba-5e63b477e026",
+        "name": "Insert row"
+      },
+      {
+        "parameters": {
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "workflow_id": "={{ $workflow.id }}",
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "status": "error",
+              "output_message": "={{ $json.output }}",
+              "data_1": "={{ $('Get PO Details').item.json.toJsonString() }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "output_message",
+                "displayName": "output_message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_3",
+                "displayName": "data_3",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          1952,
+          384
+        ],
+        "id": "3ec1690f-1322-4aff-ae7a-0b79d35595e9",
+        "name": "Insert row1"
+      },
+      {
+        "parameters": {
+          "content": "## Get valid Shipment details\n**** ",
+          "height": 640
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          240,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "a5aa677d-b353-4cac-8c92-87b612a4d3e6",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "## Upload Shipment XML to Azure\n**** ",
+          "height": 640,
+          "width": 486,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          480,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "7d202a9c-e7ec-4ad4-98d8-83fcde2ac5a8",
+        "name": "Sticky Note9"
+      },
+      {
+        "parameters": {
+          "content": "## Check PO Shipment in MFCS\n**** ",
+          "height": 640,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1360,
+          -32
+        ],
+        "typeVersion": 1,
+        "id": "e8eed188-c210-4cf1-ab8a-afb97020f95c",
+        "name": "Sticky Note10"
+      },
+      {
+        "parameters": {
+          "content": "## Evaluate with AI\n**** ",
+          "height": 640,
+          "width": 544,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1600,
+          -32
+        ],
+        "typeVersion": 1,
+        "id": "4f01380a-5091-4e8d-9c34-ef3b46a3ec66",
+        "name": "Sticky Note11"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "wj20TtcR5j24SQV9",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/wj20TtcR5j24SQV9",
+            "cachedResultName": "SBFL - SIM DTS PO - Generate SIM DTS PO Shipments"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $json.user_id }}"
+            },
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          288,
+          112
+        ],
+        "id": "c5b5ac81-53ea-4217-ab4a-f9adcede7975",
+        "name": "Call 'SBFL - Generate SIM DTS PO Shipments'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          688,
+          96
+        ],
+        "id": "902e793d-d302-4ead-a369-de96b0202fc1",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          512,
+          96
+        ],
+        "id": "8e504dd5-979a-4776-8254-5423aca37ae5",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Unable to get PO shipment details from MFCS.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          304,
+          480
+        ],
+        "id": "168c7bd2-59d3-4ea1-9dca-7477267622b5",
+        "name": "Unable to get PO shipment details from MFCS.",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "qjwFWh6uEelWF0hR",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/qjwFWh6uEelWF0hR",
+            "cachedResultName": "Upload File To Azure"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $binary }}",
+              "container": "purchaseorder",
+              "path": "=/edi/edi856/edp/inbound/dts/xml/{{ $now.format(\"yyyyMMdd\")}}/",
+              "filename": "=XML_ASN_{{ $now.format(\"yyyyMMdd_HHmmssSSS\")}}_TEST.xml"
+            },
+            "matchingColumns": [
+              "data"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "object",
+                "removed": false
+              },
+              {
+                "id": "path",
+                "displayName": "path",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "filename",
+                "displayName": "filename",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "container",
+                "displayName": "container",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          800,
+          288
+        ],
+        "id": "423fe380-8a53-4bbb-96c7-8021a0e4380c",
+        "name": "Call 'Upload File To Azure'1",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload file to Azure.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          -176
+        ],
+        "id": "e89f0369-7e93-4bbd-b006-beac98536320",
+        "name": "Failed to upload file to Azure",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "operation": "toText",
+          "sourceProperty": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          544,
+          288
+        ],
+        "id": "43fb3763-3eb9-40f1-92fe-6a32a8b38ad0",
+        "name": "Convert to File"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "w1tHRoLY57jNiy3V",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+            "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "dag_run_id": "rms_spsedi856_transform_hourly",
+              "wait": 60,
+              "wait_time": 285
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dag_run_id",
+                "displayName": "dag_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1040,
+          192
+        ],
+        "id": "5199e778-2cf5-40c9-92e7-0cd20f5ec0c4",
+        "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1040,
+          432
+        ],
+        "id": "722fc0a5-1d8e-43cd-98b7-285462ee36ff",
+        "name": "DAG Run failed or wait too long",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "content": "## Run DAG in Airflow\n**** ",
+          "height": 640,
+          "width": 224,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          976,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "c9677ff6-28e5-41a7-a8ea-a169b64efaf1",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "Xq0JELziUEJ06ZXa",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/Xq0JELziUEJ06ZXa",
+            "cachedResultName": "SBFL - SIM DTS PO - Check PO Shipments in MFCS"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "data": "={{ $('Get PO Details').item.json.items }}",
+              "wait": 60,
+              "wait_time": 1
+            },
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "array",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          1424,
+          128
+        ],
+        "id": "e1d02e78-d78b-44db-8d85-6a2a69b6416e",
+        "name": "Call 'SBFL - SIM DTS PO - Check PO Shipments in MFCS'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Can not find PO Shipment in MFCS\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          1424,
+          384
+        ],
+        "id": "5fa241e0-c66b-4323-80f5-5f2272a8e5d5",
+        "name": "Cannot find PO Shipment in MFCS",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "nrIknFdXCbcmWi7a",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/nrIknFdXCbcmWi7a",
+            "cachedResultName": "SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $json.user_id }}",
+              "data": "={{ $json.data }}"
+            },
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "array",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          624,
+          -176
+        ],
+        "id": "96063aed-4d68-4ba6-9b19-a978ba6715c2",
+        "name": "Call 'SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure'",
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - Generate SIM DTS PO Shipments'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Insert row",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Insert row1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - Generate SIM DTS PO Shipments'": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Unable to get PO shipment details from MFCS.",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Convert to File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Unable to get PO shipment details from MFCS.": {
+        "main": [
+          []
+        ]
+      },
+      "Call 'Upload File To Azure'1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      },
+      "Convert to File": {
+        "main": [
+          [
+            {
+              "node": "Call 'Upload File To Azure'1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+        "main": [
+          [],
+          [
+            {
+              "node": "DAG Run failed or wait too long",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - SIM DTS PO - Check PO Shipments in MFCS'": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Cannot find PO Shipment in MFCS",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cannot find PO Shipment in MFCS": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Failed to upload file to Azure",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version eefdf497",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "eefdf497-8cf4-4488-889c-1312d98e2176",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - Generate SIM DTS PO Shipments'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Insert row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - Generate SIM DTS PO Shipments'": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Unable to get PO shipment details from MFCS.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unable to get PO shipment details from MFCS.": {
+      "main": [
+        []
+      ]
+    },
+    "Call 'Upload File To Azure'1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Call 'Upload File To Azure'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
+      "main": [
+        [],
+        [
+          {
+            "node": "DAG Run failed or wait too long",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - SIM DTS PO - Check PO Shipments in MFCS'": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Cannot find PO Shipment in MFCS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cannot find PO Shipment in MFCS": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed to upload file to Azure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T11:16:01.354Z",
+  "id": "UUIx3jlXSnln2f8A",
+  "isArchived": false,
+  "meta": null,
+  "name": "5B - Test case - SIM DTS PO Shipment",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**** ",
+        "height": 640,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "0d88b380-3f67-42e2-9064-68f290493586",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        256
+      ],
+      "id": "668da0ba-aa80-41c8-85e4-0659d7273634",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.data }}",
+        "options": {
+          "systemMessage": "Use the incoming inputs to create a short summary from all input nodes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1680,
+        128
+      ],
+      "id": "8ecb58ee-c54a-48a2-8d14-093b6b8783cd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        256
+      ],
+      "id": "6ddc7ed0-3c66-4dba-a97a-d2b8399766d2",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FIpUb1C3cbh8qN71",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $if ($('Unable to get PO shipment details from MFCS.').isExecuted,\"Unable to get PO details from MFCS.: \\n \"+$('Unable to get PO shipment details from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('PO Creation unsuccesful').isExecuted,\"Error creating PO in MFCS: \\n \"+$('PO Creation unsuccesful').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Cannot find PO Shipment in MFCS').isExecuted,\"Cannot find PO in MFCS: \\n \"+$('Cannot find PO Shipment in MFCS').item.json.error.toJsonString(),\"\") }}",
+        "options": {
+          "systemMessage": "Use the incoming errors to create a summary from all nodes."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1680,
+        384
+      ],
+      "id": "31114514-d55b-4943-ba54-0b18739e86f3",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "output_message": "={{ $json.output }}",
+            "status": "success",
+            "workflow_id": "={{ $workflow.id }}",
+            "data_1": "={{ $('Get PO Details').item.json.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        128
+      ],
+      "id": "d2c8dd24-0a82-44fa-b6ba-5e63b477e026",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "status": "error",
+            "output_message": "={{ $json.output }}",
+            "data_1": "={{ $('Get PO Details').item.json.toJsonString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "output_message",
+              "displayName": "output_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_3",
+              "displayName": "data_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        384
+      ],
+      "id": "3ec1690f-1322-4aff-ae7a-0b79d35595e9",
+      "name": "Insert row1"
+    },
+    {
+      "parameters": {
+        "content": "## Get valid Shipment details\n**** ",
+        "height": 640
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        240,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "a5aa677d-b353-4cac-8c92-87b612a4d3e6",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Upload Shipment XML to Azure\n**** ",
+        "height": 640,
+        "width": 486,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        480,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "7d202a9c-e7ec-4ad4-98d8-83fcde2ac5a8",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Check PO Shipment in MFCS\n**** ",
+        "height": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1360,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "e8eed188-c210-4cf1-ab8a-afb97020f95c",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Evaluate with AI\n**** ",
+        "height": 640,
+        "width": 544,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        -32
+      ],
+      "typeVersion": 1,
+      "id": "4f01380a-5091-4e8d-9c34-ef3b46a3ec66",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "wj20TtcR5j24SQV9",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/wj20TtcR5j24SQV9",
+          "cachedResultName": "SBFL - SIM DTS PO - Generate SIM DTS PO Shipments"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.user_id }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        112
+      ],
+      "id": "c5b5ac81-53ea-4217-ab4a-f9adcede7975",
+      "name": "Call 'SBFL - Generate SIM DTS PO Shipments'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        688,
+        96
+      ],
+      "id": "902e793d-d302-4ead-a369-de96b0202fc1",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        512,
+        96
+      ],
+      "id": "8e504dd5-979a-4776-8254-5423aca37ae5",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Unable to get PO shipment details from MFCS.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        304,
+        480
+      ],
+      "id": "168c7bd2-59d3-4ea1-9dca-7477267622b5",
+      "name": "Unable to get PO shipment details from MFCS.",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "qjwFWh6uEelWF0hR",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/qjwFWh6uEelWF0hR",
+          "cachedResultName": "Upload File To Azure"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $binary }}",
+            "container": "purchaseorder",
+            "path": "=/edi/edi856/edp/inbound/dts/xml/{{ $now.format(\"yyyyMMdd\")}}/",
+            "filename": "=XML_ASN_{{ $now.format(\"yyyyMMdd_HHmmssSSS\")}}_TEST.xml"
+          },
+          "matchingColumns": [
+            "data"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "path",
+              "displayName": "path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "filename",
+              "displayName": "filename",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "container",
+              "displayName": "container",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        288
+      ],
+      "id": "423fe380-8a53-4bbb-96c7-8021a0e4380c",
+      "name": "Call 'Upload File To Azure'1",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload file to Azure.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        -176
+      ],
+      "id": "e89f0369-7e93-4bbd-b006-beac98536320",
+      "name": "Failed to upload file to Azure",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        544,
+        288
+      ],
+      "id": "43fb3763-3eb9-40f1-92fe-6a32a8b38ad0",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "w1tHRoLY57jNiy3V",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "dag_run_id": "rms_spsedi856_transform_hourly",
+            "wait": 60,
+            "wait_time": 285
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dag_run_id",
+              "displayName": "dag_run_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        192
+      ],
+      "id": "5199e778-2cf5-40c9-92e7-0cd20f5ec0c4",
+      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        432
+      ],
+      "id": "722fc0a5-1d8e-43cd-98b7-285462ee36ff",
+      "name": "DAG Run failed or wait too long",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Run DAG in Airflow\n**** ",
+        "height": 640,
+        "width": 224,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "c9677ff6-28e5-41a7-a8ea-a169b64efaf1",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "Xq0JELziUEJ06ZXa",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Xq0JELziUEJ06ZXa",
+          "cachedResultName": "SBFL - SIM DTS PO - Check PO Shipments in MFCS"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "data": "={{ $('Get PO Details').item.json.items }}",
+            "wait": 60,
+            "wait_time": 1
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1424,
+        128
+      ],
+      "id": "e1d02e78-d78b-44db-8d85-6a2a69b6416e",
+      "name": "Call 'SBFL - SIM DTS PO - Check PO Shipments in MFCS'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Can not find PO Shipment in MFCS\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        384
+      ],
+      "id": "5fa241e0-c66b-4323-80f5-5f2272a8e5d5",
+      "name": "Cannot find PO Shipment in MFCS",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "nrIknFdXCbcmWi7a",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/nrIknFdXCbcmWi7a",
+          "cachedResultName": "SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.user_id }}",
+            "data": "={{ $json.data }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        -176
+      ],
+      "id": "96063aed-4d68-4ba6-9b19-a978ba6715c2",
+      "name": "Call 'SBFL - SIM DTS PO - Upload DTS Shipment XML to Azure'",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "SIM DTS PO",
+            "flowName": "UUIx3jlXSnln2f8A",
+            "item": ""
+          },
+          "user_id": "93ef244a-02d4-4d06-8930-7603d92e50ef"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-23T11:16:01.354Z",
+      "createdAt": "2026-01-23T11:16:01.354Z",
+      "role": "workflow:owner",
+      "workflowId": "UUIx3jlXSnln2f8A",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:26:29.577Z",
+  "versionId": "eefdf497-8cf4-4488-889c-1312d98e2176"
+}
