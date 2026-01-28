@@ -1,0 +1,167 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-19T14:22:43.196Z",
+    "createdAt": "2026-01-19T14:22:41.118Z",
+    "versionId": "f423dac4-fd0c-46ec-8e47-3203977f22a3",
+    "workflowId": "d9ozshsHd2v1Itkl",
+    "nodes": [
+      {
+        "parameters": {
+          "topic": "={{ $json.topicName }}",
+          "sendInputData": false,
+          "message": "={{ $json.data }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.kafka",
+        "typeVersion": 1,
+        "position": [
+          256,
+          0
+        ],
+        "id": "28d54e7f-ffd9-4cba-94a6-910daf38e139",
+        "name": "Kafka",
+        "credentials": {
+          "kafka": {
+            "id": "rIqZVpegxwYRz8cx",
+            "name": "Kafka account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data"
+              },
+              {
+                "name": "topicName"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "8c9fc01c-268d-436d-aa20-30da271df495",
+        "name": "When Executed by Another Workflow"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Kafka",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version f423dac4",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "f423dac4-fd0c-46ec-8e47-3203977f22a3",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Kafka",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-12-03T08:30:27.725Z",
+  "id": "d9ozshsHd2v1Itkl",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Upload to Kafka topic",
+  "nodes": [
+    {
+      "parameters": {
+        "topic": "={{ $json.topicName }}",
+        "sendInputData": false,
+        "message": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.kafka",
+      "typeVersion": 1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "28d54e7f-ffd9-4cba-94a6-910daf38e139",
+      "name": "Kafka",
+      "credentials": {
+        "kafka": {
+          "id": "rIqZVpegxwYRz8cx",
+          "name": "Kafka account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data"
+            },
+            {
+              "name": "topicName"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8c9fc01c-268d-436d-aa20-30da271df495",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "shared": [
+    {
+      "updatedAt": "2025-12-03T08:30:27.729Z",
+      "createdAt": "2025-12-03T08:30:27.729Z",
+      "role": "workflow:owner",
+      "workflowId": "d9ozshsHd2v1Itkl",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:47.106Z",
+      "createdAt": "2026-01-28T08:40:47.106Z",
+      "id": "NN19Km37JJKZjXr6",
+      "name": "Common"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:45:09.419Z",
+  "versionId": "f423dac4-fd0c-46ec-8e47-3203977f22a3"
+}
