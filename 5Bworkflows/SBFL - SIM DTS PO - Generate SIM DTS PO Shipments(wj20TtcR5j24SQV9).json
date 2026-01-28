@@ -1,0 +1,762 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-26T13:17:01.745Z",
+    "createdAt": "2026-01-26T13:16:58.989Z",
+    "versionId": "75c08086-d347-4c6e-80aa-2c38d3778f72",
+    "workflowId": "wj20TtcR5j24SQV9",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -464,
+          0
+        ],
+        "id": "7dd6a41c-e615-41dd-808a-661f681e017c",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $json.user_id }}"
+              },
+              {
+                "keyName": "message_type",
+                "keyValue": "DTSPo"
+              }
+            ]
+          },
+          "limit": 3
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
+        "position": [
+          -304,
+          0
+        ],
+        "id": "32959a5b-33ba-4a63-bdfe-f0b3056252ca",
+        "name": "Get row(s)",
+        "alwaysOutputData": true
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          448,
+          0
+        ],
+        "id": "5a8fe728-6213-4544-a42f-47d6066d88bc",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Error occured during tXML file generation. Not able to get PO_NUMBER from MFCS.\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          928,
+          336
+        ],
+        "id": "2f1615dd-1ab1-48c9-bea5-bd0536a78efd",
+        "name": "Stop and Error"
+      },
+      {
+        "parameters": {
+          "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $('Get PO data').all()) {\n  item.json.myNewField += item;\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          320,
+          -144
+        ],
+        "id": "dc90ad72-995e-4f41-acbc-8ec79763dff9",
+        "name": "Return results"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "89d75559-a274-45d0-a5bc-bd1bdbe64199",
+                "leftValue": "={{ $('Get row(s)').item.json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -144,
+          0
+        ],
+        "id": "ce5a1e17-c4ec-4f32-b79d-4ac744496140",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "errorMessage": "No data to process. Please run the \"SIM DTS PO\" flow first."
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          16,
+          160
+        ],
+        "id": "1a27e055-7787-4b10-a628-2c81e08df237",
+        "name": "Stop and Error1"
+      },
+      {
+        "parameters": {
+          "jsCode": "\n\nreturn $('Get ASN Info').all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          944,
+          16
+        ],
+        "id": "160217a6-3e25-45c7-8900-540373e8351a",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          752,
+          -80
+        ],
+        "id": "e9ad0ec5-0f7f-4a4b-b043-f2972ceaa45d",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b3ec4e3a-c2c1-4f5f-a6fb-901b89c46aa0",
+                "name": "data",
+                "value": "={{ $json.message_data }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          16,
+          0
+        ],
+        "id": "e34e4087-b885-4d77-914d-f5667c9cbd9c",
+        "name": "Get PO data"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getDTSPoShipmentInfo",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{ $json.data }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          592,
+          96
+        ],
+        "id": "e27a4115-8ce1-40ed-a7fd-57e6b1678919",
+        "name": "Get ASN Info",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "fd8f0ffe-23db-463d-97aa-4a31ee22881a",
+                "name": "=<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n",
+                "value": "",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          832,
+          96
+        ],
+        "id": "62cbab97-0686-42aa-afca-4abb98d0fb74",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Get row(s)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s)": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get ASN Info",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Get PO data",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          []
+        ]
+      },
+      "Return results": {
+        "main": [
+          []
+        ]
+      },
+      "Get PO data": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get ASN Info": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version 75c08086",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "75c08086-d347-4c6e-80aa-2c38d3778f72",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get ASN Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get PO data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        []
+      ]
+    },
+    "Return results": {
+      "main": [
+        []
+      ]
+    },
+    "Get PO data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get ASN Info": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-23T11:14:53.792Z",
+  "id": "wj20TtcR5j24SQV9",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - SIM DTS PO - Generate SIM DTS PO Shipments",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -464,
+        0
+      ],
+      "id": "7dd6a41c-e615-41dd-808a-661f681e017c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $json.user_id }}"
+            },
+            {
+              "keyName": "message_type",
+              "keyValue": "DTSPo"
+            }
+          ]
+        },
+        "limit": 3
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -304,
+        0
+      ],
+      "id": "32959a5b-33ba-4a63-bdfe-f0b3056252ca",
+      "name": "Get row(s)",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        448,
+        0
+      ],
+      "id": "5a8fe728-6213-4544-a42f-47d6066d88bc",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Error occured during tXML file generation. Not able to get PO_NUMBER from MFCS.\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        928,
+        336
+      ],
+      "id": "2f1615dd-1ab1-48c9-bea5-bd0536a78efd",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $('Get PO data').all()) {\n  item.json.myNewField += item;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -144
+      ],
+      "id": "dc90ad72-995e-4f41-acbc-8ec79763dff9",
+      "name": "Return results"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "89d75559-a274-45d0-a5bc-bd1bdbe64199",
+              "leftValue": "={{ $('Get row(s)').item.json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -144,
+        0
+      ],
+      "id": "ce5a1e17-c4ec-4f32-b79d-4ac744496140",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "errorMessage": "No data to process. Please run the \"SIM DTS PO\" flow first."
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        16,
+        160
+      ],
+      "id": "1a27e055-7787-4b10-a628-2c81e08df237",
+      "name": "Stop and Error1"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $('Get ASN Info').all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        944,
+        16
+      ],
+      "id": "160217a6-3e25-45c7-8900-540373e8351a",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -80
+      ],
+      "id": "e9ad0ec5-0f7f-4a4b-b043-f2972ceaa45d",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b3ec4e3a-c2c1-4f5f-a6fb-901b89c46aa0",
+              "name": "data",
+              "value": "={{ $json.message_data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        0
+      ],
+      "id": "e34e4087-b885-4d77-914d-f5667c9cbd9c",
+      "name": "Get PO data"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getDTSPoShipmentInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        592,
+        96
+      ],
+      "id": "e27a4115-8ce1-40ed-a7fd-57e6b1678919",
+      "name": "Get ASN Info",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd8f0ffe-23db-463d-97aa-4a31ee22881a",
+              "name": "=<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        832,
+        96
+      ],
+      "id": "62cbab97-0686-42aa-afca-4abb98d0fb74",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "SIM DTS PO",
+            "flowName": "wj20TtcR5j24SQV9"
+          },
+          "user_id": "93ef244a-02d4-4d06-8930-7603d92e50ef"
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-23T11:14:53.792Z",
+      "createdAt": "2026-01-23T11:14:53.792Z",
+      "role": "workflow:owner",
+      "workflowId": "wj20TtcR5j24SQV9",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:39:37.467Z",
+      "createdAt": "2026-01-28T08:38:52.110Z",
+      "id": "JkY12UxMieTvHe5N",
+      "name": "Sim_DTS_Po"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-28T08:43:00.247Z",
+  "versionId": "75c08086-d347-4c6e-80aa-2c38d3778f72"
+}
