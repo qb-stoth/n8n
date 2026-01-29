@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-28T08:47:09.401Z",
-    "createdAt": "2026-01-28T08:46:24.157Z",
-    "versionId": "4ee394f6-98fd-4328-a79a-ebca73e2eb28",
+    "updatedAt": "2026-01-28T16:43:19.678Z",
+    "createdAt": "2026-01-28T16:43:14.560Z",
+    "versionId": "8eb0a7cf-df7e-4894-ad49-592aa20bd17b",
     "workflowId": "KodK9HvrO03NEnVa",
     "nodes": [
       {
@@ -34,25 +34,232 @@
         ],
         "id": "0c678de0-f362-4877-94ec-e7b336811737",
         "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getDTSReceiptInfo",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "options": {
+            "response": {
+              "response": {
+                "responseFormat": "json"
+              }
+            }
+          }
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          304,
+          160
+        ],
+        "id": "8f2a4a40-e8d9-40d5-93b9-49a6f6d1ecd2",
+        "name": "getDTSReceiptInfo",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "d9ozshsHd2v1Itkl",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/d9ozshsHd2v1Itkl",
+            "cachedResultName": "Upload to Kafka topic"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ JSON.stringify($json.relayMessage) }}",
+              "topicName": "sell_sim_mao_relay_dts_receipt_nrt"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "topicName",
+                "displayName": "topicName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          512,
+          64
+        ],
+        "id": "513d1d96-f75a-4803-9f4c-d74afc57ca3b",
+        "name": "Call 'Upload to Kafka topic'"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "w1tHRoLY57jNiy3V",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+            "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "dag_run_id": "rms_simdtsreceipts_hourly_adhoc",
+              "wait": 60,
+              "wait_time": 285
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "dag_run_id",
+                "displayName": "dag_run_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string"
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number"
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          736,
+          64
+        ],
+        "id": "f90ffd87-e9b4-4ba4-bcda-82c8efb4eee7",
+        "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+        "onError": "continueErrorOutput"
       }
     ],
     "connections": {
       "When Executed by Another Workflow": {
         "main": [
-          []
+          [
+            {
+              "node": "getDTSReceiptInfo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "getDTSReceiptInfo": {
+        "main": [
+          [
+            {
+              "node": "Call 'Upload to Kafka topic'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Upload to Kafka topic'": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       }
     },
-    "authors": "zoltan karancsi",
-    "name": "Version 4ee394f6",
+    "authors": "Attila Zubor",
+    "name": "Version 8eb0a7cf",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "4ee394f6-98fd-4328-a79a-ebca73e2eb28",
+  "activeVersionId": "8eb0a7cf-df7e-4894-ad49-592aa20bd17b",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
-        []
+        [
+          {
+            "node": "getDTSReceiptInfo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "getDTSReceiptInfo": {
+      "main": [
+        [
+          {
+            "node": "Call 'Upload to Kafka topic'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Upload to Kafka topic'": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -90,6 +297,157 @@
       ],
       "id": "0c678de0-f362-4877-94ec-e7b336811737",
       "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getDTSReceiptInfo",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        304,
+        160
+      ],
+      "id": "8f2a4a40-e8d9-40d5-93b9-49a6f6d1ecd2",
+      "name": "getDTSReceiptInfo",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "d9ozshsHd2v1Itkl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/d9ozshsHd2v1Itkl",
+          "cachedResultName": "Upload to Kafka topic"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ JSON.stringify($json.relayMessage) }}",
+            "topicName": "sell_sim_mao_relay_dts_receipt_nrt"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topicName",
+              "displayName": "topicName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        64
+      ],
+      "id": "513d1d96-f75a-4803-9f4c-d74afc57ca3b",
+      "name": "Call 'Upload to Kafka topic'"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "w1tHRoLY57jNiy3V",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/w1tHRoLY57jNiy3V",
+          "cachedResultName": "Run Apache Airflow DAG and Retrieve XCom Value"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "dag_run_id": "rms_simdtsreceipts_hourly_adhoc",
+            "wait": 60,
+            "wait_time": 285
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "dag_run_id",
+              "displayName": "dag_run_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        736,
+        64
+      ],
+      "id": "f90ffd87-e9b4-4ba4-bcda-82c8efb4eee7",
+      "name": "Call 'Run Apache Airflow DAG and Retrieve XCom Value'",
+      "onError": "continueErrorOutput"
     }
   ],
   "pinData": {
@@ -132,6 +490,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:47:06.675Z",
-  "versionId": "4ee394f6-98fd-4328-a79a-ebca73e2eb28"
+  "updatedAt": "2026-01-28T16:43:14.559Z",
+  "versionId": "8eb0a7cf-df7e-4894-ad49-592aa20bd17b"
 }
