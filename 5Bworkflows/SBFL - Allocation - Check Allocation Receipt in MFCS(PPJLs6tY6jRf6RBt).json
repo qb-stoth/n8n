@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-27T07:41:52.035Z",
-    "createdAt": "2026-01-27T07:41:29.268Z",
-    "versionId": "829415a3-f675-4323-b2a3-dff37d3cb780",
+    "updatedAt": "2026-01-28T12:47:42.410Z",
+    "createdAt": "2026-01-28T12:47:20.347Z",
+    "versionId": "b6735e0c-69aa-42dd-9bf9-b211d9a8c253",
     "workflowId": "PPJLs6tY6jRf6RBt",
     "nodes": [
       {
@@ -415,7 +415,7 @@
       },
       {
         "parameters": {
-          "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getShipment/{{ $json.ext_id }}",
+          "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getShipment/{{ $json.relayMessage.RelaySupply[1].SupplyDefinition.ReferenceId }}",
           "authentication": "genericCredentialType",
           "genericAuthType": "oAuth2Api",
           "sendHeaders": true,
@@ -432,7 +432,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.3,
         "position": [
-          192,
+          16,
           400
         ],
         "id": "4b75f98c-bd12-4fbb-b2bb-ed54a4753504",
@@ -792,8 +792,7 @@
         ],
         "id": "4fc36b38-c8b0-4208-82da-1485083fa569",
         "name": "Delete row(s)3",
-        "alwaysOutputData": true,
-        "disabled": true
+        "alwaysOutputData": true
       },
       {
         "parameters": {
@@ -807,43 +806,6 @@
         ],
         "id": "fb9f2369-4e31-4d74-8db4-b7ef68694f11",
         "name": "Code in JavaScript2"
-      },
-      {
-        "parameters": {
-          "operation": "get",
-          "dataTableId": {
-            "__rl": true,
-            "value": "hk8gBzPCwdeTj0vo",
-            "mode": "list",
-            "cachedResultName": "MFCS_MSG_DATA",
-            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
-          },
-          "matchType": "allConditions",
-          "filters": {
-            "conditions": [
-              {
-                "keyName": "message_type",
-                "keyValue": "XAllocShipment"
-              },
-              {
-                "keyName": "user_id",
-                "keyValue": "={{ $('in data').first().json.user_id}}"
-              },
-              {
-                "keyName": "message_id",
-                "keyValue": "={{ $json.relayMessage.RelaySupply[1].SupplyDefinition.ReferenceId +\"_\"+ $json.relayMessage.RelaySupply[1].SupplyDefinition.OriginLocationId+\"_\"+$json.relayMessage.RelaySupply[1].SupplyDefinition.LocationId}}"
-              }
-            ]
-          }
-        },
-        "type": "n8n-nodes-base.dataTable",
-        "typeVersion": 1.1,
-        "position": [
-          -48,
-          416
-        ],
-        "id": "8225cf8f-8695-4164-91b8-7224e190d3c8",
-        "name": "Get row(s)3"
       },
       {
         "parameters": {
@@ -895,6 +857,40 @@
         "name": "Can not find receipt",
         "alwaysOutputData": false,
         "onError": "continueRegularOutput"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocReceipt"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -1392,
+          496
+        ],
+        "id": "4675400c-faa0-45ad-9e21-f9c524f2441a",
+        "name": "Delete row(s)2"
       }
     ],
     "connections": {
@@ -908,6 +904,11 @@
             },
             {
               "node": "Wait",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Delete row(s)2",
               "type": "main",
               "index": 0
             }
@@ -954,7 +955,7 @@
           ],
           [
             {
-              "node": "Get row(s)3",
+              "node": "Get Shipment",
               "type": "main",
               "index": 0
             }
@@ -1158,17 +1159,6 @@
           ]
         ]
       },
-      "Get row(s)3": {
-        "main": [
-          [
-            {
-              "node": "Get Shipment",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Get Shipment Receipt in Hospital": {
         "main": [
           [
@@ -1189,11 +1179,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 829415a3",
+    "name": "Version b6735e0c",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "829415a3-f675-4323-b2a3-dff37d3cb780",
+  "activeVersionId": "b6735e0c-69aa-42dd-9bf9-b211d9a8c253",
   "connections": {
     "in data": {
       "main": [
@@ -1205,6 +1195,11 @@
           },
           {
             "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete row(s)2",
             "type": "main",
             "index": 0
           }
@@ -1251,7 +1246,7 @@
         ],
         [
           {
-            "node": "Get row(s)3",
+            "node": "Get Shipment",
             "type": "main",
             "index": 0
           }
@@ -1449,17 +1444,6 @@
         [
           {
             "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get row(s)3": {
-      "main": [
-        [
-          {
-            "node": "Get Shipment",
             "type": "main",
             "index": 0
           }
@@ -1900,7 +1884,7 @@
     },
     {
       "parameters": {
-        "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getShipment/{{ $json.ext_id }}",
+        "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getShipment/{{ $json.relayMessage.RelaySupply[1].SupplyDefinition.ReferenceId }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "oAuth2Api",
         "sendHeaders": true,
@@ -1917,7 +1901,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        192,
+        16,
         400
       ],
       "id": "4b75f98c-bd12-4fbb-b2bb-ed54a4753504",
@@ -2277,8 +2261,7 @@
       ],
       "id": "4fc36b38-c8b0-4208-82da-1485083fa569",
       "name": "Delete row(s)3",
-      "alwaysOutputData": true,
-      "disabled": true
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -2292,43 +2275,6 @@
       ],
       "id": "fb9f2369-4e31-4d74-8db4-b7ef68694f11",
       "name": "Code in JavaScript2"
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "dataTableId": {
-          "__rl": true,
-          "value": "hk8gBzPCwdeTj0vo",
-          "mode": "list",
-          "cachedResultName": "MFCS_MSG_DATA",
-          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
-        },
-        "matchType": "allConditions",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "message_type",
-              "keyValue": "XAllocShipment"
-            },
-            {
-              "keyName": "user_id",
-              "keyValue": "={{ $('in data').first().json.user_id}}"
-            },
-            {
-              "keyName": "message_id",
-              "keyValue": "={{ $json.relayMessage.RelaySupply[1].SupplyDefinition.ReferenceId +\"_\"+ $json.relayMessage.RelaySupply[1].SupplyDefinition.OriginLocationId+\"_\"+$json.relayMessage.RelaySupply[1].SupplyDefinition.LocationId}}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.dataTable",
-      "typeVersion": 1.1,
-      "position": [
-        -48,
-        416
-      ],
-      "id": "8225cf8f-8695-4164-91b8-7224e190d3c8",
-      "name": "Get row(s)3"
     },
     {
       "parameters": {
@@ -2380,6 +2326,40 @@
       "name": "Can not find receipt",
       "alwaysOutputData": false,
       "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocReceipt"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1392,
+        496
+      ],
+      "id": "4675400c-faa0-45ad-9e21-f9c524f2441a",
+      "name": "Delete row(s)2"
     }
   ],
   "pinData": {
@@ -2965,6 +2945,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:41:55.394Z",
-  "versionId": "829415a3-f675-4323-b2a3-dff37d3cb780"
+  "updatedAt": "2026-01-28T12:47:20.346Z",
+  "versionId": "b6735e0c-69aa-42dd-9bf9-b211d9a8c253"
 }
