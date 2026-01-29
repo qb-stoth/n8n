@@ -1,0 +1,273 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-29T13:47:50.220Z",
+    "createdAt": "2026-01-29T13:47:48.040Z",
+    "versionId": "81014d94-11da-4fa4-8853-11755e79210b",
+    "workflowId": "JIJTHshGxwXA0MLH",
+    "nodes": [
+      {
+        "parameters": {
+          "content": "## Call from other workflow\n**** ",
+          "height": 640,
+          "width": 256,
+          "color": 7
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1,
+        "id": "81142c7a-fb25-4273-a2ab-c7a18b68ed2d",
+        "name": "Sticky Note8"
+      },
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          80,
+          256
+        ],
+        "id": "94799ad9-f010-4c1a-b851-0b7246e4c5e4",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "r2CL0dIpJ0Y2uC0D",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/r2CL0dIpJ0Y2uC0D",
+            "cachedResultName": "SBFL - SIM DTS PO - Find Partially Shipped PO"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $json.user_id }}",
+              "po_list": "={{ $json.po_list }}"
+            },
+            "matchingColumns": [
+              "user_id"
+            ],
+            "schema": [
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "po_list",
+                "displayName": "po_list",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "array",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          288,
+          256
+        ],
+        "id": "a4bb5d20-35d0-4176-aa5b-5512f2ac3289",
+        "name": "Call 'SBFL - SIM DTS PO - Find Partially Shipped PO'"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Call 'SBFL - SIM DTS PO - Find Partially Shipped PO'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version 81014d94",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "81014d94-11da-4fa4-8853-11755e79210b",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Call 'SBFL - SIM DTS PO - Find Partially Shipped PO'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-29T10:37:24.196Z",
+  "id": "JIJTHshGxwXA0MLH",
+  "isArchived": false,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "5B - Test case - SIM DTS PO - Kill n Fill",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Call from other workflow\n**** ",
+        "height": 640,
+        "width": 256,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "81142c7a-fb25-4273-a2ab-c7a18b68ed2d",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        256
+      ],
+      "id": "94799ad9-f010-4c1a-b851-0b7246e4c5e4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "r2CL0dIpJ0Y2uC0D",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/r2CL0dIpJ0Y2uC0D",
+          "cachedResultName": "SBFL - SIM DTS PO - Find Partially Shipped PO"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.user_id }}",
+            "po_list": "={{ $json.po_list }}"
+          },
+          "matchingColumns": [
+            "user_id"
+          ],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "po_list",
+              "displayName": "po_list",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        256
+      ],
+      "id": "a4bb5d20-35d0-4176-aa5b-5512f2ac3289",
+      "name": "Call 'SBFL - SIM DTS PO - Find Partially Shipped PO'"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "SIM DTS PO Kill n Fill",
+            "flowName": "JIJTHshGxwXA0MLH",
+            "item": ""
+          },
+          "user_id": "93ef244a-02d4-4d06-8930-7603d92e50ef",
+          "po_list": [
+            5669498,
+            6149803,
+            5609309,
+            5702223,
+            6137299,
+            6321506
+          ]
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-29T10:37:24.196Z",
+      "createdAt": "2026-01-29T10:37:24.196Z",
+      "role": "workflow:owner",
+      "workflowId": "JIJTHshGxwXA0MLH",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
+    },
+    {
+      "updatedAt": "2026-01-28T08:39:37.467Z",
+      "createdAt": "2026-01-28T08:38:52.110Z",
+      "id": "JkY12UxMieTvHe5N",
+      "name": "Sim_DTS_Po"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-29T15:22:50.708Z",
+  "versionId": "81014d94-11da-4fa4-8853-11755e79210b"
+}
