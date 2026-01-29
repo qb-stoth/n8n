@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-28T08:48:56.833Z",
-    "createdAt": "2026-01-28T08:48:52.946Z",
-    "versionId": "d7a593ea-883e-404b-b023-1f650ad356fa",
+    "updatedAt": "2026-01-29T10:41:08.360Z",
+    "createdAt": "2026-01-29T10:41:06.015Z",
+    "versionId": "3abe503c-759d-4d92-8ce5-6318d4e3f095",
     "workflowId": "O7COVhdjaPoyuNvp",
     "nodes": [
       {
@@ -32,7 +32,7 @@
           "text": "={{ $json.chatInput }}",
           "hasOutputParser": true,
           "options": {
-            "systemMessage": "You are an AI assistant that determines the appropriate flowName based on the user request.\n\n- If the user's request is related to \"Allocation\", you MUST return:\n  flowName = \"ZxO7nED7dMeNJ76n\"\n  type = Allocation\n\n- If the user's request is related to \"Allocation Shipment\", you MUST return:\n  flowName = \"fqSjG9Otvq5CNhuT0xOH3\"\n  type = Allocation-Shipment\n\n- If the user's request is related to \"SIM DTS PO\", you MUST return:\n  flowName = \"LpeVC0fdtOGSUHy1d1KiY\"\n  type = SIM DTS PO\n\n- If the user's request is related to \"SIM DTS PO Receipt\", you MUST return:\n  flowName = \"KodK9HvrO03NEnVa\"\n  type = SIM DTS PO Receipt\n\n- If the user's request is related to \"Allocation Receipt\", you MUST return:\n  flowName = \"A6SpAT7Kw-yyDNLmMHSaY\"\n  type = Allocation-Receipt\n\n- If the user's request is related to \"Cancel Allocation\", you MUST return:\n  flowName = \"oMR3po0crNMbyJXN\"\n  type = Cancel-Allocation\n\n- Anything else, you MUST return:\n  flowName = \"\"\n  type = \"\"",
+            "systemMessage": "You are an AI assistant that determines the appropriate flowName based on the user request.\n\n- If the user's request is related to \"Allocation\", you MUST return:\n  flowName = \"ZxO7nED7dMeNJ76n\"\n  type = Allocation\n\n- If the user's request is related to \"Allocation Shipment\", you MUST return:\n  flowName = \"fqSjG9Otvq5CNhuT0xOH3\"\n  type = Allocation-Shipment\n\n- If the user's request is related to \"SIM DTS PO\", you MUST return:\n  flowName = \"LpeVC0fdtOGSUHy1d1KiY\"\n  type = SIM DTS PO\n\n- If the user's request is related to \"SIM DTS PO Receipt\", you MUST return:\n  flowName = \"KodK9HvrO03NEnVa\"\n  type = SIM DTS PO Receipt\n\n- If the user's request is related to \"SIM DTS PO Receipt\", you MUST return:\n  flowName = \"JIJTHshGxwXA0MLH\"\n  type = SIM DTS PO Kill n Fill\n\n- If the user's request is related to \"Allocation Receipt\", you MUST return:\n  flowName = \"A6SpAT7Kw-yyDNLmMHSaY\"\n  type = Allocation-Receipt\n\n- If the user's request is related to \"Cancel Allocation\", you MUST return:\n  flowName = \"oMR3po0crNMbyJXN\"\n  type = Cancel-Allocation\n\n- If the user's request is related to \"SIM Inventory Adjustment\", you MUST return:\n  flowName = \"0QOMTeKTLu4n0LO7\"\n  type = SIM-Inventory-Adjustment\n\n- Anything else, you MUST return:\n  flowName = \"\"\n  type = \"\"",
             "enableStreaming": true
           }
         },
@@ -236,7 +236,7 @@
       },
       {
         "parameters": {
-          "message": "Please specify what you want to test ?\n\n-Allocation\n\n-Allocation Shipment\n\n-Allocation Receipt\n\n-Cancel Allocation\n\n-SIM DTS PO\n\n-SIM DTS PO Receipt",
+          "message": "Please specify what you want to test ?\n\n-Allocation\n\n-Allocation Shipment\n\n-Allocation Receipt\n\n-Cancel Allocation\n\n-SIM DTS PO\n\n-SIM DTS PO Receipt\n\n-SIM DTS PO Kill n Fill\n\n-SIM Inventory Adjustment",
           "options": {
             "limitWaitTime": {
               "values": {
@@ -718,11 +718,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version d7a593ea",
+    "name": "Version 3abe503c",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "d7a593ea-883e-404b-b023-1f650ad356fa",
+  "activeVersionId": "3abe503c-759d-4d92-8ce5-6318d4e3f095",
   "connections": {
     "When chat message received": {
       "main": [
@@ -988,7 +988,7 @@
         "text": "={{ $json.chatInput }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "You are an AI assistant that determines the appropriate flowName based on the user request.\n\n- If the user's request is related to \"Allocation\", you MUST return:\n  flowName = \"ZxO7nED7dMeNJ76n\"\n  type = Allocation\n\n- If the user's request is related to \"Allocation Shipment\", you MUST return:\n  flowName = \"fqSjG9Otvq5CNhuT0xOH3\"\n  type = Allocation-Shipment\n\n- If the user's request is related to \"SIM DTS PO\", you MUST return:\n  flowName = \"LpeVC0fdtOGSUHy1d1KiY\"\n  type = SIM DTS PO\n\n- If the user's request is related to \"SIM DTS PO Receipt\", you MUST return:\n  flowName = \"KodK9HvrO03NEnVa\"\n  type = SIM DTS PO Receipt\n\n- If the user's request is related to \"Allocation Receipt\", you MUST return:\n  flowName = \"A6SpAT7Kw-yyDNLmMHSaY\"\n  type = Allocation-Receipt\n\n- If the user's request is related to \"Cancel Allocation\", you MUST return:\n  flowName = \"oMR3po0crNMbyJXN\"\n  type = Cancel-Allocation\n\n- Anything else, you MUST return:\n  flowName = \"\"\n  type = \"\"",
+          "systemMessage": "You are an AI assistant that determines the appropriate flowName based on the user request.\n\n- If the user's request is related to \"Allocation\", you MUST return:\n  flowName = \"ZxO7nED7dMeNJ76n\"\n  type = Allocation\n\n- If the user's request is related to \"Allocation Shipment\", you MUST return:\n  flowName = \"fqSjG9Otvq5CNhuT0xOH3\"\n  type = Allocation-Shipment\n\n- If the user's request is related to \"SIM DTS PO\", you MUST return:\n  flowName = \"LpeVC0fdtOGSUHy1d1KiY\"\n  type = SIM DTS PO\n\n- If the user's request is related to \"SIM DTS PO Receipt\", you MUST return:\n  flowName = \"KodK9HvrO03NEnVa\"\n  type = SIM DTS PO Receipt\n\n- If the user's request is related to \"SIM DTS PO Receipt\", you MUST return:\n  flowName = \"JIJTHshGxwXA0MLH\"\n  type = SIM DTS PO Kill n Fill\n\n- If the user's request is related to \"Allocation Receipt\", you MUST return:\n  flowName = \"A6SpAT7Kw-yyDNLmMHSaY\"\n  type = Allocation-Receipt\n\n- If the user's request is related to \"Cancel Allocation\", you MUST return:\n  flowName = \"oMR3po0crNMbyJXN\"\n  type = Cancel-Allocation\n\n- If the user's request is related to \"SIM Inventory Adjustment\", you MUST return:\n  flowName = \"0QOMTeKTLu4n0LO7\"\n  type = SIM-Inventory-Adjustment\n\n- Anything else, you MUST return:\n  flowName = \"\"\n  type = \"\"",
           "enableStreaming": true
         }
       },
@@ -1192,7 +1192,7 @@
     },
     {
       "parameters": {
-        "message": "Please specify what you want to test ?\n\n-Allocation\n\n-Allocation Shipment\n\n-Allocation Receipt\n\n-Cancel Allocation\n\n-SIM DTS PO\n\n-SIM DTS PO Receipt",
+        "message": "Please specify what you want to test ?\n\n-Allocation\n\n-Allocation Shipment\n\n-Allocation Receipt\n\n-Cancel Allocation\n\n-SIM DTS PO\n\n-SIM DTS PO Receipt\n\n-SIM DTS PO Kill n Fill\n\n-SIM Inventory Adjustment",
         "options": {
           "limitWaitTime": {
             "values": {
@@ -1471,6 +1471,6 @@
     }
   ],
   "triggerCount": 1,
-  "updatedAt": "2026-01-28T08:48:52.945Z",
-  "versionId": "d7a593ea-883e-404b-b023-1f650ad356fa"
+  "updatedAt": "2026-01-29T10:41:06.014Z",
+  "versionId": "3abe503c-759d-4d92-8ce5-6318d4e3f095"
 }
