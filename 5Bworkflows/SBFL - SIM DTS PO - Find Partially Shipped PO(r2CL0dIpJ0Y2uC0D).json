@@ -1,0 +1,219 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-29T13:47:23.042Z",
+    "createdAt": "2026-01-29T13:47:20.530Z",
+    "versionId": "c1e4f585-bc72-4fab-8a3d-03d1537738a9",
+    "workflowId": "r2CL0dIpJ0Y2uC0D",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              },
+              {
+                "name": "po_list",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "13200072-fd8b-45da-bf66-6db40e2de2e8",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getPartialDTSShipments",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "oAuth2Api",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "contentType": "raw",
+          "rawContentType": "application/json",
+          "body": "={{ $json.po_list }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          256,
+          0
+        ],
+        "id": "d6a1d757-3d66-45b8-81a0-67f790d9fd61",
+        "name": "Get ASN Info",
+        "credentials": {
+          "oAuth2Api": {
+            "id": "GLwoqYtDVXjbM9Dd",
+            "name": "MFCS"
+          }
+        },
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Get ASN Info",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Attila Zubor",
+    "name": "Version c1e4f585",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "c1e4f585-bc72-4fab-8a3d-03d1537738a9",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get ASN Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-29T10:42:07.845Z",
+  "id": "r2CL0dIpJ0Y2uC0D",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - SIM DTS PO - Find Partially Shipped PO",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "po_list",
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "13200072-fd8b-45da-bf66-6db40e2de2e8",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://rgbu.gbua.us-ashburn-1.oci.oraclecloud.com/hafpxijz8iidegdzdupe/ords/mfcs/5below/n8n/services/getPartialDTSShipments",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ $json.po_list }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        256,
+        0
+      ],
+      "id": "d6a1d757-3d66-45b8-81a0-67f790d9fd61",
+      "name": "Get ASN Info",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "GLwoqYtDVXjbM9Dd",
+          "name": "MFCS"
+        }
+      },
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "type": "SIM DTS PO",
+            "flowName": "r2CL0dIpJ0Y2uC0D",
+            "item": ""
+          },
+          "user_id": "93ef244a-02d4-4d06-8930-7603d92e50ef",
+          "po_list": [
+            5669498,
+            6149803,
+            5609309,
+            5702223,
+            6137299,
+            6321506
+          ]
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-29T10:42:07.845Z",
+      "createdAt": "2026-01-29T10:42:07.845Z",
+      "role": "workflow:owner",
+      "workflowId": "r2CL0dIpJ0Y2uC0D",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:39:37.467Z",
+      "createdAt": "2026-01-28T08:38:52.110Z",
+      "id": "JkY12UxMieTvHe5N",
+      "name": "Sim_DTS_Po"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-29T13:47:20.529Z",
+  "versionId": "c1e4f585-bc72-4fab-8a3d-03d1537738a9"
+}
