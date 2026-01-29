@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-28T11:31:39.203Z",
-    "createdAt": "2026-01-28T11:31:36.995Z",
-    "versionId": "e9afc380-ef7c-466c-b709-de8f43046f72",
+    "updatedAt": "2026-01-28T11:36:49.442Z",
+    "createdAt": "2026-01-28T11:36:44.051Z",
+    "versionId": "2d1def76-a75a-4c0b-958f-9dd29ab7499b",
     "workflowId": "vtSD934CG1TLocqcnhc31",
     "nodes": [
       {
@@ -234,75 +234,6 @@
       },
       {
         "parameters": {
-          "resource": "file",
-          "owner": {
-            "__rl": true,
-            "mode": "name",
-            "value": "={{ $('Config').first().json.repo_owner }} "
-          },
-          "repository": {
-            "__rl": true,
-            "mode": "name",
-            "value": "={{ $('Config').first().json.repo_name }}"
-          },
-          "filePath": "={{ $('Execute Workflow Trigger').item.json.data[0].name}}({{ $('Execute Workflow Trigger').item.json.data[0].id}}).json",
-          "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-          "commitMessage": "={{$('Execute Workflow Trigger').item.json.data[0].name}} ({{$json.github_status}})"
-        },
-        "id": "ecdefd92-7191-4155-b97e-e5b2ad765082",
-        "name": "Create new file",
-        "type": "n8n-nodes-base.github",
-        "position": [
-          -592,
-          624
-        ],
-        "typeVersion": 1,
-        "webhookId": "7decb0ab-505e-4cd0-b9ce-f5d768c95fe6",
-        "credentials": {
-          "githubApi": {
-            "id": "7fYaX8YIYT66PwB8",
-            "name": "GitHub account"
-          }
-        },
-        "disabled": true
-      },
-      {
-        "parameters": {
-          "resource": "file",
-          "operation": "edit",
-          "owner": {
-            "__rl": true,
-            "value": "={{ $('Config').first().json.repo_owner }} ",
-            "mode": ""
-          },
-          "repository": {
-            "__rl": true,
-            "value": "={{ $('Config').first().json.repo_name }}",
-            "mode": ""
-          },
-          "filePath": "={{ $('Config').first().json.repo_path }}{{ $json.subPath }}{{ $('Execute Workflow Trigger').item.json.data[0].name}}({{ $('Execute Workflow Trigger').item.json.data[0].id}}).json",
-          "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-          "commitMessage": "={{$('Execute Workflow Trigger').item.json.data[0].name}} ({{$json.github_status}})"
-        },
-        "id": "80e704a0-c711-413b-831d-000dd4811a36",
-        "name": "Edit existing file",
-        "type": "n8n-nodes-base.github",
-        "position": [
-          -704,
-          624
-        ],
-        "typeVersion": 1,
-        "webhookId": "cbdedb7a-32ac-45d1-b1ff-67f5d6155128",
-        "credentials": {
-          "githubApi": {
-            "id": "7fYaX8YIYT66PwB8",
-            "name": "GitHub account"
-          }
-        },
-        "disabled": true
-      },
-      {
-        "parameters": {
           "options": {}
         },
         "id": "927c8856-ea24-4481-a580-d5f7b969f521",
@@ -480,42 +411,6 @@
       },
       {
         "parameters": {
-          "resource": "file",
-          "operation": "get",
-          "owner": {
-            "__rl": true,
-            "mode": "name",
-            "value": "={{ $('Config').first().json.repo_owner }}"
-          },
-          "repository": {
-            "__rl": true,
-            "mode": "name",
-            "value": "={{ $('Config').first().json.repo_name }} "
-          },
-          "filePath": "={{$json.data[0].name}}({{$json.data[0].id}}).json",
-          "asBinaryProperty": false,
-          "additionalParameters": {}
-        },
-        "id": "62a0597a-cd39-467e-b6ac-79bcb50fd24c",
-        "name": "Get file data",
-        "type": "n8n-nodes-base.github",
-        "position": [
-          -416,
-          1024
-        ],
-        "typeVersion": 1,
-        "alwaysOutputData": true,
-        "webhookId": "5ad7e3d9-6aea-48f4-be4e-17804c449c5c",
-        "credentials": {
-          "githubApi": {
-            "id": "7fYaX8YIYT66PwB8",
-            "name": "GitHub account"
-          }
-        },
-        "continueOnFail": true
-      },
-      {
-        "parameters": {
           "assignments": {
             "assignments": [
               {
@@ -600,25 +495,6 @@
       {
         "parameters": {
           "resource": "file",
-          "operation": "get",
-          "owner": "={{ $('Config').first().json.repo_owner }} ",
-          "repository": "={{ $('Config').first().json.repo_name }} ",
-          "filePath": "={{ $('Config').first().json.repo_path }}{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[0] }}/{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[1] }}/{{$json.data[0].id}}.json",
-          "additionalParameters": {}
-        },
-        "type": "n8n-nodes-base.gitlab",
-        "typeVersion": 1,
-        "position": [
-          -400,
-          608
-        ],
-        "id": "6ca10b7e-efba-4014-94a1-cff3dbc1419c",
-        "name": "Get a file",
-        "disabled": true
-      },
-      {
-        "parameters": {
-          "resource": "file",
           "owner": {
             "__rl": true,
             "value": "qb-stoth",
@@ -652,45 +528,6 @@
             "name": "GitHub account"
           }
         }
-      },
-      {
-        "parameters": {
-          "resource": "file",
-          "operation": "get",
-          "owner": {
-            "__rl": true,
-            "value": "qb-stoth",
-            "mode": "list",
-            "cachedResultName": "qb-stoth",
-            "cachedResultUrl": "https://github.com/qb-stoth"
-          },
-          "repository": {
-            "__rl": true,
-            "value": "n8n",
-            "mode": "list",
-            "cachedResultName": "n8n",
-            "cachedResultUrl": "https://github.com/qb-stoth/n8n"
-          },
-          "filePath": "={{ $('Config').first().json.repo_path }}{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[0] }}/{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[1] }}/{{$json.data[0].name}}({{$json.data[0].id}}).json",
-          "additionalParameters": {}
-        },
-        "type": "n8n-nodes-base.github",
-        "typeVersion": 1.1,
-        "position": [
-          -416,
-          816
-        ],
-        "id": "eed50003-e4a8-4c3f-a2f7-e3557d4bb043",
-        "name": "Get a file1",
-        "webhookId": "a1d7b296-82b5-4e1a-92b2-7a33565db3ab",
-        "alwaysOutputData": true,
-        "credentials": {
-          "githubApi": {
-            "id": "7fYaX8YIYT66PwB8",
-            "name": "GitHub account"
-          }
-        },
-        "disabled": true
       },
       {
         "parameters": {
@@ -1077,11 +914,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version e9afc380",
+    "name": "Version 2d1def76",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "e9afc380-ef7c-466c-b709-de8f43046f72",
+  "activeVersionId": "2d1def76-a75a-4c0b-958f-9dd29ab7499b",
   "connections": {
     "n8n": {
       "main": [
@@ -1611,75 +1448,6 @@
     },
     {
       "parameters": {
-        "resource": "file",
-        "owner": {
-          "__rl": true,
-          "mode": "name",
-          "value": "={{ $('Config').first().json.repo_owner }} "
-        },
-        "repository": {
-          "__rl": true,
-          "mode": "name",
-          "value": "={{ $('Config').first().json.repo_name }}"
-        },
-        "filePath": "={{ $('Execute Workflow Trigger').item.json.data[0].name}}({{ $('Execute Workflow Trigger').item.json.data[0].id}}).json",
-        "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').item.json.data[0].name}} ({{$json.github_status}})"
-      },
-      "id": "ecdefd92-7191-4155-b97e-e5b2ad765082",
-      "name": "Create new file",
-      "type": "n8n-nodes-base.github",
-      "position": [
-        -592,
-        624
-      ],
-      "typeVersion": 1,
-      "webhookId": "7decb0ab-505e-4cd0-b9ce-f5d768c95fe6",
-      "credentials": {
-        "githubApi": {
-          "id": "7fYaX8YIYT66PwB8",
-          "name": "GitHub account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "resource": "file",
-        "operation": "edit",
-        "owner": {
-          "__rl": true,
-          "value": "={{ $('Config').first().json.repo_owner }} ",
-          "mode": ""
-        },
-        "repository": {
-          "__rl": true,
-          "value": "={{ $('Config').first().json.repo_name }}",
-          "mode": ""
-        },
-        "filePath": "={{ $('Config').first().json.repo_path }}{{ $json.subPath }}{{ $('Execute Workflow Trigger').item.json.data[0].name}}({{ $('Execute Workflow Trigger').item.json.data[0].id}}).json",
-        "fileContent": "={{$('isDiffOrNew').item.json[\"n8n_data_stringy\"]}}",
-        "commitMessage": "={{$('Execute Workflow Trigger').item.json.data[0].name}} ({{$json.github_status}})"
-      },
-      "id": "80e704a0-c711-413b-831d-000dd4811a36",
-      "name": "Edit existing file",
-      "type": "n8n-nodes-base.github",
-      "position": [
-        -704,
-        624
-      ],
-      "typeVersion": 1,
-      "webhookId": "cbdedb7a-32ac-45d1-b1ff-67f5d6155128",
-      "credentials": {
-        "githubApi": {
-          "id": "7fYaX8YIYT66PwB8",
-          "name": "GitHub account"
-        }
-      },
-      "disabled": true
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "id": "927c8856-ea24-4481-a580-d5f7b969f521",
@@ -1857,42 +1625,6 @@
     },
     {
       "parameters": {
-        "resource": "file",
-        "operation": "get",
-        "owner": {
-          "__rl": true,
-          "mode": "name",
-          "value": "={{ $('Config').first().json.repo_owner }}"
-        },
-        "repository": {
-          "__rl": true,
-          "mode": "name",
-          "value": "={{ $('Config').first().json.repo_name }} "
-        },
-        "filePath": "={{$json.data[0].name}}({{$json.data[0].id}}).json",
-        "asBinaryProperty": false,
-        "additionalParameters": {}
-      },
-      "id": "62a0597a-cd39-467e-b6ac-79bcb50fd24c",
-      "name": "Get file data",
-      "type": "n8n-nodes-base.github",
-      "position": [
-        -416,
-        1024
-      ],
-      "typeVersion": 1,
-      "alwaysOutputData": true,
-      "webhookId": "5ad7e3d9-6aea-48f4-be4e-17804c449c5c",
-      "credentials": {
-        "githubApi": {
-          "id": "7fYaX8YIYT66PwB8",
-          "name": "GitHub account"
-        }
-      },
-      "continueOnFail": true
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
@@ -1977,25 +1709,6 @@
     {
       "parameters": {
         "resource": "file",
-        "operation": "get",
-        "owner": "={{ $('Config').first().json.repo_owner }} ",
-        "repository": "={{ $('Config').first().json.repo_name }} ",
-        "filePath": "={{ $('Config').first().json.repo_path }}{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[0] }}/{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[1] }}/{{$json.data[0].id}}.json",
-        "additionalParameters": {}
-      },
-      "type": "n8n-nodes-base.gitlab",
-      "typeVersion": 1,
-      "position": [
-        -400,
-        608
-      ],
-      "id": "6ca10b7e-efba-4014-94a1-cff3dbc1419c",
-      "name": "Get a file",
-      "disabled": true
-    },
-    {
-      "parameters": {
-        "resource": "file",
         "owner": {
           "__rl": true,
           "value": "qb-stoth",
@@ -2029,45 +1742,6 @@
           "name": "GitHub account"
         }
       }
-    },
-    {
-      "parameters": {
-        "resource": "file",
-        "operation": "get",
-        "owner": {
-          "__rl": true,
-          "value": "qb-stoth",
-          "mode": "list",
-          "cachedResultName": "qb-stoth",
-          "cachedResultUrl": "https://github.com/qb-stoth"
-        },
-        "repository": {
-          "__rl": true,
-          "value": "n8n",
-          "mode": "list",
-          "cachedResultName": "n8n",
-          "cachedResultUrl": "https://github.com/qb-stoth/n8n"
-        },
-        "filePath": "={{ $('Config').first().json.repo_path }}{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[0] }}/{{ $('Execute Workflow Trigger').item.json.data[0].createdAt.split('-')[1] }}/{{$json.data[0].name}}({{$json.data[0].id}}).json",
-        "additionalParameters": {}
-      },
-      "type": "n8n-nodes-base.github",
-      "typeVersion": 1.1,
-      "position": [
-        -416,
-        816
-      ],
-      "id": "eed50003-e4a8-4c3f-a2f7-e3557d4bb043",
-      "name": "Get a file1",
-      "webhookId": "a1d7b296-82b5-4e1a-92b2-7a33565db3ab",
-      "alwaysOutputData": true,
-      "credentials": {
-        "githubApi": {
-          "id": "7fYaX8YIYT66PwB8",
-          "name": "GitHub account"
-        }
-      },
-      "disabled": true
     },
     {
       "parameters": {
@@ -3104,6 +2778,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 1,
-  "updatedAt": "2026-01-28T11:31:36.994Z",
-  "versionId": "e9afc380-ef7c-466c-b709-de8f43046f72"
+  "updatedAt": "2026-01-28T11:36:44.050Z",
+  "versionId": "2d1def76-a75a-4c0b-958f-9dd29ab7499b"
 }
