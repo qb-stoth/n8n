@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-28T13:58:51.833Z",
-    "createdAt": "2026-01-28T13:58:49.973Z",
-    "versionId": "19c85455-91da-4a7e-83b0-fdcbbac1cfdc",
+    "updatedAt": "2026-01-29T14:16:59.490Z",
+    "createdAt": "2026-01-29T14:16:57.035Z",
+    "versionId": "467885b2-23d6-4f31-ae50-a650e21122a8",
     "workflowId": "fqSjG9Otvq5CNhuT0xOH3",
     "nodes": [
       {
@@ -519,7 +519,7 @@
         "parameters": {
           "content": "## Result evaluation with AI \n",
           "height": 624,
-          "width": 1136,
+          "width": 1568,
           "color": 3
         },
         "type": "n8n-nodes-base.stickyNote",
@@ -934,6 +934,126 @@
         ],
         "id": "7b21f831-26dd-43f8-9ecd-fd3425e7ee48",
         "name": "Merge"
+      },
+      {
+        "parameters": {
+          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
+          "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {}
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          2416,
+          160
+        ],
+        "id": "f9a0d020-857b-4a96-9da5-471fef55a4db",
+        "name": "Send a message",
+        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+        "executeOnce": true,
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "DUshke7IpPd8PQ1f",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
+          "message": "={{ $('AI Agent1').item.json.output }}",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {}
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          2416,
+          416
+        ],
+        "id": "d2589364-c9dc-431d-b830-8218bb657136",
+        "name": "Send a message1",
+        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+        "executeOnce": true,
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "DUshke7IpPd8PQ1f",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "\n\nreturn $('Merge').all()"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2096,
+          160
+        ],
+        "id": "fce80d85-1a69-4173-8fa4-3895c4465f60",
+        "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "jsCode": "\n\nreturn $('Merge').all()"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2096,
+          416
+        ],
+        "id": "28743b9a-60f7-4954-ba5c-b4283275429a",
+        "name": "Code in JavaScript3"
+      },
+      {
+        "parameters": {
+          "operation": "toJson",
+          "options": {
+            "fileName": "input_data.json"
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          2256,
+          160
+        ],
+        "id": "f14fd98d-ff24-49f8-9896-4d37fcd67fdf",
+        "name": "Convert to File"
+      },
+      {
+        "parameters": {
+          "operation": "toJson",
+          "options": {
+            "fileName": "input_data.json"
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          2256,
+          416
+        ],
+        "id": "eaa5d733-efef-4cfe-bd3a-f9492269a695",
+        "name": "Convert to File1"
       }
     ],
     "connections": {
@@ -1149,7 +1269,13 @@
       },
       "Insert row": {
         "main": [
-          []
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       },
       "Get row(s)": {
@@ -1235,14 +1361,69 @@
             }
           ]
         ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          [
+            {
+              "node": "Convert to File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript3": {
+        "main": [
+          [
+            {
+              "node": "Convert to File1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert row1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File1": {
+        "main": [
+          [
+            {
+              "node": "Send a message1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 19c85455",
+    "name": "Version 467885b2",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "19c85455-91da-4a7e-83b0-fdcbbac1cfdc",
+  "activeVersionId": "467885b2-23d6-4f31-ae50-a650e21122a8",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -1456,7 +1637,13 @@
     },
     "Insert row": {
       "main": [
-        []
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Get row(s)": {
@@ -1537,6 +1724,61 @@
         [
           {
             "node": "Call 'SBFL - Allocation - Upload Payloads to Kafka'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
             "type": "main",
             "index": 0
           }
@@ -2065,7 +2307,7 @@
       "parameters": {
         "content": "## Result evaluation with AI \n",
         "height": 624,
-        "width": 1136,
+        "width": 1568,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -2480,6 +2722,126 @@
       ],
       "id": "7b21f831-26dd-43f8-9ecd-fd3425e7ee48",
       "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
+        "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        160
+      ],
+      "id": "f9a0d020-857b-4a96-9da5-471fef55a4db",
+      "name": "Send a message",
+      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DUshke7IpPd8PQ1f",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
+        "message": "={{ $('AI Agent1').item.json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        416
+      ],
+      "id": "d2589364-c9dc-431d-b830-8218bb657136",
+      "name": "Send a message1",
+      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DUshke7IpPd8PQ1f",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $('Merge').all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2096,
+        160
+      ],
+      "id": "fce80d85-1a69-4173-8fa4-3895c4465f60",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $('Merge').all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2096,
+        416
+      ],
+      "id": "28743b9a-60f7-4954-ba5c-b4283275429a",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {
+          "fileName": "input_data.json"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2256,
+        160
+      ],
+      "id": "f14fd98d-ff24-49f8-9896-4d37fcd67fdf",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {
+          "fileName": "input_data.json"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        2256,
+        416
+      ],
+      "id": "eaa5d733-efef-4cfe-bd3a-f9492269a695",
+      "name": "Convert to File1"
     }
   ],
   "pinData": {
@@ -2522,9 +2884,15 @@
       "createdAt": "2025-12-03T08:29:30.685Z",
       "id": "7XhEcQNHqPX9s6B9",
       "name": "Merch_test_cases"
+    },
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T13:58:49.972Z",
-  "versionId": "19c85455-91da-4a7e-83b0-fdcbbac1cfdc"
+  "updatedAt": "2026-01-29T14:16:57.034Z",
+  "versionId": "467885b2-23d6-4f31-ae50-a650e21122a8"
 }
