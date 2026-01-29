@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-20T14:06:04.521Z",
-    "createdAt": "2026-01-20T14:06:02.304Z",
-    "versionId": "25516360-2c23-4424-b4b6-a57c925d4042",
+    "updatedAt": "2026-01-28T12:21:05.549Z",
+    "createdAt": "2026-01-28T12:21:02.926Z",
+    "versionId": "a0dfacac-89a5-4a67-91b2-46c5f67f0f98",
     "workflowId": "E8eKjzqa6zzR0F0PTvs6y",
     "nodes": [
       {
@@ -64,6 +64,19 @@
           }
         },
         "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $json.error_message }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          416,
+          96
+        ],
+        "id": "875d4a6b-0174-44b6-a421-a9afb582fd33",
+        "name": "Stop and Error"
       }
     ],
     "connections": {
@@ -77,20 +90,44 @@
             }
           ]
         ]
+      },
+      "Create PO": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Stop and Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "Attila Zubor",
-    "name": "Version 25516360",
+    "name": "Version a0dfacac",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "25516360-2c23-4424-b4b6-a57c925d4042",
+  "activeVersionId": "a0dfacac-89a5-4a67-91b2-46c5f67f0f98",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
         [
           {
             "node": "Create PO",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create PO": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Stop and Error",
             "type": "main",
             "index": 0
           }
@@ -162,6 +199,19 @@
         }
       },
       "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $json.error_message }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        416,
+        96
+      ],
+      "id": "875d4a6b-0174-44b6-a421-a9afb582fd33",
+      "name": "Stop and Error"
     }
   ],
   "pinData": {},
@@ -191,6 +241,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:45:19.542Z",
-  "versionId": "25516360-2c23-4424-b4b6-a57c925d4042"
+  "updatedAt": "2026-01-28T12:21:02.925Z",
+  "versionId": "a0dfacac-89a5-4a67-91b2-46c5f67f0f98"
 }
