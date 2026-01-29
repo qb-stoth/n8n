@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-27T13:27:52.096Z",
-    "createdAt": "2026-01-27T13:27:49.613Z",
-    "versionId": "fbd6e8a6-d231-4c1d-a17f-7abb152b7c0f",
+    "updatedAt": "2026-01-29T09:29:23.761Z",
+    "createdAt": "2026-01-29T09:29:19.370Z",
+    "versionId": "f57be5a4-ea3c-4a1c-982e-c8d85e67078e",
     "workflowId": "w1tHRoLY57jNiy3V",
     "nodes": [
       {
@@ -366,7 +366,7 @@
         "name": "airflow-api",
         "type": "n8n-nodes-base.set",
         "position": [
-          -1216,
+          -1360,
           176
         ],
         "typeVersion": 3.4
@@ -378,7 +378,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -1488,
+          -1632,
           176
         ],
         "id": "343af976-220a-46e1-9e41-cbdd76d66638",
@@ -409,6 +409,34 @@
         ],
         "id": "fa70029f-fb86-4c23-a9b4-22adc63e8187",
         "name": "Code in JavaScript1"
+      },
+      {
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://cm3t505g80qd701npsdp26d79.astronomer.run/dzkj7sag/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "httpBearerAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "{\"is_paused\":false}",
+          "options": {}
+        },
+        "id": "c4d74522-caa6-47b8-9911-d87e4e2b8ae6",
+        "name": "Airflow: dag - unpause",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -1136,
+          176
+        ],
+        "typeVersion": 4.2,
+        "executeOnce": true,
+        "credentials": {
+          "httpBearerAuth": {
+            "id": "sb5iHdFXYIMMfdhI",
+            "name": "Bearer Auth Airfow"
+          }
+        },
+        "onError": "continueRegularOutput"
       }
     ],
     "connections": {
@@ -438,7 +466,7 @@
         "main": [
           [
             {
-              "node": "Airflow: dag_run",
+              "node": "Airflow: dag - unpause",
               "type": "main",
               "index": 0
             }
@@ -574,14 +602,25 @@
             }
           ]
         ]
+      },
+      "Airflow: dag - unpause": {
+        "main": [
+          [
+            {
+              "node": "Airflow: dag_run",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version fbd6e8a6",
+    "name": "Version f57be5a4",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "fbd6e8a6-d231-4c1d-a17f-7abb152b7c0f",
+  "activeVersionId": "f57be5a4-ea3c-4a1c-982e-c8d85e67078e",
   "connections": {
     "count": {
       "main": [
@@ -609,7 +648,7 @@
       "main": [
         [
           {
-            "node": "Airflow: dag_run",
+            "node": "Airflow: dag - unpause",
             "type": "main",
             "index": 0
           }
@@ -740,6 +779,17 @@
         [
           {
             "node": "Airflow: dag_run - state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airflow: dag - unpause": {
+      "main": [
+        [
+          {
+            "node": "Airflow: dag_run",
             "type": "main",
             "index": 0
           }
@@ -1113,7 +1163,7 @@
       "name": "airflow-api",
       "type": "n8n-nodes-base.set",
       "position": [
-        -1216,
+        -1360,
         176
       ],
       "typeVersion": 3.4
@@ -1125,7 +1175,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1488,
+        -1632,
         176
       ],
       "id": "343af976-220a-46e1-9e41-cbdd76d66638",
@@ -1156,6 +1206,34 @@
       ],
       "id": "fa70029f-fb86-4c23-a9b4-22adc63e8187",
       "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://cm3t505g80qd701npsdp26d79.astronomer.run/dzkj7sag/api/v2/dags/{{ $('Code in JavaScript').item.json.dag_run_id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"is_paused\":false}",
+        "options": {}
+      },
+      "id": "c4d74522-caa6-47b8-9911-d87e4e2b8ae6",
+      "name": "Airflow: dag - unpause",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -1136,
+        176
+      ],
+      "typeVersion": 4.2,
+      "executeOnce": true,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "sb5iHdFXYIMMfdhI",
+          "name": "Bearer Auth Airfow"
+        }
+      },
+      "onError": "continueRegularOutput"
     }
   ],
   "pinData": {},
@@ -1186,6 +1264,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:40:52.469Z",
-  "versionId": "fbd6e8a6-d231-4c1d-a17f-7abb152b7c0f"
+  "updatedAt": "2026-01-29T09:29:19.369Z",
+  "versionId": "f57be5a4-ea3c-4a1c-982e-c8d85e67078e"
 }
