@@ -1,0 +1,1684 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-29T09:23:21.472Z",
+    "createdAt": "2026-01-29T09:23:16.210Z",
+    "versionId": "765b9152-e855-4274-b831-9fc43a9b282f",
+    "workflowId": "QkkkYmw8piThyey7",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "user_id"
+              },
+              {
+                "name": "data",
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -624,
+          -16
+        ],
+        "id": "2a142f22-9507-490a-b42f-4238af5e1a93",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -112,
+          -16
+        ],
+        "id": "38e80a99-9f0a-49ed-a09e-3af38c1c4520",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "d9ozshsHd2v1Itkl",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/d9ozshsHd2v1Itkl",
+            "cachedResultName": "Upload to Kafka topic"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "data": "={{ $json.toJsonString() }}",
+              "topicName": "sell_sim_mao_relay_adjustment_nrt_multipart"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "data",
+                "displayName": "data",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "topicName",
+                "displayName": "topicName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          112,
+          32
+        ],
+        "id": "f82f8638-e578-4015-a68b-dfa52e444e95",
+        "name": "Call 'Upload to Kafka topic'",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "errorMessage": "=Failed to upload payload to KAFKA topic!\n{{ $json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          320,
+          32
+        ],
+        "id": "d35e8eb4-7193-44bf-920f-6ee30ac2b569",
+        "name": "Stop and Error"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\n\nreturn {\"Message\" : \"All payload was uploaded successfully to KAFKA.\"}\n"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          96,
+          -112
+        ],
+        "id": "eda4e7f5-9261-4005-b92f-4c14f0fa7c32",
+        "name": "Return"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          -16
+        ],
+        "id": "a9abaa6d-ca1b-417c-814f-db3517ee01e8",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "language": "pythonNative",
+          "pythonCode": "\nreturn _items[0][\"json\"][\"data\"]"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -416,
+          -16
+        ],
+        "id": "e6127afd-d019-43c2-8d84-e033a00da292",
+        "name": "Code in Python (Native)"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Code in Python (Native)",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "Return",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Call 'Upload to Kafka topic'",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Upload to Kafka topic'": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in Python (Native)": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version 765b9152",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "765b9152-e855-4274-b831-9fc43a9b282f",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Native)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Return",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Call 'Upload to Kafka topic'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Upload to Kafka topic'": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in Python (Native)": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2026-01-29T09:01:46.546Z",
+  "id": "QkkkYmw8piThyey7",
+  "isArchived": false,
+  "meta": null,
+  "name": "SBFL - SIM InvAdj - Upload Payloads to Kafka",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "user_id"
+            },
+            {
+              "name": "data",
+              "type": "object"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -624,
+        -16
+      ],
+      "id": "2a142f22-9507-490a-b42f-4238af5e1a93",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "38e80a99-9f0a-49ed-a09e-3af38c1c4520",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "d9ozshsHd2v1Itkl",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/d9ozshsHd2v1Itkl",
+          "cachedResultName": "Upload to Kafka topic"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "data": "={{ $json.toJsonString() }}",
+            "topicName": "sell_sim_mao_relay_adjustment_nrt_multipart"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "topicName",
+              "displayName": "topicName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        32
+      ],
+      "id": "f82f8638-e578-4015-a68b-dfa52e444e95",
+      "name": "Call 'Upload to Kafka topic'",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Failed to upload payload to KAFKA topic!\n{{ $json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        320,
+        32
+      ],
+      "id": "d35e8eb4-7193-44bf-920f-6ee30ac2b569",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\n\nreturn {\"Message\" : \"All payload was uploaded successfully to KAFKA.\"}\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        96,
+        -112
+      ],
+      "id": "eda4e7f5-9261-4005-b92f-4c14f0fa7c32",
+      "name": "Return"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        -16
+      ],
+      "id": "a9abaa6d-ca1b-417c-814f-db3517ee01e8",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "\nreturn _items[0][\"json\"][\"data\"]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        -16
+      ],
+      "id": "e6127afd-d019-43c2-8d84-e033a00da292",
+      "name": "Code in Python (Native)"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "user_id": "62a17d6f-9dec-4fb8-8784-268462326ad5",
+          "data": {
+            "data": [
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910510",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3260767",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 4,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 6
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "597",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3260767",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 4,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "597",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910510",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910511",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3220597",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 1,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 3
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "597",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3220597",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 1,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "597",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910511",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910512",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3264322",
+                        "LocationId": "826",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 2,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 4
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "826",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3264322",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 2,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "826",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910512",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910513",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "1438118",
+                        "LocationId": "826",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 2,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 4
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "826",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "1438118",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 2,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "826",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910513",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910514",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3087954",
+                        "LocationId": "826",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 1,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 3
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "826",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3087954",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 1,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "826",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910514",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910515",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3089141",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 4,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 6
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "597",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3089141",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 4,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "597",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910515",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910516",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3089133",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 4,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 6
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "597",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3089133",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 4,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "597",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910516",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910517",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3267523",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 3,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 5
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "597",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3267523",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 3,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "597",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910517",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910518",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3274149",
+                        "LocationId": "597",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 2,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 4
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "597",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3274149",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 2,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "597",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910518",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              },
+              {
+                "relayMessage": {
+                  "RelaySupply": [
+                    {
+                      "reshuffleEligible": false,
+                      "ProfileId": "fivebelow",
+                      "LastTransDate": "",
+                      "InventoryTransactionType": null,
+                      "InventoryTransactionId": "ADJ2901260910519",
+                      "SupplyDefinition": {
+                        "hashId": "f97fb5ad88bf2561f07b932326a3e9e1",
+                        "ItemId": "3267523",
+                        "LocationId": "596",
+                        "OriginLocationId": null,
+                        "ReferenceTypeId": null,
+                        "ParentReferenceTypeId": null,
+                        "ReferenceId": null,
+                        "ParentReferenceId": null,
+                        "ReferenceDetailId": null,
+                        "ParentReferenceDetailId": null,
+                        "SegmentId": null,
+                        "SupplyAttributes": {
+                          "CountryofOrigin": "",
+                          "BatchNumber": "",
+                          "ProductStatus": "",
+                          "InventoryType": "",
+                          "InvAttribute1": "",
+                          "InvAttribute2": "",
+                          "InvAttribute3": "",
+                          "InvAttribute4": "",
+                          "InvAttribute5": ""
+                        },
+                        "SupplyType": {
+                          "SupplyTypeId": "On Hand Available"
+                        },
+                        "SupplyData": {
+                          "ErrorCodeId": null,
+                          "ETA": null,
+                          "Quantity": 3,
+                          "UOM": "EA",
+                          "OldValues": {
+                            "ErrorCodeId": null,
+                            "ETA": null,
+                            "Quantity": 5
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "RelaySupplyEvent": {
+                    "ProfileId": null,
+                    "SupplyDefinition": {
+                      "ParentReferenceDetailId": null,
+                      "SegmentId": "",
+                      "LocationId": "596",
+                      "ReferenceTypeId": null,
+                      "ReferenceDetailId": "10",
+                      "RelaySupplyHash": null,
+                      "ItemId": "3267523",
+                      "SupplyAttributes": {
+                        "InvAttribute5": "",
+                        "InvAttribute4": "",
+                        "CountryofOrigin": "",
+                        "InvAttribute3": "",
+                        "BatchNumber": "",
+                        "InventoryType": "",
+                        "ProductStatus": "",
+                        "InvAttribute2": "",
+                        "InvAttribute1": ""
+                      },
+                      "SupplyData": {
+                        "UOM": "EA",
+                        "ETA": null,
+                        "AbsoluteQuantity": 3,
+                        "Quantity": 1,
+                        "ErrorCodeId": null,
+                        "QuantityAdjustmentType": "S"
+                      },
+                      "ParentReferenceId": null,
+                      "OriginLocationId": "596",
+                      "ReferenceId": null,
+                      "ReservationMovementEvent": null,
+                      "SupplyType": {
+                        "TransferFromSupplyTypeId": "On Hand Available",
+                        "SupplyTypeId": "On Hand Available",
+                        "TransferFromSegmentId": null,
+                        "TransferFromDispositionId": null,
+                        "DispositionId": "",
+                        "TransferFromLockCodeId": null,
+                        "LockCodeId": null
+                      },
+                      "SegmentTransferRequest": null,
+                      "ParentReferenceTypeId": null,
+                      "RelayAttributes": [
+                        {
+                          "AttributeName": "SIMAdjustmentType",
+                          "AttributeValue": "05 - KNOWN THEFT"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonId",
+                          "AttributeValue": "16"
+                        },
+                        {
+                          "AttributeName": "SIMAdjustmentReasonName",
+                          "AttributeValue": "Found Packaging"
+                        }
+                      ]
+                    },
+                    "InventoryTransactionType": null,
+                    "transferRequired": null,
+                    "EtaUpdated": false,
+                    "syncTransfer": false,
+                    "TransactionTypeId": "Adjustment",
+                    "InventoryTransactionId": "ADJ2901260910519",
+                    "LastTransDate": "",
+                    "ResetError": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-29T09:01:46.546Z",
+      "createdAt": "2026-01-29T09:01:46.546Z",
+      "role": "workflow:owner",
+      "workflowId": "QkkkYmw8piThyey7",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
+    }
+  ],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-29T09:23:16.208Z",
+  "versionId": "765b9152-e855-4274-b831-9fc43a9b282f"
+}
