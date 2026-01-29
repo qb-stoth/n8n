@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-23T11:55:26.533Z",
-    "createdAt": "2026-01-23T11:51:11.900Z",
-    "versionId": "b80b6056-c096-4861-9209-a112fd240959",
+    "updatedAt": "2026-01-28T13:08:46.266Z",
+    "createdAt": "2026-01-28T13:08:44.202Z",
+    "versionId": "d2168aaa-c381-4805-84f2-5ccb7cdd1859",
     "workflowId": "PFCgyfPDbWi1ZfuX",
     "nodes": [
       {
@@ -871,6 +871,40 @@
         ],
         "id": "32adc0d2-5a65-4713-a7ee-6b8e37eeaf38",
         "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "operation": "deleteRows",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAllocShipment"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('in data').first().json.user_id}}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -1376,
+          512
+        ],
+        "id": "d20cab3a-cef4-4b3c-a02d-e305c0fd225b",
+        "name": "Delete row(s)2"
       }
     ],
     "connections": {
@@ -884,6 +918,11 @@
             },
             {
               "node": "Wait",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Delete row(s)2",
               "type": "main",
               "index": 0
             }
@@ -1154,11 +1193,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version b80b6056",
+    "name": "Version d2168aaa",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "b80b6056-c096-4861-9209-a112fd240959",
+  "activeVersionId": "d2168aaa-c381-4805-84f2-5ccb7cdd1859",
   "connections": {
     "in data": {
       "main": [
@@ -1170,6 +1209,11 @@
           },
           {
             "node": "Wait",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Delete row(s)2",
             "type": "main",
             "index": 0
           }
@@ -2310,6 +2354,40 @@
       ],
       "id": "32adc0d2-5a65-4713-a7ee-6b8e37eeaf38",
       "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAllocShipment"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('in data').first().json.user_id}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        512
+      ],
+      "id": "d20cab3a-cef4-4b3c-a02d-e305c0fd225b",
+      "name": "Delete row(s)2"
     }
   ],
   "pinData": {
@@ -2667,6 +2745,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:44:07.818Z",
-  "versionId": "b80b6056-c096-4861-9209-a112fd240959"
+  "updatedAt": "2026-01-28T13:08:44.200Z",
+  "versionId": "d2168aaa-c381-4805-84f2-5ccb7cdd1859"
 }
