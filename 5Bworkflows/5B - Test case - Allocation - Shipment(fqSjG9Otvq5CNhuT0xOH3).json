@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-27T08:24:17.049Z",
-    "createdAt": "2026-01-27T08:24:14.782Z",
-    "versionId": "91a74163-4527-43be-afde-21f92649aa89",
+    "updatedAt": "2026-01-28T13:58:51.833Z",
+    "createdAt": "2026-01-28T13:58:49.973Z",
+    "versionId": "19c85455-91da-4a7e-83b0-fdcbbac1cfdc",
     "workflowId": "fqSjG9Otvq5CNhuT0xOH3",
     "nodes": [
       {
@@ -831,7 +831,7 @@
           "promptType": "define",
           "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
           "options": {
-            "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies."
+            "systemMessage": "DO NOT GENERATE RUNNABLE CODE, IF SO USE PYTHON!\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies."
           }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
@@ -1238,11 +1238,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 91a74163",
+    "name": "Version 19c85455",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "91a74163-4527-43be-afde-21f92649aa89",
+  "activeVersionId": "19c85455-91da-4a7e-83b0-fdcbbac1cfdc",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -2377,7 +2377,7 @@
         "promptType": "define",
         "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
         "options": {
-          "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies."
+          "systemMessage": "DO NOT GENERATE RUNNABLE CODE, IF SO USE PYTHON!\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -2525,6 +2525,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-27T08:24:14.780Z",
-  "versionId": "91a74163-4527-43be-afde-21f92649aa89"
+  "updatedAt": "2026-01-28T13:58:49.972Z",
+  "versionId": "19c85455-91da-4a7e-83b0-fdcbbac1cfdc"
 }
