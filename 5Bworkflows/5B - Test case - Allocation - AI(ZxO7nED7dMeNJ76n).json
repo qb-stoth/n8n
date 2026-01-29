@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-26T11:25:50.313Z",
-    "createdAt": "2026-01-26T11:25:45.036Z",
-    "versionId": "f6d9cdf9-cc74-4ec3-a3bf-59b6bdc8b008",
+    "updatedAt": "2026-01-29T14:07:42.350Z",
+    "createdAt": "2026-01-29T14:07:40.377Z",
+    "versionId": "6962c2b7-4f6f-403d-ab00-112c558e1d00",
     "workflowId": "ZxO7nED7dMeNJ76n",
     "nodes": [
       {
@@ -221,7 +221,7 @@
         "parameters": {
           "content": "## Result evaluation with AI \n",
           "height": 624,
-          "width": 960,
+          "width": 1360,
           "color": 3
         },
         "type": "n8n-nodes-base.stickyNote",
@@ -570,7 +570,7 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2096,
+          2064,
           160
         ],
         "id": "62f705ee-4571-4189-a880-5f643ef52828",
@@ -675,7 +675,7 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2096,
+          2064,
           416
         ],
         "id": "d040e229-b0f0-4b98-85ab-aba2ad849411",
@@ -725,7 +725,7 @@
         "type": "n8n-nodes-base.aggregate",
         "typeVersion": 1,
         "position": [
-          1920,
+          1904,
           160
         ],
         "id": "4f9c4a9f-877e-43cd-bc8c-bba93e4bba85",
@@ -739,7 +739,7 @@
         "type": "n8n-nodes-base.aggregate",
         "typeVersion": 1,
         "position": [
-          1920,
+          1904,
           416
         ],
         "id": "44a8d950-d82f-44d2-b69a-545432fa894a",
@@ -810,6 +810,94 @@
         "id": "7588c308-45eb-4f94-b3ee-e023c8066b07",
         "name": "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'",
         "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
+          "message": "={{ $('AI Agent').item.json.output }}",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {}
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          2384,
+          160
+        ],
+        "id": "e9f95094-925a-42b1-9066-71c9dd3ba9d8",
+        "name": "Send a message",
+        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+        "executeOnce": true,
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "DUshke7IpPd8PQ1f",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
+          "message": "={{ $('AI Agent1').item.json.output }}",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {}
+              ]
+            }
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          2384,
+          416
+        ],
+        "id": "103715e7-72c0-4ef0-aea0-5f7e22f3abf6",
+        "name": "Send a message1",
+        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+        "executeOnce": true,
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "DUshke7IpPd8PQ1f",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "\n\nreturn $('Merge').all()"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2224,
+          160
+        ],
+        "id": "e3cd0c62-1822-447b-b0fe-3d0ff968cbe5",
+        "name": "Code in JavaScript2"
+      },
+      {
+        "parameters": {
+          "jsCode": "\n\nreturn $('Merge').all()"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2224,
+          416
+        ],
+        "id": "729537f3-472c-47f4-95b5-fc25dbf9158f",
+        "name": "Code in JavaScript3"
       }
     ],
     "connections": {
@@ -1072,14 +1160,63 @@
             }
           ]
         ]
+      },
+      "Insert row": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Insert row1": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send a message": {
+        "main": [
+          []
+        ]
+      },
+      "Code in JavaScript2": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript3": {
+        "main": [
+          [
+            {
+              "node": "Send a message1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version f6d9cdf9",
+    "name": "Version 6962c2b7",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "f6d9cdf9-cc74-4ec3-a3bf-59b6bdc8b008",
+  "activeVersionId": "6962c2b7-4f6f-403d-ab00-112c558e1d00",
   "connections": {
     "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
       "main": [
@@ -1340,6 +1477,55 @@
           }
         ]
       ]
+    },
+    "Insert row": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "createdAt": "2025-12-03T08:30:56.669Z",
@@ -1565,7 +1751,7 @@
       "parameters": {
         "content": "## Result evaluation with AI \n",
         "height": 624,
-        "width": 960,
+        "width": 1360,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -1914,7 +2100,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2096,
+        2064,
         160
       ],
       "id": "62f705ee-4571-4189-a880-5f643ef52828",
@@ -2019,7 +2205,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2096,
+        2064,
         416
       ],
       "id": "d040e229-b0f0-4b98-85ab-aba2ad849411",
@@ -2069,7 +2255,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1920,
+        1904,
         160
       ],
       "id": "4f9c4a9f-877e-43cd-bc8c-bba93e4bba85",
@@ -2083,7 +2269,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1920,
+        1904,
         416
       ],
       "id": "44a8d950-d82f-44d2-b69a-545432fa894a",
@@ -2154,6 +2340,94 @@
       "id": "7588c308-45eb-4f94-b3ee-e023c8066b07",
       "name": "Call 'SBFL - Allocation - Upload Allocation CSV to Azure'",
       "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
+        "message": "={{ $('AI Agent').item.json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2384,
+        160
+      ],
+      "id": "e9f95094-925a-42b1-9066-71c9dd3ba9d8",
+      "name": "Send a message",
+      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DUshke7IpPd8PQ1f",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
+        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
+        "message": "={{ $('AI Agent1').item.json.output }}",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2384,
+        416
+      ],
+      "id": "103715e7-72c0-4ef0-aea0-5f7e22f3abf6",
+      "name": "Send a message1",
+      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "DUshke7IpPd8PQ1f",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $('Merge').all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        160
+      ],
+      "id": "e3cd0c62-1822-447b-b0fe-3d0ff968cbe5",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "\n\nreturn $('Merge').all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        416
+      ],
+      "id": "729537f3-472c-47f4-95b5-fc25dbf9158f",
+      "name": "Code in JavaScript3"
     }
   ],
   "pinData": {
@@ -2195,9 +2469,15 @@
       "createdAt": "2025-12-03T08:29:30.685Z",
       "id": "7XhEcQNHqPX9s6B9",
       "name": "Merch_test_cases"
+    },
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-26T11:25:45.035Z",
-  "versionId": "f6d9cdf9-cc74-4ec3-a3bf-59b6bdc8b008"
+  "updatedAt": "2026-01-29T14:07:40.376Z",
+  "versionId": "6962c2b7-4f6f-403d-ab00-112c558e1d00"
 }
