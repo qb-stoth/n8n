@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-29T14:18:56.420Z",
-    "createdAt": "2026-01-29T14:18:54.406Z",
-    "versionId": "5d224717-f68f-46f7-9ff2-a3e4f3c68e45",
+    "updatedAt": "2026-01-29T16:54:31.012Z",
+    "createdAt": "2026-01-29T16:53:58.635Z",
+    "versionId": "77fdf0da-79f8-40ae-bf19-b38538606999",
     "workflowId": "oMR3po0crNMbyJXN",
     "nodes": [
       {
@@ -938,7 +938,7 @@
       {
         "parameters": {
           "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
+          "subject": "=N8N - Test case : Cancel-Allocation - Result: \"SUCCESS\"",
           "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
           "options": {
             "appendAttribution": false,
@@ -969,7 +969,7 @@
       {
         "parameters": {
           "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
+          "subject": "=N8N - Test case : Cancel-Allocation - Result: \"FAILED\"",
           "message": "={{ $('AI Agent1').item.json.output }}",
           "options": {
             "appendAttribution": false,
@@ -1419,11 +1419,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 5d224717",
+    "name": "Version 77fdf0da",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "5d224717-f68f-46f7-9ff2-a3e4f3c68e45",
+  "activeVersionId": "77fdf0da-79f8-40ae-bf19-b38538606999",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -2724,7 +2724,7 @@
     {
       "parameters": {
         "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
+        "subject": "=N8N - Test case : Cancel-Allocation - Result: \"SUCCESS\"",
         "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
         "options": {
           "appendAttribution": false,
@@ -2755,7 +2755,7 @@
     {
       "parameters": {
         "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
+        "subject": "=N8N - Test case : Cancel-Allocation - Result: \"FAILED\"",
         "message": "={{ $('AI Agent1').item.json.output }}",
         "options": {
           "appendAttribution": false,
@@ -2891,6 +2891,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-29T14:18:54.405Z",
-  "versionId": "5d224717-f68f-46f7-9ff2-a3e4f3c68e45"
+  "updatedAt": "2026-01-29T16:56:20.709Z",
+  "versionId": "77fdf0da-79f8-40ae-bf19-b38538606999"
 }
