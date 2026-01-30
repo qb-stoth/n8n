@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-23T10:51:42.912Z",
-    "createdAt": "2026-01-23T10:51:03.520Z",
-    "versionId": "e1653f5c-43d8-4cfc-987d-56c4b341db9e",
+    "updatedAt": "2026-01-29T16:53:10.238Z",
+    "createdAt": "2026-01-29T16:52:57.212Z",
+    "versionId": "6f8f1c30-1cf2-4d73-b0f4-6c160c6dc0b2",
     "workflowId": "1XGShOEybzHHhuYT9ecKV",
     "nodes": [
       {
@@ -114,7 +114,8 @@
                 "keyValue": "XAlloc"
               }
             ]
-          }
+          },
+          "limit": 1000
         },
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
@@ -541,11 +542,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version e1653f5c",
+    "name": "Version 6f8f1c30",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "e1653f5c-43d8-4cfc-987d-56c4b341db9e",
+  "activeVersionId": "6f8f1c30-1cf2-4d73-b0f4-6c160c6dc0b2",
   "connections": {
     "Set parameters": {
       "main": [
@@ -804,7 +805,8 @@
               "keyValue": "XAlloc"
             }
           ]
-        }
+        },
+        "limit": 1000
       },
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -1121,6 +1123,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:44:29.350Z",
-  "versionId": "e1653f5c-43d8-4cfc-987d-56c4b341db9e"
+  "updatedAt": "2026-01-29T16:52:57.210Z",
+  "versionId": "6f8f1c30-1cf2-4d73-b0f4-6c160c6dc0b2"
 }
