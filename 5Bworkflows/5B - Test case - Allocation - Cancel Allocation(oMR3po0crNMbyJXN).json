@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-29T16:54:31.012Z",
-    "createdAt": "2026-01-29T16:53:58.635Z",
-    "versionId": "77fdf0da-79f8-40ae-bf19-b38538606999",
+    "updatedAt": "2026-01-30T12:43:09.350Z",
+    "createdAt": "2026-01-30T12:43:05.855Z",
+    "versionId": "2b1547ec-5df3-49e3-ae3d-1ac1230e53c2",
     "workflowId": "oMR3po0crNMbyJXN",
     "nodes": [
       {
@@ -279,7 +279,8 @@
           176
         ],
         "id": "6c8e9f80-04c0-4c75-8f1b-08225e2299d0",
-        "name": "AI Agent"
+        "name": "AI Agent",
+        "disabled": true
       },
       {
         "parameters": {
@@ -298,13 +299,14 @@
             "id": "FIpUb1C3cbh8qN71",
             "name": "Google Gemini(PaLM) Api account"
           }
-        }
+        },
+        "disabled": true
       },
       {
         "parameters": {
           "content": "## Result evaluation with AI \n",
           "height": 624,
-          "width": 1600,
+          "width": 848,
           "color": 3
         },
         "type": "n8n-nodes-base.stickyNote",
@@ -331,7 +333,8 @@
           432
         ],
         "id": "7aa21247-3976-48aa-b831-7ef1e3490133",
-        "name": "AI Agent1"
+        "name": "AI Agent1",
+        "disabled": true
       },
       {
         "parameters": {
@@ -433,11 +436,12 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2576,
-          176
+          2416,
+          768
         ],
         "id": "e1ead844-35ac-4c55-9b9a-8ec8cc3f1059",
-        "name": "Insert row"
+        "name": "Insert row",
+        "disabled": true
       },
       {
         "parameters": {
@@ -538,45 +542,12 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2176,
-          432
+          1776,
+          768
         ],
         "id": "76e5e376-3c70-4e3e-8d4f-9337bbd0b21a",
-        "name": "Insert row1"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 3
-            },
-            "conditions": [
-              {
-                "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
-                "leftValue": "={{ $('Merge').isExecuted }}",
-                "rightValue": "",
-                "operator": {
-                  "type": "boolean",
-                  "operation": "true",
-                  "singleValue": true
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.3,
-        "position": [
-          2016,
-          432
-        ],
-        "id": "7fd7e869-665f-458f-b7d8-4602c8dc1952",
-        "name": "If"
+        "name": "Insert row1",
+        "disabled": true
       },
       {
         "parameters": {
@@ -600,7 +571,8 @@
                 "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
               }
             ]
-          }
+          },
+          "limit": 1000
         },
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
@@ -614,7 +586,7 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+          "text": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
           "options": {
             "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"ExtPurchaseOrder\" and \"alloc_no\" fields to compare the 2 results. If found matched results than compare \"OrderLineItem.UserCanceledQty\" to \"qty_cancelled\". Put the following additional columns in the table: wh, item, to_loc "
           }
@@ -622,11 +594,12 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 2.2,
         "position": [
-          2288,
-          176
+          2144,
+          768
         ],
         "id": "11f68937-dc77-439a-a2fb-c7217b011859",
-        "name": "AI Agent2"
+        "name": "AI Agent2",
+        "disabled": true
       },
       {
         "parameters": {
@@ -937,123 +910,363 @@
       },
       {
         "parameters": {
-          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : Cancel-Allocation - Result: \"SUCCESS\"",
-          "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
-          "options": {
-            "appendAttribution": false,
-            "attachmentsUi": {
-              "attachmentsBinary": [
-                {}
-              ]
-            }
-          }
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+              "status": "success",
+              "workflow_id": "={{ $workflow.id }}",
+              "sent": "N",
+              "failed_count": 0,
+              "ai_prompt_1": "=Use the incoming inputs to create a short summary from all input nodes. ",
+              "ai_input_1_1": "={{ $if ($('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+              "ai_input_2_1": "={{ $('Merge').item.json.data.toJsonString() }}",
+              "ai_input_2_2": "={{ $('Aggregate').item.json.message_data.toJsonString() }}",
+              "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"SUCCESS\"",
+              "ai_prompt_2": "=Do not include any code, code blocks, pseudocode, or programming syntax in your response.\nConvert the incoming inputs into html tables. Use \"ExtPurchaseOrder\" and \"alloc_no\" fields to compare the 2 results. If found matched results than compare \"OrderLineItem.UserCanceledQty\" to \"qty_cancelled\". Put the following additional columns in the table: wh, item, to_loc .\nDon't forget to not include any code, code blocks, pseudocode, or programming syntax in your response."
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_1_1",
+                "displayName": "ai_input_1_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_2_1",
+                "displayName": "ai_input_2_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "subject",
+                "displayName": "subject",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_1",
+                "displayName": "ai_prompt_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_2",
+                "displayName": "ai_prompt_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_1_2",
+                "displayName": "ai_input_1_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_2_2",
+                "displayName": "ai_input_2_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "sent",
+                "displayName": "sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "failed_count",
+                "displayName": "failed_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
         },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.2,
-        "position": [
-          3056,
-          176
-        ],
-        "id": "b8910dca-2e93-4556-aef2-afb8171cd261",
-        "name": "Send a message",
-        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-        "executeOnce": true,
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "DUshke7IpPd8PQ1f",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : Cancel-Allocation - Result: \"FAILED\"",
-          "message": "={{ $('AI Agent1').item.json.output }}",
-          "options": {
-            "appendAttribution": false,
-            "attachmentsUi": {
-              "attachmentsBinary": [
-                {}
-              ]
-            }
-          }
-        },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.2,
-        "position": [
-          3056,
-          432
-        ],
-        "id": "c5fc1e79-c15d-428a-b34a-42c0238d5232",
-        "name": "Send a message1",
-        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-        "executeOnce": true,
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "DUshke7IpPd8PQ1f",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "\n\nreturn $('Merge').all()"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          2736,
-          176
-        ],
-        "id": "a059cdb2-9b4d-4f3b-9f9f-bd398803fb27",
-        "name": "Code in JavaScript2"
-      },
-      {
-        "parameters": {
-          "jsCode": "\n\nreturn $('Merge').all()"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          2736,
-          432
-        ],
-        "id": "b3b019dd-d1b3-49ef-a5f1-a62b14081a8d",
-        "name": "Code in JavaScript3"
-      },
-      {
-        "parameters": {
-          "operation": "toJson",
-          "options": {
-            "fileName": "input_data.json"
-          }
-        },
-        "type": "n8n-nodes-base.convertToFile",
+        "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2896,
+          2336,
           176
         ],
-        "id": "90d4f7bc-2944-4912-8077-231f56cba05b",
-        "name": "Convert to File"
+        "id": "65c2c5f8-3698-485a-93aa-94d45d20309f",
+        "name": "Insert row2"
       },
       {
         "parameters": {
-          "operation": "toJson",
-          "options": {
-            "fileName": "input_data.json"
-          }
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "workflow_id": "={{ $workflow.id }}",
+              "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+              "status": "error",
+              "failed_count": 0,
+              "ai_input_1_1": "={{ $if ($('Failed to generate JSON for Allocation cancellation').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Cancel Allocation\\\" node: \\n \"+$('Failed to generate JSON for Allocation cancellation').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancel message in Databricks').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Can not find Allocation Cancel message in Databricks').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancellation in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Can not find Allocation Cancellation in MFCS').item.json.error.toJsonString(),\"\") }}",
+              "sent": "N",
+              "ai_prompt_1": "Use the incoming errors to create a summary from all nodes.",
+              "ai_input_2_1": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}",
+              "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"FAILED\""
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_1_1",
+                "displayName": "ai_input_1_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_2_1",
+                "displayName": "ai_input_2_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "subject",
+                "displayName": "subject",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_1",
+                "displayName": "ai_prompt_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_2",
+                "displayName": "ai_prompt_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_1_2",
+                "displayName": "ai_input_1_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_2_2",
+                "displayName": "ai_input_2_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "sent",
+                "displayName": "sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "failed_count",
+                "displayName": "failed_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
         },
-        "type": "n8n-nodes-base.convertToFile",
+        "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2896,
+          2080,
           432
         ],
-        "id": "5a71bf29-951b-459d-ba2a-909fa646e792",
-        "name": "Convert to File1"
+        "id": "8fd2f15d-4d4c-4c4f-9d1f-65d37cf46447",
+        "name": "Insert row3"
       }
     ],
     "connections": {
@@ -1149,11 +1362,6 @@
               "node": "AI Agent1",
               "type": "ai_languageModel",
               "index": 0
-            },
-            {
-              "node": "AI Agent2",
-              "type": "ai_languageModel",
-              "index": 0
             }
           ]
         ]
@@ -1162,18 +1370,7 @@
         "main": [
           [
             {
-              "node": "If",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "Insert row1",
+              "node": "Insert row3",
               "type": "main",
               "index": 0
             }
@@ -1206,7 +1403,7 @@
         "main": [
           [
             {
-              "node": "AI Agent2",
+              "node": "Insert row2",
               "type": "main",
               "index": 0
             }
@@ -1351,79 +1548,23 @@
           ]
         ]
       },
-      "Code in JavaScript2": {
-        "main": [
-          [
-            {
-              "node": "Convert to File",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Code in JavaScript3": {
-        "main": [
-          [
-            {
-              "node": "Convert to File1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Convert to File": {
-        "main": [
-          [
-            {
-              "node": "Send a message",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Convert to File1": {
-        "main": [
-          [
-            {
-              "node": "Send a message1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Insert row": {
         "main": [
-          [
-            {
-              "node": "Code in JavaScript2",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "Insert row1": {
         "main": [
-          [
-            {
-              "node": "Code in JavaScript3",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 77fdf0da",
+    "name": "Version 2b1547ec",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "77fdf0da-79f8-40ae-bf19-b38538606999",
+  "activeVersionId": "2b1547ec-5df3-49e3-ae3d-1ac1230e53c2",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -1517,11 +1658,6 @@
             "node": "AI Agent1",
             "type": "ai_languageModel",
             "index": 0
-          },
-          {
-            "node": "AI Agent2",
-            "type": "ai_languageModel",
-            "index": 0
           }
         ]
       ]
@@ -1530,18 +1666,7 @@
       "main": [
         [
           {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Insert row1",
+            "node": "Insert row3",
             "type": "main",
             "index": 0
           }
@@ -1574,7 +1699,7 @@
       "main": [
         [
           {
-            "node": "AI Agent2",
+            "node": "Insert row2",
             "type": "main",
             "index": 0
           }
@@ -1719,70 +1844,14 @@
         ]
       ]
     },
-    "Code in JavaScript2": {
-      "main": [
-        [
-          {
-            "node": "Convert to File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript3": {
-      "main": [
-        [
-          {
-            "node": "Convert to File1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to File": {
-      "main": [
-        [
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to File1": {
-      "main": [
-        [
-          {
-            "node": "Send a message1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Insert row": {
       "main": [
-        [
-          {
-            "node": "Code in JavaScript2",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Insert row1": {
       "main": [
-        [
-          {
-            "node": "Code in JavaScript3",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -2065,7 +2134,8 @@
         176
       ],
       "id": "6c8e9f80-04c0-4c75-8f1b-08225e2299d0",
-      "name": "AI Agent"
+      "name": "AI Agent",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2084,13 +2154,14 @@
           "id": "FIpUb1C3cbh8qN71",
           "name": "Google Gemini(PaLM) Api account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
         "content": "## Result evaluation with AI \n",
         "height": 624,
-        "width": 1600,
+        "width": 848,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -2117,7 +2188,8 @@
         432
       ],
       "id": "7aa21247-3976-48aa-b831-7ef1e3490133",
-      "name": "AI Agent1"
+      "name": "AI Agent1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2219,11 +2291,12 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2576,
-        176
+        2416,
+        768
       ],
       "id": "e1ead844-35ac-4c55-9b9a-8ec8cc3f1059",
-      "name": "Insert row"
+      "name": "Insert row",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2324,45 +2397,12 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2176,
-        432
+        1776,
+        768
       ],
       "id": "76e5e376-3c70-4e3e-8d4f-9337bbd0b21a",
-      "name": "Insert row1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
-              "leftValue": "={{ $('Merge').isExecuted }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        2016,
-        432
-      ],
-      "id": "7fd7e869-665f-458f-b7d8-4602c8dc1952",
-      "name": "If"
+      "name": "Insert row1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2386,7 +2426,8 @@
               "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
             }
           ]
-        }
+        },
+        "limit": 1000
       },
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2400,7 +2441,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Cancel Allocation\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+        "text": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
         "options": {
           "systemMessage": "DO NOT GENERATE RUNNABLE CODE!\nConvert the incoming inputs into html tables. Use \"ExtPurchaseOrder\" and \"alloc_no\" fields to compare the 2 results. If found matched results than compare \"OrderLineItem.UserCanceledQty\" to \"qty_cancelled\". Put the following additional columns in the table: wh, item, to_loc "
         }
@@ -2408,11 +2449,12 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        2288,
-        176
+        2144,
+        768
       ],
       "id": "11f68937-dc77-439a-a2fb-c7217b011859",
-      "name": "AI Agent2"
+      "name": "AI Agent2",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2723,123 +2765,363 @@
     },
     {
       "parameters": {
-        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : Cancel-Allocation - Result: \"SUCCESS\"",
-        "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
-        "options": {
-          "appendAttribution": false,
-          "attachmentsUi": {
-            "attachmentsBinary": [
-              {}
-            ]
-          }
-        }
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+            "status": "success",
+            "workflow_id": "={{ $workflow.id }}",
+            "sent": "N",
+            "failed_count": 0,
+            "ai_prompt_1": "=Use the incoming inputs to create a short summary from all input nodes. ",
+            "ai_input_1_1": "={{ $if ($('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in Databricks\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Cancellation in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+            "ai_input_2_1": "={{ $('Merge').item.json.data.toJsonString() }}",
+            "ai_input_2_2": "={{ $('Aggregate').item.json.message_data.toJsonString() }}",
+            "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"SUCCESS\"",
+            "ai_prompt_2": "=Do not include any code, code blocks, pseudocode, or programming syntax in your response.\nConvert the incoming inputs into html tables. Use \"ExtPurchaseOrder\" and \"alloc_no\" fields to compare the 2 results. If found matched results than compare \"OrderLineItem.UserCanceledQty\" to \"qty_cancelled\". Put the following additional columns in the table: wh, item, to_loc .\nDon't forget to not include any code, code blocks, pseudocode, or programming syntax in your response."
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_1_1",
+              "displayName": "ai_input_1_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_2_1",
+              "displayName": "ai_input_2_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_1",
+              "displayName": "ai_prompt_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_2",
+              "displayName": "ai_prompt_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_1_2",
+              "displayName": "ai_input_1_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_2_2",
+              "displayName": "ai_input_2_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "sent",
+              "displayName": "sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_count",
+              "displayName": "failed_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        3056,
-        176
-      ],
-      "id": "b8910dca-2e93-4556-aef2-afb8171cd261",
-      "name": "Send a message",
-      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "DUshke7IpPd8PQ1f",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : Cancel-Allocation - Result: \"FAILED\"",
-        "message": "={{ $('AI Agent1').item.json.output }}",
-        "options": {
-          "appendAttribution": false,
-          "attachmentsUi": {
-            "attachmentsBinary": [
-              {}
-            ]
-          }
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        3056,
-        432
-      ],
-      "id": "c5fc1e79-c15d-428a-b34a-42c0238d5232",
-      "name": "Send a message1",
-      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "DUshke7IpPd8PQ1f",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "\n\nreturn $('Merge').all()"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2736,
-        176
-      ],
-      "id": "a059cdb2-9b4d-4f3b-9f9f-bd398803fb27",
-      "name": "Code in JavaScript2"
-    },
-    {
-      "parameters": {
-        "jsCode": "\n\nreturn $('Merge').all()"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2736,
-        432
-      ],
-      "id": "b3b019dd-d1b3-49ef-a5f1-a62b14081a8d",
-      "name": "Code in JavaScript3"
-    },
-    {
-      "parameters": {
-        "operation": "toJson",
-        "options": {
-          "fileName": "input_data.json"
-        }
-      },
-      "type": "n8n-nodes-base.convertToFile",
+      "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2896,
+        2336,
         176
       ],
-      "id": "90d4f7bc-2944-4912-8077-231f56cba05b",
-      "name": "Convert to File"
+      "id": "65c2c5f8-3698-485a-93aa-94d45d20309f",
+      "name": "Insert row2"
     },
     {
       "parameters": {
-        "operation": "toJson",
-        "options": {
-          "fileName": "input_data.json"
-        }
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+            "status": "error",
+            "failed_count": 0,
+            "ai_input_1_1": "={{ $if ($('Failed to generate JSON for Allocation cancellation').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Cancel Allocation\\\" node: \\n \"+$('Failed to generate JSON for Allocation cancellation').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancel message in Databricks').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in Databricks\\\" node: \\n \"+$('Can not find Allocation Cancel message in Databricks').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation Cancellation in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Cancellation in MFCS\\\" node: \\n \"+$('Can not find Allocation Cancellation in MFCS').item.json.error.toJsonString(),\"\") }}",
+            "sent": "N",
+            "ai_prompt_1": "Use the incoming errors to create a summary from all nodes.",
+            "ai_input_2_1": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}",
+            "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"FAILED\""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_1_1",
+              "displayName": "ai_input_1_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_2_1",
+              "displayName": "ai_input_2_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_1",
+              "displayName": "ai_prompt_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_2",
+              "displayName": "ai_prompt_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_1_2",
+              "displayName": "ai_input_1_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_2_2",
+              "displayName": "ai_input_2_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sent",
+              "displayName": "sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_count",
+              "displayName": "failed_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.convertToFile",
+      "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2896,
+        2080,
         432
       ],
-      "id": "5a71bf29-951b-459d-ba2a-909fa646e792",
-      "name": "Convert to File1"
+      "id": "8fd2f15d-4d4c-4c4f-9d1f-65d37cf46447",
+      "name": "Insert row3"
     }
   ],
   "pinData": {
@@ -2878,19 +3160,19 @@
   "staticData": null,
   "tags": [
     {
-      "updatedAt": "2026-01-28T08:40:06.911Z",
-      "createdAt": "2026-01-28T08:40:06.911Z",
-      "id": "Mk9OmPl9J1OAhffI",
-      "name": "Allocation"
-    },
-    {
       "updatedAt": "2025-12-03T08:29:30.685Z",
       "createdAt": "2025-12-03T08:29:30.685Z",
       "id": "7XhEcQNHqPX9s6B9",
       "name": "Merch_test_cases"
+    },
+    {
+      "updatedAt": "2026-01-28T08:40:06.911Z",
+      "createdAt": "2026-01-28T08:40:06.911Z",
+      "id": "Mk9OmPl9J1OAhffI",
+      "name": "Allocation"
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-29T16:56:20.709Z",
-  "versionId": "77fdf0da-79f8-40ae-bf19-b38538606999"
+  "updatedAt": "2026-01-30T12:43:05.854Z",
+  "versionId": "2b1547ec-5df3-49e3-ae3d-1ac1230e53c2"
 }
