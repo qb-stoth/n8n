@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-23T12:36:44.868Z",
-    "createdAt": "2026-01-23T12:36:41.688Z",
-    "versionId": "3ee9337b-b17e-4bc8-ac92-5ad838356d57",
+    "updatedAt": "2026-01-30T08:34:20.812Z",
+    "createdAt": "2026-01-30T08:34:17.964Z",
+    "versionId": "532d8b05-42c4-4ebd-8b16-4c19473a39ec",
     "workflowId": "puq5n4bzX7gsRBT9",
     "nodes": [
       {
@@ -223,11 +223,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 3ee9337b",
+    "name": "Version 532d8b05",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "3ee9337b-b17e-4bc8-ac92-5ad838356d57",
+  "activeVersionId": "532d8b05-42c4-4ebd-8b16-4c19473a39ec",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -1029,6 +1029,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T08:43:52.100Z",
-  "versionId": "3ee9337b-b17e-4bc8-ac92-5ad838356d57"
+  "updatedAt": "2026-01-30T08:34:17.962Z",
+  "versionId": "532d8b05-42c4-4ebd-8b16-4c19473a39ec"
 }
