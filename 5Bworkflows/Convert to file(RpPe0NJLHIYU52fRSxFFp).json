@@ -1,0 +1,161 @@
+{
+  "active": true,
+  "activeVersion": {
+    "updatedAt": "2026-01-30T13:12:02.148Z",
+    "createdAt": "2026-01-30T13:11:52.406Z",
+    "versionId": "c43d6912-1e39-4970-a861-e6f5cc148a7e",
+    "workflowId": "RpPe0NJLHIYU52fRSxFFp",
+    "nodes": [
+      {
+        "parameters": {
+          "workflowInputs": {
+            "values": [
+              {
+                "name": "data"
+              },
+              {
+                "name": "filename"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          -496,
+          -48
+        ],
+        "id": "949d86bd-27aa-4918-9775-fc2a7e9396e4",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "operation": "toText",
+          "sourceProperty": "=data",
+          "options": {
+            "fileName": "={{ $json.filename }}"
+          }
+        },
+        "type": "n8n-nodes-base.convertToFile",
+        "typeVersion": 1.1,
+        "position": [
+          -288,
+          -64
+        ],
+        "id": "1ccb4bb5-5ee7-46fe-bd0d-ab2d8f56562f",
+        "name": "Convert to File2",
+        "onError": "continueErrorOutput"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "Convert to File2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Convert to File2": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "zoltan karancsi",
+    "name": "Version c43d6912",
+    "description": "",
+    "autosaved": false
+  },
+  "activeVersionId": "c43d6912-1e39-4970-a861-e6f5cc148a7e",
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "createdAt": "2026-01-30T10:19:03.537Z",
+  "id": "RpPe0NJLHIYU52fRSxFFp",
+  "isArchived": false,
+  "meta": null,
+  "name": "Convert to file",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "data"
+            },
+            {
+              "name": "filename"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -496,
+        -48
+      ],
+      "id": "949d86bd-27aa-4918-9775-fc2a7e9396e4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "=data",
+        "options": {
+          "fileName": "={{ $json.filename }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -288,
+        -64
+      ],
+      "id": "1ccb4bb5-5ee7-46fe-bd0d-ab2d8f56562f",
+      "name": "Convert to File2",
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {},
+  "repo_name": "n8n",
+  "repo_owner": "qb-stoth",
+  "repo_path": "5Bworkflows",
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "shared": [
+    {
+      "updatedAt": "2026-01-30T10:19:03.537Z",
+      "createdAt": "2026-01-30T10:19:03.537Z",
+      "role": "workflow:owner",
+      "workflowId": "RpPe0NJLHIYU52fRSxFFp",
+      "projectId": "qocjUN26HqmYcJIH"
+    }
+  ],
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-01-30T13:11:52.405Z",
+  "versionId": "c43d6912-1e39-4970-a861-e6f5cc148a7e"
+}
