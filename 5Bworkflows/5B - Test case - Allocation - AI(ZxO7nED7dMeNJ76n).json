@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-29T14:07:42.350Z",
-    "createdAt": "2026-01-29T14:07:40.377Z",
-    "versionId": "6962c2b7-4f6f-403d-ab00-112c558e1d00",
+    "updatedAt": "2026-01-30T09:55:44.975Z",
+    "createdAt": "2026-01-30T09:55:42.777Z",
+    "versionId": "e61040d5-4e74-4bdc-b6cb-1787141b9581",
     "workflowId": "ZxO7nED7dMeNJ76n",
     "nodes": [
       {
@@ -105,7 +105,8 @@
           160
         ],
         "id": "56f69204-ef31-463c-8afb-0e983b3c22ac",
-        "name": "AI Agent"
+        "name": "AI Agent",
+        "disabled": true
       },
       {
         "parameters": {
@@ -124,7 +125,8 @@
             "id": "FIpUb1C3cbh8qN71",
             "name": "Google Gemini(PaLM) Api account"
           }
-        }
+        },
+        "disabled": true
       },
       {
         "parameters": {
@@ -221,7 +223,7 @@
         "parameters": {
           "content": "## Result evaluation with AI \n",
           "height": 624,
-          "width": 1360,
+          "width": 1152,
           "color": 3
         },
         "type": "n8n-nodes-base.stickyNote",
@@ -248,7 +250,8 @@
           416
         ],
         "id": "b2b8304b-0c97-465d-948b-029f7b6d969d",
-        "name": "AI Agent1"
+        "name": "AI Agent1",
+        "disabled": true
       },
       {
         "parameters": {
@@ -483,11 +486,16 @@
           "columns": {
             "mappingMode": "defineBelow",
             "value": {
-              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
-              "output_message": "={{ $('AI Agent').item.json.output }}",
+              "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
               "status": "success",
               "workflow_id": "={{ $workflow.id }}",
-              "data_1": "={{ $json.data.toJsonString() }}"
+              "sent": "N",
+              "failed_count": 0,
+              "ai_prompt_1": "=Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies.",
+              "ai_input_1_1": "={{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Check Allocation in MFCS v2\\'').isExecuted,\"Input from \\\"Call Check Allocation in MFCS\\\" node: \\n \"+$('Call \\'Check Allocation in MFCS v2\\'').item.json.toJsonString(),\"\" )}}",
+              "ai_input_2_1": "={{ $('Aggregate').item.json.data.toJsonString() }}",
+              "ai_input_2_2": "={{ $('Aggregate2').item.json.message_data.toJsonString() }}",
+              "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"SUCCESS\""
             },
             "matchingColumns": [],
             "schema": [
@@ -512,8 +520,18 @@
                 "removed": false
               },
               {
-                "id": "output_message",
-                "displayName": "output_message",
+                "id": "ai_input_1_1",
+                "displayName": "ai_input_1_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_2_1",
+                "displayName": "ai_input_2_1",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
@@ -539,7 +557,7 @@
                 "display": true,
                 "type": "string",
                 "readOnly": false,
-                "removed": false
+                "removed": true
               },
               {
                 "id": "data_2",
@@ -552,14 +570,74 @@
                 "removed": true
               },
               {
-                "id": "data_3",
-                "displayName": "data_3",
+                "id": "subject",
+                "displayName": "subject",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_1",
+                "displayName": "ai_prompt_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_2",
+                "displayName": "ai_prompt_2",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
                 "type": "string",
                 "readOnly": false,
                 "removed": true
+              },
+              {
+                "id": "ai_input_1_2",
+                "displayName": "ai_input_1_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_2_2",
+                "displayName": "ai_input_2_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "sent",
+                "displayName": "sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "failed_count",
+                "displayName": "failed_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
               }
             ],
             "attemptToConvertTypes": false,
@@ -570,7 +648,7 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2064,
+          2336,
           160
         ],
         "id": "62f705ee-4571-4189-a880-5f643ef52828",
@@ -589,10 +667,14 @@
             "mappingMode": "defineBelow",
             "value": {
               "workflow_id": "={{ $workflow.id }}",
-              "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+              "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
               "status": "error",
-              "output_message": "={{ $('AI Agent1').item.json.output }}",
-              "data_1": "={{ $json.data.toJsonString() }}"
+              "failed_count": 0,
+              "ai_input_1_1": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get allocation JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Azure').isExecuted,\"Error from \\\"Upload File To Azure\\\" node: \\n \"+$('Failed to upload file to Azure').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check Allocation in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n",
+              "sent": "N",
+              "ai_prompt_1": "Use the incoming errors to create a summary from all nodes.",
+              "ai_input_2_1": "={{ $('Aggregate1').item.json.data.toJsonString() }}",
+              "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"FAILED\""
             },
             "matchingColumns": [],
             "schema": [
@@ -617,8 +699,18 @@
                 "removed": false
               },
               {
-                "id": "output_message",
-                "displayName": "output_message",
+                "id": "ai_input_1_1",
+                "displayName": "ai_input_1_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_2_1",
+                "displayName": "ai_input_2_1",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
@@ -644,7 +736,7 @@
                 "display": true,
                 "type": "string",
                 "readOnly": false,
-                "removed": false
+                "removed": true
               },
               {
                 "id": "data_2",
@@ -657,14 +749,74 @@
                 "removed": true
               },
               {
-                "id": "data_3",
-                "displayName": "data_3",
+                "id": "subject",
+                "displayName": "subject",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_1",
+                "displayName": "ai_prompt_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_2",
+                "displayName": "ai_prompt_2",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
                 "type": "string",
                 "readOnly": false,
                 "removed": true
+              },
+              {
+                "id": "ai_input_1_2",
+                "displayName": "ai_input_1_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_2_2",
+                "displayName": "ai_input_2_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "sent",
+                "displayName": "sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "failed_count",
+                "displayName": "failed_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
               }
             ],
             "attemptToConvertTypes": false,
@@ -813,91 +965,58 @@
       },
       {
         "parameters": {
-          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
-          "message": "={{ $('AI Agent').item.json.output }}",
-          "options": {
-            "appendAttribution": false,
-            "attachmentsUi": {
-              "attachmentsBinary": [
-                {}
-              ]
-            }
-          }
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "hk8gBzPCwdeTj0vo",
+            "mode": "list",
+            "cachedResultName": "MFCS_MSG_DATA",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "message_type",
+                "keyValue": "XAlloc"
+              },
+              {
+                "keyName": "user_id",
+                "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+              }
+            ]
+          },
+          "limit": 1000
         },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.2,
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1.1,
         "position": [
-          2384,
+          2048,
           160
         ],
-        "id": "e9f95094-925a-42b1-9066-71c9dd3ba9d8",
-        "name": "Send a message",
-        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-        "executeOnce": true,
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "DUshke7IpPd8PQ1f",
-            "name": "Gmail account"
-          }
-        }
+        "id": "d5c7d042-07cb-4616-8f80-d25218b04b55",
+        "name": "Get row(s)",
+        "alwaysOutputData": true
       },
       {
         "parameters": {
-          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
-          "message": "={{ $('AI Agent1').item.json.output }}",
-          "options": {
-            "appendAttribution": false,
-            "attachmentsUi": {
-              "attachmentsBinary": [
-                {}
-              ]
-            }
-          }
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "message_data"
+              }
+            ]
+          },
+          "options": {}
         },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.2,
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
         "position": [
-          2384,
-          416
-        ],
-        "id": "103715e7-72c0-4ef0-aea0-5f7e22f3abf6",
-        "name": "Send a message1",
-        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-        "executeOnce": true,
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "DUshke7IpPd8PQ1f",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "\n\nreturn $('Merge').all()"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          2224,
+          2192,
           160
         ],
-        "id": "e3cd0c62-1822-447b-b0fe-3d0ff968cbe5",
-        "name": "Code in JavaScript2"
-      },
-      {
-        "parameters": {
-          "jsCode": "\n\nreturn $('Merge').all()"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          2224,
-          416
-        ],
-        "id": "729537f3-472c-47f4-95b5-fc25dbf9158f",
-        "name": "Code in JavaScript3"
+        "id": "1abaeafb-b764-47ad-813c-cc9008a5d8bf",
+        "name": "Aggregate2"
       }
     ],
     "connections": {
@@ -1125,7 +1244,7 @@
         "main": [
           [
             {
-              "node": "Insert row",
+              "node": "Get row(s)",
               "type": "main",
               "index": 0
             }
@@ -1163,47 +1282,30 @@
       },
       "Insert row": {
         "main": [
-          [
-            {
-              "node": "Code in JavaScript2",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "Insert row1": {
         "main": [
-          [
-            {
-              "node": "Code in JavaScript3",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Send a message": {
-        "main": [
           []
         ]
       },
-      "Code in JavaScript2": {
+      "Get row(s)": {
         "main": [
           [
             {
-              "node": "Send a message",
+              "node": "Aggregate2",
               "type": "main",
               "index": 0
             }
           ]
         ]
       },
-      "Code in JavaScript3": {
+      "Aggregate2": {
         "main": [
           [
             {
-              "node": "Send a message1",
+              "node": "Insert row",
               "type": "main",
               "index": 0
             }
@@ -1212,11 +1314,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 6962c2b7",
+    "name": "Version e61040d5",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "6962c2b7-4f6f-403d-ab00-112c558e1d00",
+  "activeVersionId": "e61040d5-4e74-4bdc-b6cb-1787141b9581",
   "connections": {
     "Call 'Run Apache Airflow DAG and Retrieve XCom Value'": {
       "main": [
@@ -1442,7 +1544,7 @@
       "main": [
         [
           {
-            "node": "Insert row",
+            "node": "Get row(s)",
             "type": "main",
             "index": 0
           }
@@ -1480,47 +1582,30 @@
     },
     "Insert row": {
       "main": [
-        [
-          {
-            "node": "Code in JavaScript2",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Insert row1": {
       "main": [
-        [
-          {
-            "node": "Code in JavaScript3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Send a message": {
-      "main": [
         []
       ]
     },
-    "Code in JavaScript2": {
+    "Get row(s)": {
       "main": [
         [
           {
-            "node": "Send a message",
+            "node": "Aggregate2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code in JavaScript3": {
+    "Aggregate2": {
       "main": [
         [
           {
-            "node": "Send a message1",
+            "node": "Insert row",
             "type": "main",
             "index": 0
           }
@@ -1635,7 +1720,8 @@
         160
       ],
       "id": "56f69204-ef31-463c-8afb-0e983b3c22ac",
-      "name": "AI Agent"
+      "name": "AI Agent",
+      "disabled": true
     },
     {
       "parameters": {
@@ -1654,7 +1740,8 @@
           "id": "FIpUb1C3cbh8qN71",
           "name": "Google Gemini(PaLM) Api account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
@@ -1751,7 +1838,7 @@
       "parameters": {
         "content": "## Result evaluation with AI \n",
         "height": 624,
-        "width": 1360,
+        "width": 1152,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -1778,7 +1865,8 @@
         416
       ],
       "id": "b2b8304b-0c97-465d-948b-029f7b6d969d",
-      "name": "AI Agent1"
+      "name": "AI Agent1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2013,11 +2101,16 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
-            "output_message": "={{ $('AI Agent').item.json.output }}",
+            "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
             "status": "success",
             "workflow_id": "={{ $workflow.id }}",
-            "data_1": "={{ $json.data.toJsonString() }}"
+            "sent": "N",
+            "failed_count": 0,
+            "ai_prompt_1": "=Use the incoming inputs to create a short summary from all input nodes. If the input contains items and qty-s fields then collect and compare them and show any discrepancies.",
+            "ai_input_1_1": "={{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Check Allocation in MFCS v2\\'').isExecuted,\"Input from \\\"Call Check Allocation in MFCS\\\" node: \\n \"+$('Call \\'Check Allocation in MFCS v2\\'').item.json.toJsonString(),\"\" )}}",
+            "ai_input_2_1": "={{ $('Aggregate').item.json.data.toJsonString() }}",
+            "ai_input_2_2": "={{ $('Aggregate2').item.json.message_data.toJsonString() }}",
+            "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"SUCCESS\""
           },
           "matchingColumns": [],
           "schema": [
@@ -2042,8 +2135,18 @@
               "removed": false
             },
             {
-              "id": "output_message",
-              "displayName": "output_message",
+              "id": "ai_input_1_1",
+              "displayName": "ai_input_1_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_2_1",
+              "displayName": "ai_input_2_1",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -2069,7 +2172,7 @@
               "display": true,
               "type": "string",
               "readOnly": false,
-              "removed": false
+              "removed": true
             },
             {
               "id": "data_2",
@@ -2082,14 +2185,74 @@
               "removed": true
             },
             {
-              "id": "data_3",
-              "displayName": "data_3",
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_1",
+              "displayName": "ai_prompt_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_2",
+              "displayName": "ai_prompt_2",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
               "readOnly": false,
               "removed": true
+            },
+            {
+              "id": "ai_input_1_2",
+              "displayName": "ai_input_1_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_2_2",
+              "displayName": "ai_input_2_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "sent",
+              "displayName": "sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_count",
+              "displayName": "failed_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -2100,7 +2263,7 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2064,
+        2336,
         160
       ],
       "id": "62f705ee-4571-4189-a880-5f643ef52828",
@@ -2119,10 +2282,14 @@
           "mappingMode": "defineBelow",
           "value": {
             "workflow_id": "={{ $workflow.id }}",
-            "user_id": "={{ $('When Executed by Another Workflow').item.json.userid }}",
+            "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
             "status": "error",
-            "output_message": "={{ $('AI Agent1').item.json.output }}",
-            "data_1": "={{ $json.data.toJsonString() }}"
+            "failed_count": 0,
+            "ai_input_1_1": "={{ $if ($('Unable to get allocation JSON template from MFCS.').isExecuted,\"Error from \\\"Unable to get allocation JSON template from MFCS.\\\" node: \\n \"+$('Unable to get allocation JSON template from MFCS.').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload file to Azure').isExecuted,\"Error from \\\"Upload File To Azure\\\" node: \\n \"+$('Failed to upload file to Azure').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('DAG Run failed or wait too long').isExecuted,\"Error from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('DAG Run failed or wait too long').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Allocation in MFCS').isExecuted,\"Error from \\\"Call Check Allocation in MFCS\\\" node: \\n\"+ $('Can not find Allocation in MFCS').item.json.error.toJsonString(),\"\") }}\n",
+            "sent": "N",
+            "ai_prompt_1": "Use the incoming errors to create a summary from all nodes.",
+            "ai_input_2_1": "={{ $('Aggregate1').item.json.data.toJsonString() }}",
+            "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"FAILED\""
           },
           "matchingColumns": [],
           "schema": [
@@ -2147,8 +2314,18 @@
               "removed": false
             },
             {
-              "id": "output_message",
-              "displayName": "output_message",
+              "id": "ai_input_1_1",
+              "displayName": "ai_input_1_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_2_1",
+              "displayName": "ai_input_2_1",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -2174,7 +2351,7 @@
               "display": true,
               "type": "string",
               "readOnly": false,
-              "removed": false
+              "removed": true
             },
             {
               "id": "data_2",
@@ -2187,14 +2364,74 @@
               "removed": true
             },
             {
-              "id": "data_3",
-              "displayName": "data_3",
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_1",
+              "displayName": "ai_prompt_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_2",
+              "displayName": "ai_prompt_2",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
               "readOnly": false,
               "removed": true
+            },
+            {
+              "id": "ai_input_1_2",
+              "displayName": "ai_input_1_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_2_2",
+              "displayName": "ai_input_2_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sent",
+              "displayName": "sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_count",
+              "displayName": "failed_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -2343,91 +2580,58 @@
     },
     {
       "parameters": {
-        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
-        "message": "={{ $('AI Agent').item.json.output }}",
-        "options": {
-          "appendAttribution": false,
-          "attachmentsUi": {
-            "attachmentsBinary": [
-              {}
-            ]
-          }
-        }
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "hk8gBzPCwdeTj0vo",
+          "mode": "list",
+          "cachedResultName": "MFCS_MSG_DATA",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/hk8gBzPCwdeTj0vo"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "message_type",
+              "keyValue": "XAlloc"
+            },
+            {
+              "keyName": "user_id",
+              "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
+            }
+          ]
+        },
+        "limit": 1000
       },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
       "position": [
-        2384,
+        2048,
         160
       ],
-      "id": "e9f95094-925a-42b1-9066-71c9dd3ba9d8",
-      "name": "Send a message",
-      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "DUshke7IpPd8PQ1f",
-          "name": "Gmail account"
-        }
-      }
+      "id": "d5c7d042-07cb-4616-8f80-d25218b04b55",
+      "name": "Get row(s)",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
-        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
-        "message": "={{ $('AI Agent1').item.json.output }}",
-        "options": {
-          "appendAttribution": false,
-          "attachmentsUi": {
-            "attachmentsBinary": [
-              {}
-            ]
-          }
-        }
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message_data"
+            }
+          ]
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
       "position": [
-        2384,
-        416
-      ],
-      "id": "103715e7-72c0-4ef0-aea0-5f7e22f3abf6",
-      "name": "Send a message1",
-      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "DUshke7IpPd8PQ1f",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "\n\nreturn $('Merge').all()"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2224,
+        2192,
         160
       ],
-      "id": "e3cd0c62-1822-447b-b0fe-3d0ff968cbe5",
-      "name": "Code in JavaScript2"
-    },
-    {
-      "parameters": {
-        "jsCode": "\n\nreturn $('Merge').all()"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2224,
-        416
-      ],
-      "id": "729537f3-472c-47f4-95b5-fc25dbf9158f",
-      "name": "Code in JavaScript3"
+      "id": "1abaeafb-b764-47ad-813c-cc9008a5d8bf",
+      "name": "Aggregate2"
     }
   ],
   "pinData": {
@@ -2478,6 +2682,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-29T14:07:40.376Z",
-  "versionId": "6962c2b7-4f6f-403d-ab00-112c558e1d00"
+  "updatedAt": "2026-01-30T09:55:42.776Z",
+  "versionId": "e61040d5-4e74-4bdc-b6cb-1787141b9581"
 }
