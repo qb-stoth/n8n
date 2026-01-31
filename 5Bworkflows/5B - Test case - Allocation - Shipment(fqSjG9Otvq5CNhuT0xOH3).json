@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-29T14:16:59.490Z",
-    "createdAt": "2026-01-29T14:16:57.035Z",
-    "versionId": "467885b2-23d6-4f31-ae50-a650e21122a8",
+    "updatedAt": "2026-01-30T12:27:38.405Z",
+    "createdAt": "2026-01-30T12:27:36.136Z",
+    "versionId": "163bf891-9b06-4b0a-afdf-a5ecc90431a9",
     "workflowId": "fqSjG9Otvq5CNhuT0xOH3",
     "nodes": [
       {
@@ -494,7 +494,8 @@
           160
         ],
         "id": "2354be47-0d43-4e81-84b2-ba76bc0c52a1",
-        "name": "AI Agent"
+        "name": "AI Agent",
+        "disabled": true
       },
       {
         "parameters": {
@@ -513,13 +514,14 @@
             "id": "FIpUb1C3cbh8qN71",
             "name": "Google Gemini(PaLM) Api account"
           }
-        }
+        },
+        "disabled": true
       },
       {
         "parameters": {
           "content": "## Result evaluation with AI \n",
           "height": 624,
-          "width": 1568,
+          "width": 832,
           "color": 3
         },
         "type": "n8n-nodes-base.stickyNote",
@@ -546,7 +548,8 @@
           416
         ],
         "id": "07743ae9-8741-415c-9466-b320a74c21a1",
-        "name": "AI Agent1"
+        "name": "AI Agent1",
+        "disabled": true
       },
       {
         "parameters": {
@@ -648,11 +651,12 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          1936,
-          160
+          1792,
+          736
         ],
         "id": "c6630571-6797-4fb6-ba0d-59f0eda548d7",
-        "name": "Insert row"
+        "name": "Insert row",
+        "disabled": true
       },
       {
         "parameters": {
@@ -753,45 +757,12 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          1536,
-          416
+          2032,
+          736
         ],
         "id": "e755c141-3437-4d6e-8790-58440f5bdae2",
-        "name": "Insert row1"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 3
-            },
-            "conditions": [
-              {
-                "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
-                "leftValue": "={{ $('Merge').isExecuted }}",
-                "rightValue": "",
-                "operator": {
-                  "type": "boolean",
-                  "operation": "true",
-                  "singleValue": true
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.3,
-        "position": [
-          1376,
-          416
-        ],
-        "id": "88f9d7ed-04a3-4e7e-9dd5-d8c308d03139",
-        "name": "If"
+        "name": "Insert row1",
+        "disabled": true
       },
       {
         "parameters": {
@@ -815,7 +786,8 @@
                 "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
               }
             ]
-          }
+          },
+          "limit": 1000
         },
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
@@ -829,7 +801,7 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+          "text": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
           "options": {
             "systemMessage": "DO NOT GENERATE RUNNABLE CODE, IF SO USE PYTHON!\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies."
           }
@@ -837,11 +809,12 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 2.2,
         "position": [
-          1648,
-          160
+          1536,
+          736
         ],
         "id": "b26b8a2a-efe5-41f3-86ee-501aa2677ab2",
-        "name": "AI Agent2"
+        "name": "AI Agent2",
+        "disabled": true
       },
       {
         "parameters": {
@@ -937,123 +910,363 @@
       },
       {
         "parameters": {
-          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
-          "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
-          "options": {
-            "appendAttribution": false,
-            "attachmentsUi": {
-              "attachmentsBinary": [
-                {}
-              ]
-            }
-          }
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+              "status": "success",
+              "workflow_id": "={{ $workflow.id }}",
+              "sent": "N",
+              "failed_count": 0,
+              "ai_prompt_1": "=Use the incoming inputs to create a short summary from all input nodes. ",
+              "ai_input_1_1": "={{ $if ($('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Shipment in Databricks\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Shipment in Databricks\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Shipment in Databricks\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Shipment in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Shipment in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Shipment in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+              "ai_input_2_1": "={{ $('Merge').item.json.data.toJsonString() }}",
+              "ai_input_2_2": "={{ $('Aggregate').item.json.message_data.toJsonString() }}",
+              "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"SUCCESS\"",
+              "ai_prompt_2": "=Do not include any code, code blocks, pseudocode, or programming syntax in your response.\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies.\nDon't forget to not include any code, code blocks, pseudocode, or programming syntax in your response."
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_1_1",
+                "displayName": "ai_input_1_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_2_1",
+                "displayName": "ai_input_2_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "subject",
+                "displayName": "subject",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_1",
+                "displayName": "ai_prompt_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_2",
+                "displayName": "ai_prompt_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_1_2",
+                "displayName": "ai_input_1_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_2_2",
+                "displayName": "ai_input_2_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "sent",
+                "displayName": "sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "failed_count",
+                "displayName": "failed_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
         },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.2,
-        "position": [
-          2416,
-          160
-        ],
-        "id": "f9a0d020-857b-4a96-9da5-471fef55a4db",
-        "name": "Send a message",
-        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-        "executeOnce": true,
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "DUshke7IpPd8PQ1f",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-          "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
-          "message": "={{ $('AI Agent1').item.json.output }}",
-          "options": {
-            "appendAttribution": false,
-            "attachmentsUi": {
-              "attachmentsBinary": [
-                {}
-              ]
-            }
-          }
-        },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.2,
-        "position": [
-          2416,
-          416
-        ],
-        "id": "d2589364-c9dc-431d-b830-8218bb657136",
-        "name": "Send a message1",
-        "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-        "executeOnce": true,
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "DUshke7IpPd8PQ1f",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "\n\nreturn $('Merge').all()"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          2096,
-          160
-        ],
-        "id": "fce80d85-1a69-4173-8fa4-3895c4465f60",
-        "name": "Code in JavaScript2"
-      },
-      {
-        "parameters": {
-          "jsCode": "\n\nreturn $('Merge').all()"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          2096,
-          416
-        ],
-        "id": "28743b9a-60f7-4954-ba5c-b4283275429a",
-        "name": "Code in JavaScript3"
-      },
-      {
-        "parameters": {
-          "operation": "toJson",
-          "options": {
-            "fileName": "input_data.json"
-          }
-        },
-        "type": "n8n-nodes-base.convertToFile",
+        "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2256,
+          1664,
           160
         ],
-        "id": "f14fd98d-ff24-49f8-9896-4d37fcd67fdf",
-        "name": "Convert to File"
+        "id": "2a41ea82-e1f7-4854-a7df-acf3f6db4cbf",
+        "name": "Insert row2"
       },
       {
         "parameters": {
-          "operation": "toJson",
-          "options": {
-            "fileName": "input_data.json"
-          }
+          "dataTableId": {
+            "__rl": true,
+            "value": "fmq7TTUtjjt9Qdjh",
+            "mode": "list",
+            "cachedResultName": "WORKFLOW_OUTPUT",
+            "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "workflow_id": "={{ $workflow.id }}",
+              "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+              "status": "error",
+              "failed_count": 0,
+              "ai_input_1_1": "={{ $if ($('Failed to generate tXML for Shipment').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Allocation Shipments\\\" node: \\n \"+$('Failed to generate tXML for Shipment').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Shipment in Databricks').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Shipment in Databricks\\\" node: \\n \"+$('Can not find Shipment in Databricks').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Shipment in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Shipment in MFCS\\\" node: \\n \"+$('Can not find Shipment in MFCS').item.json.error.toJsonString(),\"\") }}",
+              "sent": "N",
+              "ai_prompt_1": "Use the incoming errors to create a summary from all nodes.",
+              "ai_input_2_1": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}",
+              "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"FAILED\""
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "workflow_id",
+                "displayName": "workflow_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "user_id",
+                "displayName": "user_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_1_1",
+                "displayName": "ai_input_1_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_input_2_1",
+                "displayName": "ai_input_2_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "data_1",
+                "displayName": "data_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "data_2",
+                "displayName": "data_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "subject",
+                "displayName": "subject",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_1",
+                "displayName": "ai_prompt_1",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "ai_prompt_2",
+                "displayName": "ai_prompt_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_1_2",
+                "displayName": "ai_input_1_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "ai_input_2_2",
+                "displayName": "ai_input_2_2",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": true
+              },
+              {
+                "id": "sent",
+                "displayName": "sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "failed_count",
+                "displayName": "failed_count",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
         },
-        "type": "n8n-nodes-base.convertToFile",
+        "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          2256,
+          1456,
           416
         ],
-        "id": "eaa5d733-efef-4cfe-bd3a-f9492269a695",
-        "name": "Convert to File1"
+        "id": "2f25b1f6-8cb8-47c9-af5f-3f76c1c6fcab",
+        "name": "Insert row3"
       }
     ],
     "connections": {
@@ -1192,11 +1405,6 @@
               "node": "AI Agent1",
               "type": "ai_languageModel",
               "index": 0
-            },
-            {
-              "node": "AI Agent2",
-              "type": "ai_languageModel",
-              "index": 0
             }
           ]
         ]
@@ -1205,7 +1413,7 @@
         "main": [
           [
             {
-              "node": "If",
+              "node": "Insert row3",
               "type": "main",
               "index": 0
             }
@@ -1256,26 +1464,9 @@
           ]
         ]
       },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "Insert row1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Insert row": {
         "main": [
-          [
-            {
-              "node": "Code in JavaScript2",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "Get row(s)": {
@@ -1293,7 +1484,7 @@
         "main": [
           [
             {
-              "node": "AI Agent2",
+              "node": "Insert row2",
               "type": "main",
               "index": 0
             }
@@ -1362,68 +1553,18 @@
           ]
         ]
       },
-      "Code in JavaScript2": {
-        "main": [
-          [
-            {
-              "node": "Convert to File",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Code in JavaScript3": {
-        "main": [
-          [
-            {
-              "node": "Convert to File1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Insert row1": {
         "main": [
-          [
-            {
-              "node": "Code in JavaScript3",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Convert to File": {
-        "main": [
-          [
-            {
-              "node": "Send a message",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Convert to File1": {
-        "main": [
-          [
-            {
-              "node": "Send a message1",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version 467885b2",
+    "name": "Version 163bf891",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "467885b2-23d6-4f31-ae50-a650e21122a8",
+  "activeVersionId": "163bf891-9b06-4b0a-afdf-a5ecc90431a9",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -1560,11 +1701,6 @@
             "node": "AI Agent1",
             "type": "ai_languageModel",
             "index": 0
-          },
-          {
-            "node": "AI Agent2",
-            "type": "ai_languageModel",
-            "index": 0
           }
         ]
       ]
@@ -1573,7 +1709,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Insert row3",
             "type": "main",
             "index": 0
           }
@@ -1624,26 +1760,9 @@
         ]
       ]
     },
-    "If": {
-      "main": [
-        [
-          {
-            "node": "Insert row1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Insert row": {
       "main": [
-        [
-          {
-            "node": "Code in JavaScript2",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Get row(s)": {
@@ -1661,7 +1780,7 @@
       "main": [
         [
           {
-            "node": "AI Agent2",
+            "node": "Insert row2",
             "type": "main",
             "index": 0
           }
@@ -1730,59 +1849,9 @@
         ]
       ]
     },
-    "Code in JavaScript2": {
-      "main": [
-        [
-          {
-            "node": "Convert to File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript3": {
-      "main": [
-        [
-          {
-            "node": "Convert to File1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Insert row1": {
       "main": [
-        [
-          {
-            "node": "Code in JavaScript3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to File": {
-      "main": [
-        [
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to File1": {
-      "main": [
-        [
-          {
-            "node": "Send a message1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     }
   },
@@ -2282,7 +2351,8 @@
         160
       ],
       "id": "2354be47-0d43-4e81-84b2-ba76bc0c52a1",
-      "name": "AI Agent"
+      "name": "AI Agent",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2301,13 +2371,14 @@
           "id": "FIpUb1C3cbh8qN71",
           "name": "Google Gemini(PaLM) Api account"
         }
-      }
+      },
+      "disabled": true
     },
     {
       "parameters": {
         "content": "## Result evaluation with AI \n",
         "height": 624,
-        "width": 1568,
+        "width": 832,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
@@ -2334,7 +2405,8 @@
         416
       ],
       "id": "07743ae9-8741-415c-9466-b320a74c21a1",
-      "name": "AI Agent1"
+      "name": "AI Agent1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2436,11 +2508,12 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1936,
-        160
+        1792,
+        736
       ],
       "id": "c6630571-6797-4fb6-ba0d-59f0eda548d7",
-      "name": "Insert row"
+      "name": "Insert row",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2541,45 +2614,12 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        1536,
-        416
+        2032,
+        736
       ],
       "id": "e755c141-3437-4d6e-8790-58440f5bdae2",
-      "name": "Insert row1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 3
-          },
-          "conditions": [
-            {
-              "id": "518b25bc-6df3-4e66-b446-5fb2bbbf3f57",
-              "leftValue": "={{ $('Merge').isExecuted }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.3,
-      "position": [
-        1376,
-        416
-      ],
-      "id": "88f9d7ed-04a3-4e7e-9dd5-d8c308d03139",
-      "name": "If"
+      "name": "Insert row1",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2603,7 +2643,8 @@
               "keyValue": "={{ $('When Executed by Another Workflow').item.json.userid }}"
             }
           ]
-        }
+        },
+        "limit": 1000
       },
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
@@ -2617,7 +2658,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $if ($('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').isExecuted, $('Call \\'SBFL - Allocation - Generate Allocation Shipments\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
+        "text": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}\n\n{{ $json.message_data.toJsonString() }}",
         "options": {
           "systemMessage": "DO NOT GENERATE RUNNABLE CODE, IF SO USE PYTHON!\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies."
         }
@@ -2625,11 +2666,12 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        1648,
-        160
+        1536,
+        736
       ],
       "id": "b26b8a2a-efe5-41f3-86ee-501aa2677ab2",
-      "name": "AI Agent2"
+      "name": "AI Agent2",
+      "disabled": true
     },
     {
       "parameters": {
@@ -2725,123 +2767,363 @@
     },
     {
       "parameters": {
-        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"SUCCESS\"",
-        "message": "={{ $('AI Agent').item.json.output }}\n{{ $('AI Agent2').item.json.output }}",
-        "options": {
-          "appendAttribution": false,
-          "attachmentsUi": {
-            "attachmentsBinary": [
-              {}
-            ]
-          }
-        }
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+            "status": "success",
+            "workflow_id": "={{ $workflow.id }}",
+            "sent": "N",
+            "failed_count": 0,
+            "ai_prompt_1": "=Use the incoming inputs to create a short summary from all input nodes. ",
+            "ai_input_1_1": "={{ $if ($('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Upload Payloads to Kafka\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').isExecuted,\"Input from \\\"Run Apache Airflow DAG and Retrieve\\\" node: \\n \"+$('Call \\'Run Apache Airflow DAG and Retrieve XCom Value\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Shipment in Databricks\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Shipment in Databricks\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Shipment in Databricks\\'').item.json.toJsonString(),\"\" )}}\n\n{{ $if ($('Call \\'SBFL - Allocation - Check Allocation Shipment in MFCS\\'').isExecuted,\"Input from \\\"Call SBFL - Allocation - Check Allocation Shipment in MFCS\\\" node: \\n \"+$('Call \\'SBFL - Allocation - Check Allocation Shipment in MFCS\\'').item.json.toJsonString(),\"\" )}}",
+            "ai_input_2_1": "={{ $('Merge').item.json.data.toJsonString() }}",
+            "ai_input_2_2": "={{ $('Aggregate').item.json.message_data.toJsonString() }}",
+            "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"SUCCESS\"",
+            "ai_prompt_2": "=Do not include any code, code blocks, pseudocode, or programming syntax in your response.\nConvert the incoming inputs into html tables. Use \"BillOfLading\" and \"bol_no\" fields to compare the 2 results. If found matched results and the input contains locations,items, qty-s fields then collect and compare them and show any discrepancies.\nDon't forget to not include any code, code blocks, pseudocode, or programming syntax in your response."
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_1_1",
+              "displayName": "ai_input_1_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_2_1",
+              "displayName": "ai_input_2_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_1",
+              "displayName": "ai_prompt_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_2",
+              "displayName": "ai_prompt_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_1_2",
+              "displayName": "ai_input_1_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_2_2",
+              "displayName": "ai_input_2_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "sent",
+              "displayName": "sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_count",
+              "displayName": "failed_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        2416,
-        160
-      ],
-      "id": "f9a0d020-857b-4a96-9da5-471fef55a4db",
-      "name": "Send a message",
-      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "DUshke7IpPd8PQ1f",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "sendTo": "szabolcs.toth@qbcs.com,attila.zubor@qbcs.com,peter.beck@qbcs.com",
-        "subject": "=N8N - Test case : {{ $('When Executed by Another Workflow').item.json.output.type }} - Result: \"FAILED\"",
-        "message": "={{ $('AI Agent1').item.json.output }}",
-        "options": {
-          "appendAttribution": false,
-          "attachmentsUi": {
-            "attachmentsBinary": [
-              {}
-            ]
-          }
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.2,
-      "position": [
-        2416,
-        416
-      ],
-      "id": "d2589364-c9dc-431d-b830-8218bb657136",
-      "name": "Send a message1",
-      "webhookId": "3d473b6e-17c7-4200-8588-b72ab879102b",
-      "executeOnce": true,
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "DUshke7IpPd8PQ1f",
-          "name": "Gmail account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "\n\nreturn $('Merge').all()"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2096,
-        160
-      ],
-      "id": "fce80d85-1a69-4173-8fa4-3895c4465f60",
-      "name": "Code in JavaScript2"
-    },
-    {
-      "parameters": {
-        "jsCode": "\n\nreturn $('Merge').all()"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        2096,
-        416
-      ],
-      "id": "28743b9a-60f7-4954-ba5c-b4283275429a",
-      "name": "Code in JavaScript3"
-    },
-    {
-      "parameters": {
-        "operation": "toJson",
-        "options": {
-          "fileName": "input_data.json"
-        }
-      },
-      "type": "n8n-nodes-base.convertToFile",
+      "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2256,
+        1664,
         160
       ],
-      "id": "f14fd98d-ff24-49f8-9896-4d37fcd67fdf",
-      "name": "Convert to File"
+      "id": "2a41ea82-e1f7-4854-a7df-acf3f6db4cbf",
+      "name": "Insert row2"
     },
     {
       "parameters": {
-        "operation": "toJson",
-        "options": {
-          "fileName": "input_data.json"
-        }
+        "dataTableId": {
+          "__rl": true,
+          "value": "fmq7TTUtjjt9Qdjh",
+          "mode": "list",
+          "cachedResultName": "WORKFLOW_OUTPUT",
+          "cachedResultUrl": "/projects/qocjUN26HqmYcJIH/datatables/fmq7TTUtjjt9Qdjh"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "workflow_id": "={{ $workflow.id }}",
+            "user_id": "={{ $('When Executed by Another Workflow').first().json.userid }}",
+            "status": "error",
+            "failed_count": 0,
+            "ai_input_1_1": "={{ $if ($('Failed to generate tXML for Shipment').isExecuted,\"Error from \\\"SBFL - Allocation - Generate Allocation Shipments\\\" node: \\n \"+$('Failed to generate tXML for Shipment').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Failed to upload payloads to KAFKA topic').isExecuted,\"Error from \\\"SBFL - Allocation - Upload Payloads to Kafka\\\" node: \\n \"+$('Failed to upload payloads to KAFKA topic').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Shipment in Databricks').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Shipment in Databricks\\\" node: \\n \"+$('Can not find Shipment in Databricks').item.json.error.toJsonString(),\"\") }}\n\n{{ $if ($('Can not find Shipment in MFCS').isExecuted,\"Error from \\\"SBFL - Allocation - Check Allocation Shipment in MFCS\\\" node: \\n \"+$('Can not find Shipment in MFCS').item.json.error.toJsonString(),\"\") }}",
+            "sent": "N",
+            "ai_prompt_1": "Use the incoming errors to create a summary from all nodes.",
+            "ai_input_2_1": "={{ $if ($('Merge').isExecuted, $('Merge').item.json.toJsonString(),\"\" )}}",
+            "subject": "=N8N - Test case : {{$('When Executed by Another Workflow').first().json.output.type}} - Result: \"FAILED\""
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "workflow_id",
+              "displayName": "workflow_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_1_1",
+              "displayName": "ai_input_1_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_input_2_1",
+              "displayName": "ai_input_2_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "data_1",
+              "displayName": "data_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "data_2",
+              "displayName": "data_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_1",
+              "displayName": "ai_prompt_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ai_prompt_2",
+              "displayName": "ai_prompt_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_1_2",
+              "displayName": "ai_input_1_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ai_input_2_2",
+              "displayName": "ai_input_2_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "sent",
+              "displayName": "sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "failed_count",
+              "displayName": "failed_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.convertToFile",
+      "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        2256,
+        1456,
         416
       ],
-      "id": "eaa5d733-efef-4cfe-bd3a-f9492269a695",
-      "name": "Convert to File1"
+      "id": "2f25b1f6-8cb8-47c9-af5f-3f76c1c6fcab",
+      "name": "Insert row3"
     }
   ],
   "pinData": {
@@ -2880,19 +3162,19 @@
   "staticData": null,
   "tags": [
     {
-      "updatedAt": "2025-12-03T08:29:30.685Z",
-      "createdAt": "2025-12-03T08:29:30.685Z",
-      "id": "7XhEcQNHqPX9s6B9",
-      "name": "Merch_test_cases"
-    },
-    {
       "updatedAt": "2026-01-28T08:40:06.911Z",
       "createdAt": "2026-01-28T08:40:06.911Z",
       "id": "Mk9OmPl9J1OAhffI",
       "name": "Allocation"
+    },
+    {
+      "updatedAt": "2025-12-03T08:29:30.685Z",
+      "createdAt": "2025-12-03T08:29:30.685Z",
+      "id": "7XhEcQNHqPX9s6B9",
+      "name": "Merch_test_cases"
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-29T14:16:57.034Z",
-  "versionId": "467885b2-23d6-4f31-ae50-a650e21122a8"
+  "updatedAt": "2026-01-30T12:27:36.132Z",
+  "versionId": "163bf891-9b06-4b0a-afdf-a5ecc90431a9"
 }
