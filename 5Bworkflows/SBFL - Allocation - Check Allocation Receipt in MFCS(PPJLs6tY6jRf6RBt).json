@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-28T12:47:42.410Z",
-    "createdAt": "2026-01-28T12:47:20.347Z",
-    "versionId": "b6735e0c-69aa-42dd-9bf9-b211d9a8c253",
+    "updatedAt": "2026-01-30T14:03:31.848Z",
+    "createdAt": "2026-01-30T14:03:29.477Z",
+    "versionId": "17266fa8-93d9-423a-a764-da77e92fbf37",
     "workflowId": "PPJLs6tY6jRf6RBt",
     "nodes": [
       {
@@ -1179,11 +1179,11 @@
       }
     },
     "authors": "zoltan karancsi",
-    "name": "Version b6735e0c",
+    "name": "Version 17266fa8",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "b6735e0c-69aa-42dd-9bf9-b211d9a8c253",
+  "activeVersionId": "17266fa8-93d9-423a-a764-da77e92fbf37",
   "connections": {
     "in data": {
       "main": [
@@ -2945,6 +2945,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-28T12:47:20.346Z",
-  "versionId": "b6735e0c-69aa-42dd-9bf9-b211d9a8c253"
+  "updatedAt": "2026-01-30T14:03:29.475Z",
+  "versionId": "17266fa8-93d9-423a-a764-da77e92fbf37"
 }
