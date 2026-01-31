@@ -1,9 +1,9 @@
 {
   "active": true,
   "activeVersion": {
-    "updatedAt": "2026-01-29T12:09:00.509Z",
-    "createdAt": "2026-01-29T12:08:50.972Z",
-    "versionId": "8f6d887f-dbf9-41d9-811b-4c025f9d068d",
+    "updatedAt": "2026-01-30T12:46:18.075Z",
+    "createdAt": "2026-01-30T12:46:12.018Z",
+    "versionId": "4f35a00e-7392-44e2-9ab4-5f3f09a880f5",
     "workflowId": "Y5jRinMoEIYHOQPP",
     "nodes": [
       {
@@ -216,6 +216,198 @@
         ],
         "id": "c99d2341-6a50-4f7a-bdb4-9eadce5edfad",
         "name": "Call 'Run Databricks Notebook'1"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "pkzrp7tMgbhguG0z",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/pkzrp7tMgbhguG0z",
+            "cachedResultName": "Run Databricks Notebook"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wait": 10,
+              "wait_time": 180,
+              "run_name": "Oracle_RDS_Replication_API_Run",
+              "cluster_id": "1121-082127-c9ls3qfz",
+              "notebook_path": "/BUY/modules/Oracle_RDS_Replication",
+              "base_parameters": "{\"replication_id\": \"SHIPSKU_INCREMENTAL\"}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "run_name",
+                "displayName": "run_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "cluster_id",
+                "displayName": "cluster_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "notebook_path",
+                "displayName": "notebook_path",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "base_parameters",
+                "displayName": "base_parameters",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          16,
+          -16
+        ],
+        "id": "825daa63-a067-48c0-87bd-b7801fb8bcac",
+        "name": "Call 'Run Databricks Notebook'2"
+      },
+      {
+        "parameters": {
+          "workflowId": {
+            "__rl": true,
+            "value": "pkzrp7tMgbhguG0z",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/pkzrp7tMgbhguG0z",
+            "cachedResultName": "Run Databricks Notebook"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "wait": 10,
+              "wait_time": 180,
+              "run_name": "Oracle_RDS_Replication_API_Run",
+              "cluster_id": "1121-082127-c9ls3qfz",
+              "notebook_path": "/BUY/modules/Oracle_RDS_Replication",
+              "base_parameters": "{\"replication_id\": \"SHIPSKU_INCREMENTAL\"}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "run_name",
+                "displayName": "run_name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "cluster_id",
+                "displayName": "cluster_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "notebook_path",
+                "displayName": "notebook_path",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "base_parameters",
+                "displayName": "base_parameters",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "string",
+                "removed": false
+              },
+              {
+                "id": "wait",
+                "displayName": "wait",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              },
+              {
+                "id": "wait_time",
+                "displayName": "wait_time",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "type": "number",
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": true
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.executeWorkflow",
+        "typeVersion": 1.3,
+        "position": [
+          256,
+          -16
+        ],
+        "id": "8e688eda-7af0-4a24-b7d3-7ee0928f088a",
+        "name": "Call 'Run Databricks Notebook'3"
       }
     ],
     "connections": {
@@ -240,14 +432,36 @@
             }
           ]
         ]
+      },
+      "Call 'Run Databricks Notebook'1": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Databricks Notebook'2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'Run Databricks Notebook'2": {
+        "main": [
+          [
+            {
+              "node": "Call 'Run Databricks Notebook'3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
-    "authors": "zoltan karancsi",
-    "name": "Version 8f6d887f",
+    "authors": "Attila Zubor",
+    "name": "Version 4f35a00e",
     "description": "",
     "autosaved": false
   },
-  "activeVersionId": "8f6d887f-dbf9-41d9-811b-4c025f9d068d",
+  "activeVersionId": "4f35a00e-7392-44e2-9ab4-5f3f09a880f5",
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
@@ -265,6 +479,28 @@
         [
           {
             "node": "Call 'Run Databricks Notebook'1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Run Databricks Notebook'1": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Databricks Notebook'2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Run Databricks Notebook'2": {
+      "main": [
+        [
+          {
+            "node": "Call 'Run Databricks Notebook'3",
             "type": "main",
             "index": 0
           }
@@ -488,6 +724,198 @@
       ],
       "id": "c99d2341-6a50-4f7a-bdb4-9eadce5edfad",
       "name": "Call 'Run Databricks Notebook'1"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "pkzrp7tMgbhguG0z",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/pkzrp7tMgbhguG0z",
+          "cachedResultName": "Run Databricks Notebook"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "wait": 10,
+            "wait_time": 180,
+            "run_name": "Oracle_RDS_Replication_API_Run",
+            "cluster_id": "1121-082127-c9ls3qfz",
+            "notebook_path": "/BUY/modules/Oracle_RDS_Replication",
+            "base_parameters": "{\"replication_id\": \"SHIPSKU_INCREMENTAL\"}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "run_name",
+              "displayName": "run_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "cluster_id",
+              "displayName": "cluster_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "notebook_path",
+              "displayName": "notebook_path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "base_parameters",
+              "displayName": "base_parameters",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        -16
+      ],
+      "id": "825daa63-a067-48c0-87bd-b7801fb8bcac",
+      "name": "Call 'Run Databricks Notebook'2"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "pkzrp7tMgbhguG0z",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/pkzrp7tMgbhguG0z",
+          "cachedResultName": "Run Databricks Notebook"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "wait": 10,
+            "wait_time": 180,
+            "run_name": "Oracle_RDS_Replication_API_Run",
+            "cluster_id": "1121-082127-c9ls3qfz",
+            "notebook_path": "/BUY/modules/Oracle_RDS_Replication",
+            "base_parameters": "{\"replication_id\": \"SHIPSKU_INCREMENTAL\"}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "run_name",
+              "displayName": "run_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "cluster_id",
+              "displayName": "cluster_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "notebook_path",
+              "displayName": "notebook_path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "base_parameters",
+              "displayName": "base_parameters",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "wait",
+              "displayName": "wait",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            },
+            {
+              "id": "wait_time",
+              "displayName": "wait_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        -16
+      ],
+      "id": "8e688eda-7af0-4a24-b7d3-7ee0928f088a",
+      "name": "Call 'Run Databricks Notebook'3"
     }
   ],
   "pinData": {
@@ -841,6 +1269,6 @@
     }
   ],
   "triggerCount": 0,
-  "updatedAt": "2026-01-29T13:06:32.661Z",
-  "versionId": "8f6d887f-dbf9-41d9-811b-4c025f9d068d"
+  "updatedAt": "2026-01-30T12:46:12.017Z",
+  "versionId": "4f35a00e-7392-44e2-9ab4-5f3f09a880f5"
 }
